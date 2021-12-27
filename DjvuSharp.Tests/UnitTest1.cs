@@ -10,8 +10,10 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
+    public void Test_DjvuVersion()
     {
-        Assert.Pass();
+        var version = Djvu.GetDjvuVersion();
+
+        Assert.AreEqual("DjVuLibre-3.5.27", version);
     }
 }
