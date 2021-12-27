@@ -41,20 +41,29 @@ namespace DjvuSharp
         }
 
         /// <summary>
-        /// <p>Gets and sets the maximum size of the cache of decoded page data.
+        /// <para>Gets and sets the maximum size of the cache of decoded page data.
         /// The value of argument is expressed in bytes, meaning if you set the value
         /// of this property 50 then the cache size is 50 bytes and so on.
-        /// </p>
+        /// </para>
         /// 
-        /// <p> The default value for this property is 10485760
-        /// And you cannot assign value less than 1
-        /// </p>
+        /// <para> The default value for this property is 10485760
+        /// and you cannot assign value less than 1.
+        /// </para>
         /// </summary>
-        ///
+        /// <exception cref="ArgumentException">Throws exception if set to value less than 1.</exception>
         public uint CacheSize 
         { 
-            get { return djvulibre.ddjvu_cache_get_size(_djvu_context_s); } 
-            set { djvulibre.ddjvu_cache_set_size(_djvu_context_s, value); }
+            get 
+            { 
+                return djvulibre.ddjvu_cache_get_size(_djvu_context_s);
+            } 
+            set 
+            {
+                if (value <= 0)
+                    throw new ArgumentException($"The value of {nameof(CacheSize)} should be greater than 0");
+
+                djvulibre.ddjvu_cache_set_size(_djvu_context_s, value);
+            }
         }
 
         ~DjvuContext()
