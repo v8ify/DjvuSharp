@@ -66,6 +66,12 @@ namespace DjvuSharp
             }
         }
 
+        /// <summary>Clears all cached data in a context.</summary>
+        public void ClearCache()
+        {
+            djvulibre.ddjvu_cache_clear(_djvu_context_s);
+        }
+
         ~DjvuContext()
         {
             this.Dispose(false);
