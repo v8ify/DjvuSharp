@@ -22,6 +22,12 @@ using Djvulibre.Internal;
 
 namespace DjvuSharp
 {
+    /// <summary>
+    /// There is usually only one DjvuContext object.  
+    /// This object holds global data structures such as the 
+    /// cache of decoded pages, or the list of pending 
+    /// event messages.
+    /// </summary>
     public class DjvuContext: IDisposable
     {
         private SWIGTYPE_p_ddjvu_context_s _djvu_context_s;
@@ -32,6 +38,23 @@ namespace DjvuSharp
         {
             // Create a djvu context
             _djvu_context_s = djvulibre.ddjvu_context_create(programName);
+        }
+
+        /// <summary>
+        /// <p>Gets and sets the maximum size of the cache of decoded page data.
+        /// The value of argument is expressed in bytes, meaning if you set the value
+        /// of this property 50 then the cache size is 50 bytes and so on.
+        /// </p>
+        /// 
+        /// <p> The default value for this property is 10485760
+        /// And you cannot assign value less than 1
+        /// </p>
+        /// </summary>
+        ///
+        public uint CacheSize 
+        { 
+            get { return djvulibre.ddjvu_cache_get_size(_djvu_context_s); } 
+            set { djvulibre.ddjvu_cache_set_size(_djvu_context_s, value); }
         }
 
         ~DjvuContext()
