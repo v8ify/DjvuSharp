@@ -456,3 +456,4 @@ $RECYCLE.BIN/
 # Custom
 DjvuSharp/Generated
 native/out
+native/*_wrap.cxx
