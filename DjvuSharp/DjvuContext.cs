@@ -72,6 +72,11 @@ namespace DjvuSharp
             djvulibre.ddjvu_cache_clear(_djvu_context_s);
         }
 
+        /// <summary>Returns a pointer to the next DDJVU message.
+        /// This function returns 0 if no message is available.
+        /// It does not remove the message from the queue.</summary>
+        
+
         ~DjvuContext()
         {
             this.Dispose(false);
