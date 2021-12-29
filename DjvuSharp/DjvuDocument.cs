@@ -41,6 +41,18 @@ namespace DjvuSharp
             _document = djvulibre.ddjvu_document_create_by_filename_utf8(context, filename, cache);
         }
 
+        /// <summary>
+        /// Access the job object in charge of decoding the document header.
+        /// </summary>
+        public DjvuJob DjvuJob
+        {
+            get 
+            {
+                SWIGTYPE_p_ddjvu_job_s job = djvulibre.ddjvu_document_job(_document);
+                return new DjvuJob(job);
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
