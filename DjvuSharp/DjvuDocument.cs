@@ -53,6 +53,33 @@ namespace DjvuSharp
             }
         }
 
+        /// <summary>
+        /// Returns the type of a DjVu document.
+        /// <para>
+        /// This function might return <see cref="DDjvuDocumentType.DDJVU_DOCTYPE_UNKNOWN" />
+        /// when called before receiving a m_docinfo message.
+        /// </para>
+        /// </summary>
+        /// <returns>The type of djvu document in form of an enum member.</returns>
+        public DDjvuDocumentType GetDocumentType()
+        {
+            return (DDjvuDocumentType)djvulibre.ddjvu_document_get_type(_document);
+        }
+
+
+        /// <summary>
+        /// Returns the number of pages in a DjVu document.
+        /// <para>
+        /// This function might return 1 when called 
+        /// before receiving a m_docinfo message.
+        /// </para>
+        /// </summary>
+        /// <returns>An int representing number of pages.</returns>
+        public int GetPageNumber()
+        {
+            return djvulibre.ddjvu_document_get_pagenum(_document);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
