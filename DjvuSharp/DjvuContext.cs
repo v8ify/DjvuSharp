@@ -72,6 +72,15 @@ namespace DjvuSharp
             djvulibre.ddjvu_cache_clear(_djvu_context_s);
         }
 
+        /// <summary>Creates and returns a Djvu document from given file</summary>
+        /// <param name="filename">The djvu file you want to process</param>
+        /// <param name="shouldCache">Setting this argument to true indicates that decoded pages
+        /// should be cached when possible.</param>
+        public DjvuDocument CreateDjvuDocument(string filename, bool shouldCache)
+        {
+            return new DjvuDocument(_djvu_context_s, filename, shouldCache);
+        }
+
         ~DjvuContext()
         {
             this.Dispose(false);
