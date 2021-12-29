@@ -17,6 +17,7 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using System; // IDisposable
 using Djvulibre.Internal;
 
 namespace DjvuSharp
@@ -26,9 +27,10 @@ namespace DjvuSharp
     /// These "jobs" run in seperate threads and report their
     /// progress by posting messages into the ddjvu context event queue. 
     /// </summary>
-    public class DjvuJob
+    public class DjvuJob: IDisposable
     {
         private SWIGTYPE_p_ddjvu_job_s _ddjvu_job;
+        private bool disposedValue;
 
         internal DjvuJob(SWIGTYPE_p_ddjvu_job_s ddjvu_job)
         {
@@ -44,6 +46,66 @@ namespace DjvuSharp
             {
                 return (DDjvuStatus)djvulibre.ddjvu_job_status(_ddjvu_job);
             }
+        }
+
+        /// <summary>
+        /// Indicates if this job has finished.
+        /// </summary>
+        /// <returns>true if the job has finished; false otherwise</returns>
+        public bool IsDone()
+        {
+            return this.Status >= DDjvuStatus.DDJVU_JOB_OK;
+        }
+
+        /// <summary>
+        /// Indicates if any errors occured while running this job.
+        /// </summary>
+        /// <returns>true if error occured; false otherwise.</returns>
+        public bool HadErrors()
+        {
+            return this.Status >= DDjvuStatus.DDJVU_JOB_FAILED;
+        }
+
+        /// <summary>
+        /// Attempts to cancel the specified job.
+        /// <para>
+        /// This is a best effort function. There no guarantee that the job will 
+        /// actually stop.
+        /// </para>
+        /// </summary>
+        public void Stop()
+        {
+            djvulibre.ddjvu_job_stop(_ddjvu_job);
+        }
+
+        // Implementation of Dispose pattern
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                djvulibre.ddjvu_job_release(_ddjvu_job);
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        ~DjvuJob()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
