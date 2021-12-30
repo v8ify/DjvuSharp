@@ -16,4 +16,11 @@
     <ProjectReference Include="../DjvuSharp/DjvuSharp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="../assets/**/*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>assets\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
+
 </Project>

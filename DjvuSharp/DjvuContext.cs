@@ -19,6 +19,7 @@
 
 using System;
 using Djvulibre.Internal;
+using DjvuSharp.Message;
 
 namespace DjvuSharp
 {
@@ -79,6 +80,33 @@ namespace DjvuSharp
         public DjvuDocument CreateDjvuDocument(string filename, bool shouldCache)
         {
             return new DjvuDocument(_djvu_context_s, filename, shouldCache);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ddjvu_message_s PeekMessage()
+        {
+            // return new DDjvuMessage(djvulibre.ddjvu_message_peek(_djvu_context_s));
+            return djvulibre.ddjvu_message_peek(_djvu_context_s);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public DDjvuMessage WaitMessage()
+        {
+            return new DDjvuMessage(djvulibre.ddjvu_message_wait(_djvu_context_s));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void PopMessage()
+        {
+            djvulibre.ddjvu_message_pop(_djvu_context_s);
         }
 
         ~DjvuContext()
