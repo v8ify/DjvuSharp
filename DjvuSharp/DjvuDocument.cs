@@ -80,6 +80,19 @@ namespace DjvuSharp
             return djvulibre.ddjvu_document_get_pagenum(_document);
         }
 
+        /// <summary>
+        /// <p>When we construct a document, djvulibre starts decoding it in background.<p>
+        /// <p>Also djvulibre decodes a document in chunks. Hence, we don't have to wait till
+        /// all of the document is decoded.
+        /// </p>
+        /// <p>We use this function to know if the decoding of document is complete.</p>
+        /// </summary>
+        /// <returns>A boolean. true if decoding of the document is finished. false otherwise.</returns>
+        public bool IsDecodingDone()
+        {
+            return this.DjvuJob.IsDone();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

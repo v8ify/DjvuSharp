@@ -86,10 +86,14 @@ namespace DjvuSharp
         /// 
         /// </summary>
         /// <returns></returns>
-        public ddjvu_message_s PeekMessage()
+        public DDjvuMessage PeekMessage()
         {
-            // return new DDjvuMessage(djvulibre.ddjvu_message_peek(_djvu_context_s));
-            return djvulibre.ddjvu_message_peek(_djvu_context_s);
+            ddjvu_message_s message = djvulibre.ddjvu_message_peek(_djvu_context_s);
+
+            if (message == null)
+                return null;
+
+            return new DDjvuMessage(djvulibre.ddjvu_message_peek(_djvu_context_s));
         }
 
         /// <summary>
@@ -98,6 +102,11 @@ namespace DjvuSharp
         /// <returns></returns>
         public DDjvuMessage WaitMessage()
         {
+            ddjvu_message_s message = djvulibre.ddjvu_message_wait(_djvu_context_s);
+
+            if (message == null)
+                return null;
+
             return new DDjvuMessage(djvulibre.ddjvu_message_wait(_djvu_context_s));
         }
 
