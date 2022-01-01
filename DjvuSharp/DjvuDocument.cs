@@ -93,6 +93,20 @@ namespace DjvuSharp
             return this.DjvuJob.IsDone();
         }
 
+
+        /// <summary>
+        /// This function returns a UTF8 encoded text describing the contents
+        /// of entire document using the same format as command: <code>djvudump</code>
+        /// </summary>
+        /// <param name="json">If parameter json is set to true output will be json formatted</param>
+        /// <returns>returns a UTF8 encoded text describing the contents
+        /// of entire document. May return null if decoding of the document is not done yet.
+        /// </returns>
+        public string GetDump(bool json)
+        {
+            return djvulibre.ddjvu_document_get_dump(_document, json);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
