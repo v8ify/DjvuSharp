@@ -100,4 +100,50 @@ public class TestDjvuDocument
             }
         }
     }
+
+    const string DocumentDump =
+@"  FORM:DJVM [11465] 
+    DIRM [30]         Document directory (bundled, 2 files 2 pages)
+    FORM:DJVU [3159] {p0} [P1]
+      INFO [10]         DjVu 192x256, v24, 100 dpi, gamma=2.2, orientation=0
+      BG44 [3129]       IW4 data #1, 90 slices, v1.2 (color), 192x256
+    FORM:DJVU [8247] {p1} [P2]
+      INFO [10]         DjVu 181x240, v24, 100 dpi, gamma=2.2, orientation=0
+      BG44 [8217]       IW4 data #1, 90 slices, v1.2 (color), 181x240
+";
+
+    [TestCase("./assets/boy_and_chicken.djvu")]
+    public void Test_If_Document_GetDump_Return_Correct_Output(string filename)
+    {
+        using (var context = new DjvuContext("NunitTest"))
+        {
+            using (var document = context.CreateDjvuDocument(filename, true))
+            {
+                while (!document.IsDecodingDone())
+                {
+                    DDjvuMessage message = context.WaitMessage();
+
+                    while ((message = context.PeekMessage()) != null)
+                    {
+                        switch (message.MessageAny.Tag)
+                        {
+                            case MessageTag.DDJVU_ERROR:
+                                TestContext.Out.WriteLine($"ddjvu: {message.M_Error.message}");
+
+                                if (message.M_Error.filename != null)
+                                    TestContext.Out.WriteLine($"ddjvu: {message.M_Error.filename}");
+
+                                throw new Exception(message.M_Error.message);
+                        }
+
+                        context.PopMessage();
+                    }
+                }
+
+                string actualPageDump = document.GetDump(false);
+
+                Assert.AreEqual(DocumentDump, actualPageDump);
+            }
+        }
+    }
 }
