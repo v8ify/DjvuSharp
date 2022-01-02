@@ -118,6 +118,37 @@ namespace DjvuSharp
             return djvulibre.ddjvu_document_get_dump(_document, json);
         }
 
+
+        /// <summary>
+        ///     Each page of a document can be accessed by creating a
+        ///     <see cref="DjvuPage" /> object with this function.
+        ///     <para>
+        ///         This function may return NULL when called before receiving the
+        ///         M_DocInfo message.
+        ///     </para>
+        ///     <para>Error messages will be generated if the page does not exists.</para>
+        ///     <para>
+        ///         Calling this function also initiates the data transfer
+        ///         and the decoding threads for the specified page. Various messages
+        ///         will document the progress of these operations.
+        ///     </para>
+        /// </summary>
+        /// 
+        /// <param name="pageNum">An integer between 0 to (total_pages - 1)</param>
+        /// 
+        /// <returns>A <see cref="DjvuPage" /></returns>
+        /// 
+        public DjvuPage CreateDjvuPageByPageNo(int pageNum)
+        {
+            var djvuPage = djvulibre.ddjvu_page_create_by_pageno(_document, pageNum);
+
+            if (djvuPage == null)
+                return null;
+
+            return new DjvuPage(djvuPage);
+        }
+
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
