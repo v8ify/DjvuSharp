@@ -81,6 +81,17 @@ namespace DjvuSharp
         }
 
         /// <summary>
+        /// Returns the number of component files. 
+        /// This function might return 0 when called
+        /// before receiving a m_docinfo message
+        /// </summary>
+        /// <returns>The number of component files</returns>
+        public int GetFileNumber()
+        {
+            return djvulibre.ddjvu_document_get_filenum(_document);
+        }
+
+        /// <summary>
         /// <p>When we construct a document, djvulibre starts decoding it in background.<p>
         /// <p>Also djvulibre decodes a document in chunks. Hence, we don't have to wait till
         /// all of the document is decoded.
