@@ -2,6 +2,7 @@ using NUnit.Framework;
 using Djvulibre.Internal;
 using DjvuSharp.Message;
 using System;
+using System.IO;
 
 namespace DjvuSharp.Tests;
 
@@ -143,6 +144,59 @@ public class TestDjvuDocument
                 string actualPageDump = document.GetDump(false);
 
                 Assert.AreEqual(DocumentDump, actualPageDump);
+            }
+        }
+    }
+
+    const string DocumentDumpJson =
+@"{ ""$type"":""DjvuNet.Serialization.DjvuDoc"", ""DjvuData"":
+    { ""$type"": ""DjvuNet.Serialization.DjvmForm"", ""ID"": ""FORM:DJVM"", ""NodeOffset"": 0, ""Size"": 11465, ""Children"": [
+            { ""$type"": ""DjvuNet.Serialization.Dirm"", ""ID"": ""DIRM"", ""NodeOffset"": 16, ""Size"": 30, ""Description"": ""Document directory"", ""DocumentType"": ""bundled"", ""FileCount"": 2, ""PageCount"": 2 },
+            { ""$type"": ""DjvuNet.Serialization.DjvuForm"", ""ID"": ""FORM:DJVU"", ""NodeOffset"": 54, ""Size"": 3159, ""Children"": [
+                    { ""$type"": ""DjvuNet.Serialization.Info"", ""ID"": ""INFO"", ""NodeOffset"": 66, ""Size"": 10, ""Width"": 192, ""Height"": 256, ""Version"": 24, ""Dpi"": 100, ""Gamma"": 2.2, ""Orientation"": 0 },
+                    { ""$type"": ""DjvuNet.Serialization.BG44"", ""ID"": ""BG44"", ""NodeOffset"": 84, ""Size"": 3129, ""Description"": ""IW4 data #1"", ""Slices"": 90, ""Version"": 1.2, ""Color"": ""True"", ""Width"": 192, ""Height"": 256 }
+                ]
+            },
+            { ""$type"": ""DjvuNet.Serialization.DjvuForm"", ""ID"": ""FORM:DJVU"", ""NodeOffset"": 3222, ""Size"": 8247, ""Children"": [
+                    { ""$type"": ""DjvuNet.Serialization.Info"", ""ID"": ""INFO"", ""NodeOffset"": 3234, ""Size"": 10, ""Width"": 181, ""Height"": 240, ""Version"": 24, ""Dpi"": 100, ""Gamma"": 2.2, ""Orientation"": 0 },
+                    { ""$type"": ""DjvuNet.Serialization.BG44"", ""ID"": ""BG44"", ""NodeOffset"": 3252, ""Size"": 8217, ""Description"": ""IW4 data #1"", ""Slices"": 90, ""Version"": 1.2, ""Color"": ""True"", ""Width"": 181, ""Height"": 240 }
+                ]
+            }
+        ]
+    }
+}
+";
+    [TestCase("./assets/boy_and_chicken.djvu")]
+    public void Test_If_Document_GetDump_Return_Correct_Output_JSON(string filename)
+    {
+        using (var context = new DjvuContext("NunitTest"))
+        {
+            using (var document = context.CreateDjvuDocument(filename, true))
+            {
+                while (!document.IsDecodingDone())
+                {
+                    DDjvuMessage message = context.WaitMessage();
+
+                    while ((message = context.PeekMessage()) != null)
+                    {
+                        switch (message.MessageAny.Tag)
+                        {
+                            case MessageTag.DDJVU_ERROR:
+                                TestContext.Out.WriteLine($"ddjvu: {message.M_Error.message}");
+
+                                if (message.M_Error.filename != null)
+                                    TestContext.Out.WriteLine($"ddjvu: {message.M_Error.filename}");
+
+                                throw new Exception(message.M_Error.message);
+                        }
+
+                        context.PopMessage();
+                    }
+                }
+
+                string actualPageDump = document.GetDump(true);
+
+                Assert.AreEqual(DocumentDumpJson, actualPageDump);
             }
         }
     }
