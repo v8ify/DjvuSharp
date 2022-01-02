@@ -11,6 +11,8 @@
 // a stub function
 void ddjvu_document_release(ddjvu_document_t*);
 
+void ddjvu_page_release(ddjvu_page_t*);
+
 
 // These function return char* which was malloced
 // we need to free the memory manually
