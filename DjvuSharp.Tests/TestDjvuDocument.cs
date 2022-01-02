@@ -200,4 +200,47 @@ public class TestDjvuDocument
             }
         }
     }
+
+    /// <summary>
+    /// Testing the Document.GetFileNumber() method if it returns the correct number of files
+    /// in a document.
+    /// </summary>
+    /// <param name="filePath">The file path to the djvu documents which we are testing</param>
+    /// <param name="fileNum">The number of files in the document </param>
+    /// <exception cref="Exception">Raised if an error occures while decoding the document</exception>
+    [TestCase("./assets/boy_and_chicken.djvu", 2)]
+    [TestCase("./assets/DjVu3Spec.djvu", 75)]
+    public void Test_Document_Get_FileNum(string filePath, int fileNum)
+    {
+        using (var context = new DjvuContext("NunitTest"))
+        {
+            using (var document = context.CreateDjvuDocument(filePath, true))
+            {
+                while (!document.IsDecodingDone())
+                {
+                    DDjvuMessage message = context.WaitMessage();
+
+                    while ((message = context.PeekMessage()) != null)
+                    {
+                        switch (message.MessageAny.Tag)
+                        {
+                            case MessageTag.DDJVU_ERROR:
+                                TestContext.Out.WriteLine($"ddjvu: {message.M_Error.message}");
+
+                                if (message.M_Error.filename != null)
+                                    TestContext.Out.WriteLine($"ddjvu: {message.M_Error.filename}");
+
+                                throw new Exception(message.M_Error.message);
+                        }
+
+                        context.PopMessage();
+                    }
+                }
+
+                int actualFileNum = document.GetFileNumber();
+
+                Assert.AreEqual(fileNum, actualFileNum);
+            }
+        }
+    }
 }
