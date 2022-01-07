@@ -113,6 +113,17 @@ namespace DjvuSharp
         }
 
 
+        /// <summary>
+        /// Returns the type of the page data.
+        /// Calling this function before the termination of the
+        /// decoding process might return <see cref="PageType.DDJVU_PAGETYPE_UNKNOWN" />.
+        /// </summary>
+        public PageType Type
+        {
+            get { return (PageType)djvulibre.ddjvu_page_get_type(_djvu_page); }
+        }
+
+
         /* 
             Implementing Dispose pattern below
         */
