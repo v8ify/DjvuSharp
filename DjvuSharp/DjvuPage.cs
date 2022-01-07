@@ -43,6 +43,21 @@ namespace DjvuSharp
             _djvu_page = djvu_page;
         }
 
+        /// <summary>
+        /// Access the job object in charge of decoding the document header.
+        /// </summary>
+        public DjvuJob PageJob
+        {
+            get
+            {
+                var job = djvulibre.ddjvu_page_job(_djvu_page);
+
+                if (job == null)
+                    return null;
+
+                return new DjvuJob(job);
+            }
+        }
 
 
         /* 
