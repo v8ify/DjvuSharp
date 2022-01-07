@@ -60,6 +60,59 @@ namespace DjvuSharp
         }
 
 
+        /// <summary>
+        /// Returns the page height in pixels. Calling this function 
+        /// before receiving a M_PageInfo message always yields 0.
+        /// </summary>
+        public int Height 
+        { 
+            get { return djvulibre.ddjvu_page_get_height(_djvu_page); } 
+        }
+
+
+        /// <summary>
+        /// Returns the page width in pixels. Calling this function 
+        /// before receiving a M_PageInfo message always yields 0.
+        /// </summary>
+        public int Width
+        {
+            get { return djvulibre.ddjvu_page_get_width(_djvu_page); }
+        }
+
+
+        /// <summary>
+        /// Returns the page resolution in pixels per inch (dpi).
+        /// Calling this function before receiving a M_PageInfo
+        /// message yields a meaningless but plausible value.
+        /// </summary>
+        public int Resolution
+        {
+            get { return djvulibre.ddjvu_page_get_resolution(_djvu_page); }
+        }
+
+
+        /// <summary>
+        /// Returns the gamma of the display for which this page was designed.
+        /// Calling this function before receiving a M_PageInfo
+        /// message yields a meaningless but plausible value.
+        /// </summary>
+        public double Gamma
+        {
+            get { return djvulibre.ddjvu_page_get_gamma(_djvu_page); }
+        }
+
+        
+        /// <summary>
+        /// Returns the version of the djvu file format.
+        /// Calling this function before receiving a M_PageInfo
+        /// message yields a meaningless but plausible value.
+        /// </summary>
+        public int Version
+        {
+            get { return djvulibre.ddjvu_page_get_version(_djvu_page); }
+        }
+
+
         /* 
             Implementing Dispose pattern below
         */
