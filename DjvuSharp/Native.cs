@@ -52,5 +52,17 @@ namespace DjvuSharp
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void ddjvu_cache_clear(IntPtr context);
+        
+
+        /// <summary>
+        /// Removes one message from the queue.
+        /// This function must be called after processing the message.
+        /// Pointers returned by previous calls to ddjvu_message_peek
+        /// or ddjvu_message_wait are no longer valid after 
+        /// calling ddjvu_message_pop.
+        /// </summary>
+        /// <param name="context">Pointer to djvu_context_t</param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_message_pop(IntPtr context);
     }
 }
