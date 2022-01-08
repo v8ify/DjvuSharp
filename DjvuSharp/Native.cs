@@ -38,5 +38,14 @@ namespace DjvuSharp
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void ddjvu_context_release(IntPtr ddjvu_context);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_cache_set_size(IntPtr context, ulong cachesize);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static ulong ddjvu_cache_get_size(IntPtr context);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_cache_clear(IntPtr context);
     }
 }
