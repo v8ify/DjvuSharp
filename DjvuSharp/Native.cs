@@ -1,6 +1,6 @@
 /*
 *   DjvuSharp - .NET bindings for DjvuLibre
-*   Copyright (C) 2021 Prajwal Jadhav
+*   Copyright (C) 2022 Prajwal Jadhav
 *   
 *   This program is free software; you can redistribute it and/or
 *   modify it under the terms of the GNU General Public License
@@ -85,5 +85,38 @@ namespace DjvuSharp
         /// <param name="context">Pointer to djvu_context_t</param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void ddjvu_message_pop(IntPtr context);
+
+
+        /// <summary>
+        /// Returns the status of the specified job.
+        /// </summary>
+        /// <param name="job">Pointer to ddjvu_job_t</param>
+        /// <returns>Returns the status of the specified job in form 
+        /// of enum <see cref="DDjvuStatus" />
+        /// </returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static DDjvuStatus ddjvu_job_status(IntPtr job);
+
+
+        /// <summary>
+        /// Attempts to cancel the specified job.
+        /// This is a best effort function. 
+        /// There no guarantee that the job will actually stop.
+        /// </summary>
+        /// <param name="job">Pointer to ddjvu_job_t</param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_job_stop(IntPtr job);
+
+
+        /// <summary>
+        /// Releases a reference to a job object and clears its user 
+        /// data field.  This does not cause the job to stop executing.
+        /// The calling program should no longer reference this object.
+        /// The object itself will be destroyed as soon as no 
+        /// other object or thread needs it. 
+        /// </summary>
+        /// <param name="job">A pointer to ddjvu_job_t</param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_job_release(IntPtr job);
     }
 }
