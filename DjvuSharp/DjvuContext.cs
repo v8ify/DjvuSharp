@@ -33,12 +33,15 @@ namespace DjvuSharp
     {
         private SWIGTYPE_p_ddjvu_context_s _djvu_context_s;
 
+        private IntPtr _djvu_context;
+
         private bool _isDisposed;
 
         public DjvuContext(string programName)
         {
             // Create a djvu context
             _djvu_context_s = djvulibre.ddjvu_context_create(programName);
+            _djvu_context = Native.ddjvu_context_create(programName);
         }
 
         /// <summary>
@@ -52,25 +55,25 @@ namespace DjvuSharp
         /// </para>
         /// </summary>
         /// <exception cref="ArgumentException">Throws exception if set to value less than 1.</exception>
-        public uint CacheSize 
+        public ulong CacheSize
         { 
             get 
-            { 
-                return djvulibre.ddjvu_cache_get_size(_djvu_context_s);
+            {
+                return Native.ddjvu_cache_get_size(_djvu_context);
             } 
             set 
             {
                 if (value <= 0)
                     throw new ArgumentException($"The value of {nameof(CacheSize)} should be greater than 0");
 
-                djvulibre.ddjvu_cache_set_size(_djvu_context_s, value);
+                Native.ddjvu_cache_set_size(_djvu_context, value);
             }
         }
 
         /// <summary>Clears all cached data in a context.</summary>
         public void ClearCache()
         {
-            djvulibre.ddjvu_cache_clear(_djvu_context_s);
+            Native.ddjvu_cache_clear(_djvu_context);
         }
 
         /// <summary>Creates and returns a Djvu document from given file</summary>
@@ -135,6 +138,7 @@ namespace DjvuSharp
             {
                 // Release the context
                 djvulibre.ddjvu_context_release(_djvu_context_s);
+                Native.ddjvu_context_release(_djvu_context);
 
                 _isDisposed = true;
             }

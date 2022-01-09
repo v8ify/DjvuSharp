@@ -8,4 +8,9 @@
     <Content Include="../native/out/build/linux-x64/libdjvulibre.so" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <!-- Macro used for conditional compilation on 32-bit machines -->
+  <PropertyGroup Condition="'${Platform}' == 'x86'">
+    <DefineConstants>X86</DefineConstants>
+  </PropertyGroup>
+
 </Project>

@@ -35,10 +35,10 @@ public class Tests
         Assert.AreEqual("DjVuLibre-3.5.27", version);
     }
 
-    [TestCase(1u)]
-    [TestCase(50u)]
-    [TestCase(100000u)]
-    public void Test_DjvuContextCacheProperty(uint size)
+    [TestCase(1ul)]
+    [TestCase(50ul)]
+    [TestCase(100000ul)]
+    public void Test_DjvuContextCacheProperty(ulong size)
     {
         using (var context = new DjvuContext("NUnit Test"))
         {
