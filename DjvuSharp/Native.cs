@@ -118,5 +118,28 @@ namespace DjvuSharp
         /// <param name="job">A pointer to ddjvu_job_t</param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void ddjvu_job_release(IntPtr job);
+
+
+        /// <summary>
+        /// Creates a decoder for a DjVu document and starts
+        /// decoding. This function returns immediately. The
+        /// decoding job then generates messages to request the raw
+        /// data and to indicate the state of the decoding process.
+        /// </summary>
+        /// <param name="context">A pointer to ddjvu_context_t</param>
+        /// <param name="url">
+        /// Argument url specifies an optional URL for the document.  
+        /// The URL follows the usual syntax (&lt;"protocol://machine/path"&gt;). 
+        /// It should not end with a slash. It only serves two purposes:
+        /// The URL is used as a key for the cache of decoded pages.
+        ///  The URL is used to document m_newstream messages.
+        /// </param>
+        /// <param name="cache">Setting argument cache to 1 indicates that decoded pages
+        /// should be cached when possible.  This only works when
+        /// argument url is not the null pointer.
+        /// </param>
+        /// <returns>A pointer to ddjvu_document_t</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static IntPtr ddjvu_document_create(IntPtr context, string url, int cache);
     }
 }
