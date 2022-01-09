@@ -141,5 +141,30 @@ namespace DjvuSharp
         /// <returns>A pointer to ddjvu_document_t</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static IntPtr ddjvu_document_create(IntPtr context, string url, int cache);
+
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static IntPtr ddjvu_document_create_by_filename(IntPtr context, string filename, int cache);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static IntPtr ddjvu_document_create_by_filename_utf8(IntPtr context, string filename, int cache);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static IntPtr ddjvu_document_job(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_document_release(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_document_decoding_status(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static DDjvuDocumentType ddjvu_document_get_type(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static int ddjvu_document_get_pagenum(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static int ddjvu_document_get_filenum(IntPtr document);
     }
 }
