@@ -31,8 +31,6 @@ namespace DjvuSharp
     /// </summary>
     public class DjvuContext: IDisposable
     {
-        private SWIGTYPE_p_ddjvu_context_s _djvu_context_s;
-
         private IntPtr _djvu_context;
 
         private bool _isDisposed;
@@ -40,7 +38,6 @@ namespace DjvuSharp
         public DjvuContext(string programName)
         {
             // Create a djvu context
-            _djvu_context_s = djvulibre.ddjvu_context_create(programName);
             _djvu_context = Native.ddjvu_context_create(programName);
         }
 
@@ -82,7 +79,15 @@ namespace DjvuSharp
         /// should be cached when possible.</param>
         public DjvuDocument CreateDjvuDocument(string filename, bool shouldCache)
         {
-            return new DjvuDocument(_djvu_context_s, filename, shouldCache);
+            // Since C code expects us to pass 1 or 0 instead or true or false.
+            int cache = shouldCache ? 1 : 0;
+
+            IntPtr djvu_document = Native.ddjvu_document_create_by_filename_utf8(_djvu_context, filename, cache);
+
+            if (djvu_document == IntPtr.Zero)
+                return null;
+
+            return new DjvuDocument(djvu_document);
         }
 
         /// <summary>
@@ -91,12 +96,12 @@ namespace DjvuSharp
         /// <returns></returns>
         public DDjvuMessage PeekMessage()
         {
-            ddjvu_message_s message = djvulibre.ddjvu_message_peek(_djvu_context_s);
+            IntPtr message = Native.ddjvu_message_peek(_djvu_context);
 
             if (message == null)
                 return null;
 
-            return new DDjvuMessage(djvulibre.ddjvu_message_peek(_djvu_context_s));
+            return new DDjvuMessage(message);
         }
 
         /// <summary>
@@ -105,12 +110,12 @@ namespace DjvuSharp
         /// <returns></returns>
         public DDjvuMessage WaitMessage()
         {
-            ddjvu_message_s message = djvulibre.ddjvu_message_wait(_djvu_context_s);
+            IntPtr message = Native.ddjvu_message_wait(_djvu_context);
 
             if (message == null)
                 return null;
 
-            return new DDjvuMessage(djvulibre.ddjvu_message_wait(_djvu_context_s));
+            return new DDjvuMessage(message);
         }
 
         /// <summary>
@@ -118,7 +123,7 @@ namespace DjvuSharp
         /// </summary>
         public void PopMessage()
         {
-            djvulibre.ddjvu_message_pop(_djvu_context_s);
+            Native.ddjvu_message_pop(_djvu_context);
         }
 
         ~DjvuContext()
@@ -137,7 +142,6 @@ namespace DjvuSharp
             if (!_isDisposed)
             {
                 // Release the context
-                djvulibre.ddjvu_context_release(_djvu_context_s);
                 Native.ddjvu_context_release(_djvu_context);
 
                 _isDisposed = true;
