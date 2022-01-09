@@ -178,5 +178,63 @@ namespace DjvuSharp
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int ddjvu_document_get_filenum(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        private extern static IntPtr ddjvu_document_get_dump(IntPtr document, int json);
+
+        internal static string ddjvu_document_get_dump(IntPtr document, bool json)
+        {
+            // dotnet and c++ bool type are represented differently
+            // hence we need to convert from bool to int
+            // here true --> 1 and false --> 0
+            int requireJson = json ? 1 : 0;
+
+            IntPtr docDump = ddjvu_document_get_dump(document, requireJson);
+
+            string result = Marshal.PtrToStringUni(docDump);
+
+            // must free since IntPtr points to dynamically allocated
+            // char array
+            djvu_free(docDump);
+
+            return result;
+        }
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        private extern static IntPtr ddjvu_document_get_pagedump(IntPtr document, int pageno);
+
+        internal static string ddjvu_document_get_page_dump(IntPtr document, int pageno)
+        {
+
+            IntPtr docDump = ddjvu_document_get_pagedump(document, pageno);
+
+            string result = Marshal.PtrToStringUni(docDump);
+
+            // must free since IntPtr points to dynamically allocated char array
+            djvu_free(docDump);
+
+            return result;
+        }
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        private extern static IntPtr ddjvu_document_get_pagedump_json(IntPtr document, int pageno, int json);
+
+        internal static string ddjvu_document_get_page_dump_json(IntPtr document, int pageno, bool json)
+        {
+            // dotnet and c++ bool type are represented differently
+            // hence we need to convert from bool to int
+            // here true --> 1 and false --> 0
+            int requireJson = json ? 1 : 0;
+
+            IntPtr docDump = ddjvu_document_get_pagedump_json(document, pageno, requireJson);
+
+            string result = Marshal.PtrToStringUni(docDump);
+
+            // must free since IntPtr points to dynamically allocated
+            // char array
+            djvu_free(docDump);
+
+            return result;
+        }
     }
 }
