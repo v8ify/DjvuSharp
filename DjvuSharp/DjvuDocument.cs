@@ -33,12 +33,9 @@ namespace DjvuSharp
         private bool disposedValue;
 
         /// <inheritdoc cref="DjvuDocument" />
-        internal DjvuDocument(IntPtr context, string filename, bool shouldCache)
+        internal DjvuDocument(IntPtr djvu_document)
         {
-            // Since C code expects us to pass 1 or 0 instead or true or false.
-            int cache = shouldCache ? 1 : 0;
-
-            _djvu_document = Native.ddjvu_document_create_by_filename_utf8(context, filename, cache);
+            _djvu_document = djvu_document;
         }
 
         /// <summary>
