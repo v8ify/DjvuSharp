@@ -236,5 +236,8 @@ namespace DjvuSharp
 
             return result;
         }
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static IntPtr ddjvu_page_create_by_pageno(IntPtr document, int pageno);
     }
 }
