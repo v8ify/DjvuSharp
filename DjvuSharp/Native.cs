@@ -95,7 +95,7 @@ namespace DjvuSharp
         /// of enum <see cref="DDjvuStatus" />
         /// </returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static DDjvuStatus ddjvu_job_status(IntPtr job);
+        internal extern static int ddjvu_job_status(IntPtr job);
 
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace DjvuSharp
         internal extern static void ddjvu_document_decoding_status(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static DDjvuDocumentType ddjvu_document_get_type(IntPtr document);
+        internal extern static int ddjvu_document_get_type(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int ddjvu_document_get_pagenum(IntPtr document);
