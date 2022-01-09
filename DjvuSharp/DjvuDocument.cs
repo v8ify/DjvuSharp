@@ -29,16 +29,13 @@ namespace DjvuSharp
     /// </summay>
     public class DjvuDocument: IDisposable
     {
-        private SWIGTYPE_p_ddjvu_document_s _document;
+        private IntPtr _djvu_document;
         private bool disposedValue;
 
         /// <inheritdoc cref="DjvuDocument" />
-        internal DjvuDocument(SWIGTYPE_p_ddjvu_context_s context, string filename, bool shouldCache)
+        internal DjvuDocument(IntPtr djvu_document)
         {
-            // Since C code expects us to pass 1 or 0 instead or true or false.
-            int cache = shouldCache ? 1 : 0;
-
-            _document = djvulibre.ddjvu_document_create_by_filename_utf8(context, filename, cache);
+            _djvu_document = djvu_document;
         }
 
         /// <summary>
@@ -48,7 +45,11 @@ namespace DjvuSharp
         {
             get 
             {
-                SWIGTYPE_p_ddjvu_job_s job = djvulibre.ddjvu_document_job(_document);
+                IntPtr job = Native.ddjvu_document_job(_djvu_document);
+
+                if (job == IntPtr.Zero)
+                    return null;
+
                 return new DjvuJob(job);
             }
         }
@@ -63,7 +64,7 @@ namespace DjvuSharp
         /// <returns>The type of djvu document in form of an enum member.</returns>
         public DDjvuDocumentType GetDocumentType()
         {
-            return (DDjvuDocumentType)djvulibre.ddjvu_document_get_type(_document);
+            return (DDjvuDocumentType)Native.ddjvu_document_get_type(_djvu_document);
         }
 
 
@@ -77,7 +78,7 @@ namespace DjvuSharp
         /// <returns>An int representing number of pages.</returns>
         public int GetPageNumber()
         {
-            return djvulibre.ddjvu_document_get_pagenum(_document);
+            return Native.ddjvu_document_get_pagenum(_djvu_document);
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace DjvuSharp
         /// <returns>The number of component files</returns>
         public int GetFileNumber()
         {
-            return djvulibre.ddjvu_document_get_filenum(_document);
+            return Native.ddjvu_document_get_filenum(_djvu_document);
         }
 
         /// <summary>
@@ -115,7 +116,7 @@ namespace DjvuSharp
         /// </returns>
         public string GetDump(bool json)
         {
-            return djvulibre.ddjvu_document_get_dump(_document, json);
+            return Native.ddjvu_document_get_dump(_djvu_document, json);
         }
 
 
@@ -140,12 +141,12 @@ namespace DjvuSharp
         /// 
         public DjvuPage CreateDjvuPageByPageNo(int pageNum)
         {
-            var djvuPage = djvulibre.ddjvu_page_create_by_pageno(_document, pageNum);
+            IntPtr djvuPagePtr = Native.ddjvu_page_create_by_pageno(_djvu_document, pageNum);
 
-            if (djvuPage == null)
+            if (djvuPagePtr == IntPtr.Zero)
                 return null;
 
-            return new DjvuPage(djvuPage);
+            return new DjvuPage(djvuPagePtr);
         }
 
 
@@ -158,8 +159,8 @@ namespace DjvuSharp
                     // TODO: dispose managed state (managed objects)
                 }
 
-                djvulibre.ddjvu_document_release(_document);
-                _document = null;
+                Native.ddjvu_document_release(_djvu_document);
+                _djvu_document = IntPtr.Zero;
                 
                 disposedValue = true;
             }
