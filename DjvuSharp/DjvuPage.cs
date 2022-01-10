@@ -17,7 +17,6 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using Djvulibre.Internal; // SWIGTYPE_p_ddjvu_page_s
 using System; // IDisposable
 
 
@@ -35,10 +34,10 @@ namespace DjvuSharp
     /// </summary>
     public class DjvuPage: IDisposable
     {
-        private SWIGTYPE_p_ddjvu_page_s _djvu_page;
+        private IntPtr _djvu_page;
         private bool disposedValue;
 
-        internal DjvuPage(SWIGTYPE_p_ddjvu_page_s djvu_page)
+        internal DjvuPage(IntPtr djvu_page)
         {
             _djvu_page = djvu_page;
         }
@@ -50,7 +49,7 @@ namespace DjvuSharp
         {
             get
             {
-                var job = djvulibre.ddjvu_page_job(_djvu_page);
+                var job = Native.ddjvu_page_job(_djvu_page);
 
                 if (job == null)
                     return null;

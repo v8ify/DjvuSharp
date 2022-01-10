@@ -28,7 +28,7 @@ namespace DjvuSharp
 {
     internal static class Native
     {
-        private const string dllname = "libdjvulibre";
+        private const string dllname = "libdjvulibre-21";
 
 #if X86
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
@@ -237,7 +237,84 @@ namespace DjvuSharp
             return result;
         }
 
+
+        ////////////////////////////////////////////
+        /// Djvu Page related methods
+        ////////////////////////////////////////////
+
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static IntPtr ddjvu_page_create_by_pageno(IntPtr document, int pageno);
+
+        /// <summary>
+        /// Gets the job which corresponds to a page
+        /// </summary>
+        /// <param name="page">A pointer to the page whose job we want</param>
+        /// <returns>A pointer to djvu_job. Could be null so check with IntPtr.Zero</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr ddjvu_page_job(IntPtr page);
+
+
+        /// <summary>
+        /// Gets the width of a page in pixel.
+        /// Calling this function before receiving a m_pageinfo message always yields 0
+        /// </summary>
+        /// <param name="page">A pointer to page.</param>
+        /// <returns>Page width in pixels.</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int ddjvu_page_get_width(IntPtr page);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int ddjvu_page_get_height(IntPtr page);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention=CallingConvention.Cdecl)]
+        internal static extern int ddjvu_page_get_resolution(IntPtr page);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern double ddjvu_page_get_gamma(IntPtr page);
+
+        /// <summary>
+        /// Returns the version of the djvu file format.
+        /// Calling this function before receiving a m_pageinfo
+        /// message yields a meaningless but plausible value
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int ddjvu_page_get_version(IntPtr page);
+
+        /// <summary>
+        /// Returns the version of the djvu file format
+        /// implemented by this library.More or less graceful
+        /// degradation might arise if this is smaller than
+        /// the number returned by ddjvu_page_get_version.
+        /// </summary>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int ddjvu_code_get_version();
+
+        /// <summary>
+        /// Returns the type of the page data.
+        /// Calling this function before the termination of the
+        /// decoding process might returns <see cref="PageType.DDJVU_PAGETYPE_UNKNOWN"/>.
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int ddjvu_page_get_type(IntPtr page);
     }
 }

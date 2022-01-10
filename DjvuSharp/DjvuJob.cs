@@ -18,7 +18,6 @@
 */
 
 using System; // IDisposable
-using Djvulibre.Internal;
 
 namespace DjvuSharp
 {
@@ -29,10 +28,10 @@ namespace DjvuSharp
     /// </summary>
     public class DjvuJob: IDisposable
     {
-        private SWIGTYPE_p_ddjvu_job_s _ddjvu_job;
+        private IntPtr _ddjvu_job;
         private bool disposedValue;
 
-        internal DjvuJob(SWIGTYPE_p_ddjvu_job_s ddjvu_job)
+        internal DjvuJob(IntPtr ddjvu_job)
         {
             _ddjvu_job = ddjvu_job;
         }
@@ -44,7 +43,7 @@ namespace DjvuSharp
         {
             get
             {
-                return (DDjvuStatus)djvulibre.ddjvu_job_status(_ddjvu_job);
+                return (DDjvuStatus)Native.ddjvu_job_status(_ddjvu_job);
             }
         }
 
@@ -75,7 +74,7 @@ namespace DjvuSharp
         /// </summary>
         public void Stop()
         {
-            djvulibre.ddjvu_job_stop(_ddjvu_job);
+            Native.ddjvu_job_stop(_ddjvu_job);
         }
 
         // Implementation of Dispose pattern
@@ -89,7 +88,7 @@ namespace DjvuSharp
                     // TODO: dispose managed state (managed objects)
                 }
 
-                djvulibre.ddjvu_job_release(_ddjvu_job);
+                Native.ddjvu_job_release(_ddjvu_job);
                 // TODO: set large fields to null
                 disposedValue = true;
             }
