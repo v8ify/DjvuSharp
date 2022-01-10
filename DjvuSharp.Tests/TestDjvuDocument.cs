@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using Djvulibre.Internal;
 using DjvuSharp.Message;
 using System;
 using System.IO;

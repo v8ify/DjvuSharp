@@ -18,7 +18,6 @@
 */
 
 using System;
-using Djvulibre.Internal;
 using DjvuSharp.Message;
 
 namespace DjvuSharp

@@ -18,7 +18,6 @@
 */
 
 using System; // IDisposable
-using Djvulibre.Internal;
 
 namespace DjvuSharp
 {
