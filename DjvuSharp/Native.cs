@@ -26,6 +26,65 @@ using System.Runtime.CompilerServices;
 [assembly:InternalsVisibleTo("DjvuSharp.Tests")]
 namespace DjvuSharp
 {
+
+    /// <summary>
+    /// This structure is a member of the union djvu_message.
+    /// It represents the information common to all kinds of
+    /// messages.
+    /// If the message has not yet been passed to the user 
+    /// with ddjvu_message_{peek,wait}, it is silently
+    /// removed from the message queue.
+     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageAny
+    {
+        /// <summary>
+        /// The kind of message corresponding to enum <see cref="Message.MessageTag"/>
+        /// </summary>
+        public int tag;
+
+        /* context, document, page, job fields may be IntPtr.Zero when not relevant.
+         * These fields are also cleared when the corresponding object is 
+         * released with ddjvu_{job,page,document}_release methods.
+         */
+        public IntPtr context;
+        public IntPtr document;
+        public IntPtr page;
+        public IntPtr job;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageError
+    {
+        public DjvuMessageAny any;
+        public IntPtr message;
+        public IntPtr function;
+        public IntPtr filename;
+        public int lineno;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageInfo
+    {
+        public DjvuMessageAny any;
+        public IntPtr message;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageNewStream
+    {
+        public DjvuMessageAny any;
+        public int streamid;
+        public IntPtr name;
+        public IntPtr url;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageDocInfo
+    {
+        public DjvuMessageAny any;
+    }
+
     internal static class Native
     {
         private const string dllname = "libdjvulibre-21";
