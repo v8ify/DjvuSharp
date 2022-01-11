@@ -26,6 +26,65 @@ using System.Runtime.CompilerServices;
 [assembly:InternalsVisibleTo("DjvuSharp.Tests")]
 namespace DjvuSharp
 {
+
+    /// <summary>
+    /// This structure is a member of the union djvu_message.
+    /// It represents the information common to all kinds of
+    /// messages.
+    /// If the message has not yet been passed to the user 
+    /// with ddjvu_message_{peek,wait}, it is silently
+    /// removed from the message queue.
+     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageAny
+    {
+        /// <summary>
+        /// The kind of message corresponding to enum <see cref="Message.MessageTag"/>
+        /// </summary>
+        public int tag;
+
+        /* context, document, page, job fields may be IntPtr.Zero when not relevant.
+         * These fields are also cleared when the corresponding object is 
+         * released with ddjvu_{job,page,document}_release methods.
+         */
+        public IntPtr context;
+        public IntPtr document;
+        public IntPtr page;
+        public IntPtr job;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageError
+    {
+        public DjvuMessageAny any;
+        public IntPtr message;
+        public IntPtr function;
+        public IntPtr filename;
+        public int lineno;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageInfo
+    {
+        public DjvuMessageAny any;
+        public IntPtr message;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageNewStream
+    {
+        public DjvuMessageAny any;
+        public int streamid;
+        public IntPtr name;
+        public IntPtr url;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageDocInfo
+    {
+        public DjvuMessageAny any;
+    }
+
     internal static class Native
     {
         private const string dllname = "libdjvulibre-21";
@@ -246,6 +305,16 @@ namespace DjvuSharp
         internal extern static IntPtr ddjvu_page_create_by_pageno(IntPtr document, int pageno);
 
         /// <summary>
+        /// Release a reference to a ddjvu_page_t object.
+        /// The calling program should no longer reference this object.
+        /// The object itself will be destroyed as soon as no other object
+        /// or thread needs it.
+        /// </summary>
+        /// <param name="page"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_page_release(IntPtr page);
+
+        /// <summary>
         /// Gets the job which corresponds to a page
         /// </summary>
         /// <param name="page">A pointer to the page whose job we want</param>
@@ -316,5 +385,29 @@ namespace DjvuSharp
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int ddjvu_page_get_type(IntPtr page);
+
+        /// <summary>
+        /// Changes the counter-clockwise rotation angle for a DjVu page.
+        /// Calling this function before receiving a m_pageinfo
+        /// message has no good effect.
+        /// </summary>
+        /// <param name="page">An IntPtr to ddjvu_page_t</param>
+        /// <param name="rotation">
+        /// One of the values from enum DjvuPageRotation.
+        /// Remember to cast it to int before passing as an argument.
+        /// </param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_page_set_rotation(IntPtr page, int rotation);
+
+        /// <summary>
+        /// Returns the counter-clockwise rotation angle for the DjVu page.
+        /// The rotation is automatically taken into account
+        /// by ddjvu_page_render, <see cref="ddjvu_page_get_width(IntPtr)"/>
+        /// and <see cref="ddjvu_page_get_height(IntPtr)"/>
+        /// </summary>
+        /// <param name="page">An IntPtr to ddjvu_page_t</param>
+        /// <returns>An integer which should be cast to the enum <see cref="DjvuPageRotation"/></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int ddjvu_page_get_rotation(IntPtr page);
     }
 }

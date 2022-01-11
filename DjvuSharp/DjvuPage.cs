@@ -65,7 +65,7 @@ namespace DjvuSharp
         /// </summary>
         public int Height 
         { 
-            get { return djvulibre.ddjvu_page_get_height(_djvu_page); } 
+            get { return Native.ddjvu_page_get_height(_djvu_page); } 
         }
 
 
@@ -75,7 +75,7 @@ namespace DjvuSharp
         /// </summary>
         public int Width
         {
-            get { return djvulibre.ddjvu_page_get_width(_djvu_page); }
+            get { return Native.ddjvu_page_get_width(_djvu_page); }
         }
 
 
@@ -86,7 +86,7 @@ namespace DjvuSharp
         /// </summary>
         public int Resolution
         {
-            get { return djvulibre.ddjvu_page_get_resolution(_djvu_page); }
+            get { return Native.ddjvu_page_get_resolution(_djvu_page); }
         }
 
 
@@ -97,7 +97,7 @@ namespace DjvuSharp
         /// </summary>
         public double Gamma
         {
-            get { return djvulibre.ddjvu_page_get_gamma(_djvu_page); }
+            get { return Native.ddjvu_page_get_gamma(_djvu_page); }
         }
 
         
@@ -108,7 +108,7 @@ namespace DjvuSharp
         /// </summary>
         public int Version
         {
-            get { return djvulibre.ddjvu_page_get_version(_djvu_page); }
+            get { return Native.ddjvu_page_get_version(_djvu_page); }
         }
 
 
@@ -119,7 +119,7 @@ namespace DjvuSharp
         /// </summary>
         public PageType Type
         {
-            get { return (PageType)djvulibre.ddjvu_page_get_type(_djvu_page); }
+            get { return (PageType)Native.ddjvu_page_get_type(_djvu_page); }
         }
 
 
@@ -135,8 +135,8 @@ namespace DjvuSharp
                     // TODO: dispose managed state (managed objects)
                 }
 
-                djvulibre.ddjvu_page_release(_djvu_page);
-                _djvu_page = null;
+                Native.ddjvu_page_release(_djvu_page);
+                _djvu_page = IntPtr.Zero;
                 disposedValue = true;
             }
         }
