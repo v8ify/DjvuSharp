@@ -316,5 +316,29 @@ namespace DjvuSharp
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int ddjvu_page_get_type(IntPtr page);
+
+        /// <summary>
+        /// Changes the counter-clockwise rotation angle for a DjVu page.
+        /// Calling this function before receiving a m_pageinfo
+        /// message has no good effect.
+        /// </summary>
+        /// <param name="page">An IntPtr to ddjvu_page_t</param>
+        /// <param name="rotation">
+        /// One of the values from enum DjvuPageRotation.
+        /// Remember to cast it to int before passing as an argument.
+        /// </param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_page_set_rotation(IntPtr page, int rotation);
+
+        /// <summary>
+        /// Returns the counter-clockwise rotation angle for the DjVu page.
+        /// The rotation is automatically taken into account
+        /// by ddjvu_page_render, <see cref="ddjvu_page_get_width(IntPtr)"/>
+        /// and <see cref="ddjvu_page_get_height(IntPtr)"/>
+        /// </summary>
+        /// <param name="page">An IntPtr to ddjvu_page_t</param>
+        /// <returns>An integer which should be cast to the enum <see cref="DjvuPageRotation"/></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int ddjvu_page_get_rotation(IntPtr page);
     }
 }
