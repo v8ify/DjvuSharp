@@ -246,6 +246,16 @@ namespace DjvuSharp
         internal extern static IntPtr ddjvu_page_create_by_pageno(IntPtr document, int pageno);
 
         /// <summary>
+        /// Release a reference to a ddjvu_page_t object.
+        /// The calling program should no longer reference this object.
+        /// The object itself will be destroyed as soon as no other object
+        /// or thread needs it.
+        /// </summary>
+        /// <param name="page"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal extern static void ddjvu_page_release(IntPtr page);
+
+        /// <summary>
         /// Gets the job which corresponds to a page
         /// </summary>
         /// <param name="page">A pointer to the page whose job we want</param>
