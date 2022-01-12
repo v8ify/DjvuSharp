@@ -97,7 +97,7 @@ namespace DjvuSharp
         {
             IntPtr message = Native.ddjvu_message_peek(_djvu_context);
 
-            if (message == null)
+            if (message == IntPtr.Zero)
                 return null;
 
             return new DDjvuMessage(message);
@@ -111,7 +111,7 @@ namespace DjvuSharp
         {
             IntPtr message = Native.ddjvu_message_wait(_djvu_context);
 
-            if (message == null)
+            if (message == IntPtr.Zero)
                 return null;
 
             return new DDjvuMessage(message);
