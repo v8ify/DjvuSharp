@@ -36,7 +36,7 @@ namespace DjvuSharp
     /// removed from the message queue.
      /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageAny
+    internal struct ddjvu_message_any_s
     {
         /// <summary>
         /// The kind of message corresponding to enum <see cref="Message.MessageTag"/>
@@ -54,9 +54,9 @@ namespace DjvuSharp
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageError
+    internal struct ddjvu_message_error_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
         public IntPtr message;
         public IntPtr function;
         public IntPtr filename;
@@ -64,25 +64,25 @@ namespace DjvuSharp
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageInfo
+    internal struct ddjvu_message_info_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
         public IntPtr message;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageNewStream
+    internal struct ddjvu_message_newstream_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
         public int streamid;
         public IntPtr name;
         public IntPtr url;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageDocInfo
+    internal struct ddjvu_message_docinfo_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
     }
 
     /// <summary>
@@ -97,9 +97,9 @@ namespace DjvuSharp
     /// The field m_any.page of such message is null.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessagePageInfo
+    internal struct ddjvu_message_pageinfo_s
     {
-        public DjvuMessageAny  any;
+        public ddjvu_message_any_s  any;
     }
 
     /// <summary>
@@ -109,9 +109,9 @@ namespace DjvuSharp
     /// been updated.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageRelayout
+    internal struct ddjvu_message_relayout_s
     {
-        public DjvuMessageAny  any;
+        public ddjvu_message_any_s  any;
     }
 
     /// <summary>
@@ -121,9 +121,9 @@ namespace DjvuSharp
     /// decoded DjVu data provides a better image.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageRedisplay
+    internal struct ddjvu_message_redisplay_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
     }
 
     /// <summary>
@@ -132,9 +132,9 @@ namespace DjvuSharp
     /// indicates the type of the DjVu chunk.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageChunk
+    internal struct ddjvu_message_chunk_s
     {
-        public DjvuMessageAny  any;
+        public ddjvu_message_any_s  any;
         public IntPtr chunkid;
     }
 
@@ -179,9 +179,9 @@ namespace DjvuSharp
     /// This message is sent when additional thumbnails are available
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageThumbnail
+    internal struct ddjvu_message_thumbnail_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
         public int pagenum;
     }
 
@@ -190,13 +190,58 @@ namespace DjvuSharp
     /// towards the completion of a print or save job.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageProgress
+    internal struct ddjvu_message_progress_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
         public int status;
         public int percent;
     };
 
+
+    /* -------------------------------------------------- */
+    /* DJVU_MESSAGE_T                                     */
+    /* -------------------------------------------------- */
+
+    /// <summary>
+    /// Represents the ddjvu_message_s union in the unmanaged code
+    /// </summary>
+    [StructLayout(LayoutKind.Explicit)]
+    internal struct ddjvu_message_s
+    {
+        [FieldOffset(0)]
+        public ddjvu_message_any_s        m_any;
+
+        [FieldOffset(0)]
+        public ddjvu_message_error_s      m_error;
+
+        [FieldOffset(0)]
+        public ddjvu_message_info_s       m_info;
+
+        [FieldOffset(0)]
+        public ddjvu_message_newstream_s  m_newstream;
+
+        [FieldOffset(0)]
+        public ddjvu_message_docinfo_s    m_docinfo;
+
+        [FieldOffset(0)]
+        public ddjvu_message_pageinfo_s   m_pageinfo;
+
+        [FieldOffset(0)]
+        public ddjvu_message_chunk_s      m_chunk;
+
+        [FieldOffset(0)]
+        public ddjvu_message_relayout_s   m_relayout;
+
+        [FieldOffset(0)]
+        public ddjvu_message_redisplay_s  m_redisplay;
+
+        [FieldOffset(0)]
+        public ddjvu_message_thumbnail_s  m_thumbnail;
+
+        [FieldOffset(0)]
+        public ddjvu_message_progress_s   m_progress;
+    }
+    
 
     internal static class Native
     {
