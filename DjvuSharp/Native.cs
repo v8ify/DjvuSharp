@@ -175,6 +175,29 @@ namespace DjvuSharp
     };
 
 
+    /// <summary>
+    /// This message is sent when additional thumbnails are available
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageThumbnail
+    {
+        public DjvuMessageAny any;
+        public int pagenum;
+    }
+
+    /// <summary>
+    /// These messages are generated to indicate progress 
+    /// towards the completion of a print or save job.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageProgress
+    {
+        public DjvuMessageAny any;
+        public int status;
+        public int percent;
+    };
+
+
     internal static class Native
     {
         private const string dllname = "libdjvulibre-21";
