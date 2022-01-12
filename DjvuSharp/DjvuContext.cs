@@ -93,29 +93,29 @@ namespace DjvuSharp
         /// 
         /// </summary>
         /// <returns></returns>
-        public DDjvuMessage PeekMessage()
-        {
-            IntPtr message = Native.ddjvu_message_peek(_djvu_context);
+        // public DDjvuMessage PeekMessage()
+        // {
+        //     IntPtr message = Native.ddjvu_message_peek(_djvu_context);
 
-            if (message == IntPtr.Zero)
-                return null;
+        //     if (message == IntPtr.Zero)
+        //         return null;
 
-            return new DDjvuMessage(message);
-        }
+        //     return new DDjvuMessage(message);
+        // }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public DDjvuMessage WaitMessage()
-        {
-            IntPtr message = Native.ddjvu_message_wait(_djvu_context);
+        // public DDjvuMessage WaitMessage()
+        // {
+        //     IntPtr message = Native.ddjvu_message_wait(_djvu_context);
 
-            if (message == IntPtr.Zero)
-                return null;
+        //     if (message == IntPtr.Zero)
+        //         return null;
 
-            return new DDjvuMessage(message);
-        }
+        //     return new DDjvuMessage(message);
+        // }
 
         /// <summary>
         /// 

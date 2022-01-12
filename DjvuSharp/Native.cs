@@ -36,7 +36,7 @@ namespace DjvuSharp
     /// removed from the message queue.
      /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_any_s
+    public struct ddjvu_message_any_s
     {
         /// <summary>
         /// The kind of message corresponding to enum <see cref="Message.MessageTag"/>
@@ -51,10 +51,15 @@ namespace DjvuSharp
         public IntPtr document;
         public IntPtr page;
         public IntPtr job;
+
+        public override bool Equals(object obj)
+        {
+            
+        }
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_error_s
+    public struct ddjvu_message_error_s
     {
         public ddjvu_message_any_s any;
         public IntPtr message;
@@ -64,14 +69,14 @@ namespace DjvuSharp
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_info_s
+    public struct ddjvu_message_info_s
     {
         public ddjvu_message_any_s any;
         public IntPtr message;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_newstream_s
+    public struct ddjvu_message_newstream_s
     {
         public ddjvu_message_any_s any;
         public int streamid;
@@ -80,7 +85,7 @@ namespace DjvuSharp
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_docinfo_s
+    public struct ddjvu_message_docinfo_s
     {
         public ddjvu_message_any_s any;
     }
@@ -97,7 +102,7 @@ namespace DjvuSharp
     /// The field m_any.page of such message is null.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_pageinfo_s
+    public struct ddjvu_message_pageinfo_s
     {
         public ddjvu_message_any_s  any;
     }
@@ -109,7 +114,7 @@ namespace DjvuSharp
     /// been updated.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_relayout_s
+    public struct ddjvu_message_relayout_s
     {
         public ddjvu_message_any_s  any;
     }
@@ -121,7 +126,7 @@ namespace DjvuSharp
     /// decoded DjVu data provides a better image.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_redisplay_s
+    public struct ddjvu_message_redisplay_s
     {
         public ddjvu_message_any_s any;
     }
@@ -132,7 +137,7 @@ namespace DjvuSharp
     /// indicates the type of the DjVu chunk.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_chunk_s
+    public struct ddjvu_message_chunk_s
     {
         public ddjvu_message_any_s  any;
         public IntPtr chunkid;
@@ -179,7 +184,7 @@ namespace DjvuSharp
     /// This message is sent when additional thumbnails are available
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_thumbnail_s
+    public struct ddjvu_message_thumbnail_s
     {
         public ddjvu_message_any_s any;
         public int pagenum;
@@ -190,7 +195,7 @@ namespace DjvuSharp
     /// towards the completion of a print or save job.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct ddjvu_message_progress_s
+    public struct ddjvu_message_progress_s
     {
         public ddjvu_message_any_s any;
         public int status;
@@ -206,7 +211,7 @@ namespace DjvuSharp
     /// Represents the ddjvu_message_s union in the unmanaged code
     /// </summary>
     [StructLayout(LayoutKind.Explicit)]
-    internal struct ddjvu_message_s
+    public struct ddjvu_message_s
     {
         [FieldOffset(0)]
         public ddjvu_message_any_s        m_any;
