@@ -85,6 +85,96 @@ namespace DjvuSharp
         public DjvuMessageAny any;
     }
 
+    /// <summary>
+    /// The page decoding process generates this message
+    /// - when basic page information is available and 
+    ///   before any m_relayout or m_redisplay message,
+    /// - when the page decoding thread terminates.
+    /// You can distinguish both cases using 
+    /// function <see cref="Native.ddjvu_page_decoding_status(IntPtr)" />
+    /// Messages m_pageinfo are also generated as a consequence of 
+    /// functions such as ddjvu_document_get_pageinfo. 
+    /// The field m_any.page of such message is null.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessagePageInfo
+    {
+        public DjvuMessageAny  any;
+    }
+
+    /// <summary>
+    /// This message is generated when a DjVu viewer
+    /// should recompute the layout of the page viewer
+    /// because the page size and resolution information has
+    /// been updated.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageRelayout
+    {
+        public DjvuMessageAny  any;
+    }
+
+    /// <summary>
+    /// This message is generated when a DjVu viewer
+    /// should call <see cref="ddjvu_page_render" /> and redisplay
+    /// the page. This happens, for instance, when newly 
+    /// decoded DjVu data provides a better image.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageRedisplay
+    {
+        public DjvuMessageAny any;
+    }
+
+    /// <summary>
+    /// This message indicates that an additional chunk
+    /// of DjVu data has been decoded.  Member chunkid
+    /// indicates the type of the DjVu chunk.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct DjvuMessageChunk
+    {
+        public DjvuMessageAny  any;
+        public IntPtr chunkid;
+    }
+
+    /// <summary>
+    /// This structure specifies the location of a rectangle.
+    /// Coordinates are usually expressed in pixels relative to 
+    /// the BOTTOM LEFT CORNER (but see ddjvu_format_set_y_direction).
+    /// Members x and y indicate the position of the bottom left 
+    /// corner of the rectangle. Members w and h indicate the 
+    /// width and height of the rectangle.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    struct DjvuRect
+    {
+        /// <summary>
+        /// Members x and y indicate the position of the bottom left 
+        /// corner of the rectangle
+        /// </summary>
+        public int x;
+
+        /// <summary>
+        /// Members x and y indicate the position of the bottom left 
+        /// corner of the rectangle
+        /// </summary>
+        public int y;
+
+        /// <summary>
+        /// Members w indicates the 
+        /// width and height of the rectangle.
+        /// </summary>
+        public uint w;
+
+        /// <summary>
+        /// Members h indicates the 
+        /// width and height of the rectangle.
+        /// </summary> 
+        public uint h;
+    };
+
+
     internal static class Native
     {
         private const string dllname = "libdjvulibre-21";
