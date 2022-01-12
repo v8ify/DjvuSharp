@@ -16,6 +16,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace DjvuSharp
 {
@@ -27,7 +28,11 @@ namespace DjvuSharp
         /// <returns>The version of underlying DjvuLibre library</returns>
         public static string GetDjvuVersion()
         {
-            return djvulibre.ddjvu_get_version_string();
+            IntPtr charPtr = Native.ddjvu_get_version_string();
+
+            string version = Marshal.PtrToStringAnsi(charPtr);
+
+            return version;
         }
     }
 }
