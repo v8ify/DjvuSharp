@@ -18,7 +18,7 @@
 */
 
 
-namespace DjvuSharp
+namespace DjvuSharp.Enums
 {
     public enum DDjvuDocumentType
     {

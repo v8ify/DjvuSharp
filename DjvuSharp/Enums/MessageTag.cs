@@ -17,7 +17,7 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DjvuSharp.Message
+namespace DjvuSharp.Enums
 {
     /// <summary>
     /// This enum identifies each kind of message delivered by the DDJVU API.

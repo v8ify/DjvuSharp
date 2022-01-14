@@ -18,6 +18,7 @@
 */
 
 using System; // IDisposable
+using DjvuSharp.Enums; // PageStatus
 
 
 namespace DjvuSharp
@@ -121,6 +122,9 @@ namespace DjvuSharp
         {
             get { return (PageType)Native.ddjvu_page_get_type(_djvu_page); }
         }
+
+
+
 
 
         /* 

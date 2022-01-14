@@ -18,7 +18,7 @@
 */
 
 
-namespace DjvuSharp
+namespace DjvuSharp.Enums
 {
     /// <summary>
     /// Represents the counter-clockwise rotation angle of 

@@ -18,6 +18,7 @@
 */
 
 using System; // IDisposable
+using DjvuSharp.Enums; // DDjvuStatus
 
 namespace DjvuSharp
 {

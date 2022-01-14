@@ -18,7 +18,7 @@
 */
 
 
-namespace DjvuSharp
+namespace DjvuSharp.Enums
 {
     /// <summary>
     /// Pretty self explanatory. This enum contains the types of djvu pages
