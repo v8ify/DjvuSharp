@@ -51,11 +51,6 @@ namespace DjvuSharp
         public IntPtr document;
         public IntPtr page;
         public IntPtr job;
-
-        public override bool Equals(object obj)
-        {
-            
-        }
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -606,5 +601,14 @@ namespace DjvuSharp
         /// <param name="mirrory"></param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void ddjvu_rectmapper_modify(IntPtr mapper, int rotation, int mirrorx, int mirrory);
+
+
+        /// <summary>
+        /// Destroys the ddjvu_rectmapper_t structure
+        /// returned by <see cref="ddjvu_rectmapper_release(IntPtr)"/>.
+        /// </summary>
+        /// <param name="mapper">Pointer to ddjvu_rectmapper_t that you want to release.</param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_rectmapper_release(IntPtr mapper);
     }
 }
