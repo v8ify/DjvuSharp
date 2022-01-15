@@ -572,5 +572,39 @@ namespace DjvuSharp
         /// <returns>An integer which should be cast to the enum <see cref="DjvuPageRotation"/></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int ddjvu_page_get_rotation(IntPtr page);
+
+
+        /* -------------------------------------------------- */
+        /* COORDINATE TRANSFORMS                              */
+        /* -------------------------------------------------- */
+
+
+        /// <summary>
+        /// Creates a djvu_rectmapper_t data structure 
+        /// representing an affine coordinate transformation that
+        /// maps points from rectangle input to rectangle output.
+        /// The transformation maintains the positions relative
+        /// to the coordinates of the rectangle corners.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe IntPtr ddjvu_rectmapper_create(DjvuRect* input, DjvuRect* output);
+
+
+        /// <summary>
+        /// Modifies the coordinate transform <paramref name="mapper"/> by redefining
+        /// which corners of the output rectangle match those of the
+        /// input rectangle. This function first applies a counter-clockwise
+        /// rotation of <paramref name="rotation"/> quarter-turns, and then reverses the X
+        /// (resp.Y) coordinates when <paramref name="mirrorx"/> (resp. <paramref name="mirrory"/>) is non zero.
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="rotation"></param>
+        /// <param name="mirrorx"></param>
+        /// <param name="mirrory"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_rectmapper_modify(IntPtr mapper, int rotation, int mirrorx, int mirrory);
     }
 }
