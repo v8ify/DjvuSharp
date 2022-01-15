@@ -17,33 +17,22 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DjvuSharp
+namespace DjvuSharp.Enums
 {
-    public enum DDjvuStatus
+    /// <summary>
+    /// This enum identifies each kind of message delivered by the DDJVU API.
+    /// </summary>
+    public enum MessageTag
     {
-        /// <summary>
-        /// Operation was not even started
-        /// </summary>
-        DDJVU_JOB_NOTSTARTED,
-
-        /// <summary>
-        /// Operation is in progress
-        /// </summary>
-        DDJVU_JOB_STARTED,
-
-        /// <summary>
-        /// Operation terminated successfully
-        /// </summary>
-        DDJVU_JOB_OK,
-
-        /// <summary>
-        /// Operation failed because of an error
-        /// </summary>
-        DDJVU_JOB_FAILED,
-
-        /// <summary>
-        /// Operation was interrupted by user
-        /// </summary>
-        DDJVU_JOB_STOPPED
+        DDJVU_ERROR,
+        DDJVU_INFO,
+        DDJVU_NEWSTREAM,
+        DDJVU_DOCINFO,
+        DDJVU_PAGEINFO,
+        DDJVU_RELAYOUT,
+        DDJVU_REDISPLAY,
+        DDJVU_CHUNK,
+        DDJVU_THUMBNAIL,
+        DDJVU_PROGRESS
     }
 }

@@ -17,22 +17,24 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DjvuSharp.Message
+
+namespace DjvuSharp.Enums
 {
-    /// <summary>
-    /// This enum identifies each kind of message delivered by the DDJVU API.
-    /// </summary>
-    public enum MessageTag
+    public enum DDjvuDocumentType
     {
-        DDJVU_ERROR,
-        DDJVU_INFO,
-        DDJVU_NEWSTREAM,
-        DDJVU_DOCINFO,
-        DDJVU_PAGEINFO,
-        DDJVU_RELAYOUT,
-        DDJVU_REDISPLAY,
-        DDJVU_CHUNK,
-        DDJVU_THUMBNAIL,
-        DDJVU_PROGRESS
+        DDJVU_DOCTYPE_UNKNOWN = 0,
+        DDJVU_DOCTYPE_SINGLEPAGE,
+        DDJVU_DOCTYPE_BUNDLED,
+        DDJVU_DOCTYPE_INDIRECT,
+
+        /// <summary>
+        /// obsolete
+        /// </summary>
+        DDJVU_DOCTYPE_OLD_BUNDLED,
+
+        /// <summary>
+        /// obsolete
+        /// </summary>
+        DDJVU_DOCTYPE_OLD_INDEXED
     }
 }

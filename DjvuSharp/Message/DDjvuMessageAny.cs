@@ -22,9 +22,9 @@ namespace DjvuSharp.Message
 {
     public class DDjvuMessageAny
     {
-        private ddjvu_message_any_t _message_any;
+        private ddjvu_message_any_s _message_any;
 
-        internal DDjvuMessageAny(ddjvu_message_any_t message_any)
+        internal DDjvuMessageAny(ddjvu_message_any_s message_any)
         {
             _message_any = message_any;
         }

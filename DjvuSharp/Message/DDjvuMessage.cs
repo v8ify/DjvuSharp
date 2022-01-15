@@ -33,7 +33,7 @@ namespace DjvuSharp.Message
         {
             get
             {
-                if (_ddjvu_message.m_any == null)
+                if (_ddjvu_message.m_any == default(ddjvu_message_any_s))
                     return null;
 
                 return new DDjvuMessageAny(_ddjvu_message.m_any);

@@ -17,18 +17,33 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-
-namespace DjvuSharp
+namespace DjvuSharp.Enums
 {
-    /// <summary>
-    /// Pretty self explanatory. This enum contains the types of djvu pages
-    /// the property <see cref="DjvuPage.Type" /> returns.
-    /// </summary>
-    public enum PageType
+    public enum DDjvuStatus
     {
-        DDJVU_PAGETYPE_UNKNOWN,
-        DDJVU_PAGETYPE_BITONAL,
-        DDJVU_PAGETYPE_PHOTO,
-        DDJVU_PAGETYPE_COMPOUND
+        /// <summary>
+        /// Operation was not even started
+        /// </summary>
+        DDJVU_JOB_NOTSTARTED,
+
+        /// <summary>
+        /// Operation is in progress
+        /// </summary>
+        DDJVU_JOB_STARTED,
+
+        /// <summary>
+        /// Operation terminated successfully
+        /// </summary>
+        DDJVU_JOB_OK,
+
+        /// <summary>
+        /// Operation failed because of an error
+        /// </summary>
+        DDJVU_JOB_FAILED,
+
+        /// <summary>
+        /// Operation was interrupted by user
+        /// </summary>
+        DDJVU_JOB_STOPPED
     }
 }

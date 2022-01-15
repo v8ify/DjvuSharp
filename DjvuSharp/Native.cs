@@ -36,7 +36,7 @@ namespace DjvuSharp
     /// removed from the message queue.
      /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageAny
+    public struct ddjvu_message_any_s
     {
         /// <summary>
         /// The kind of message corresponding to enum <see cref="Message.MessageTag"/>
@@ -51,12 +51,17 @@ namespace DjvuSharp
         public IntPtr document;
         public IntPtr page;
         public IntPtr job;
+
+        public override bool Equals(object obj)
+        {
+            
+        }
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageError
+    public struct ddjvu_message_error_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
         public IntPtr message;
         public IntPtr function;
         public IntPtr filename;
@@ -64,26 +69,184 @@ namespace DjvuSharp
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageInfo
+    public struct ddjvu_message_info_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
         public IntPtr message;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageNewStream
+    public struct ddjvu_message_newstream_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
         public int streamid;
         public IntPtr name;
         public IntPtr url;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DjvuMessageDocInfo
+    public struct ddjvu_message_docinfo_s
     {
-        public DjvuMessageAny any;
+        public ddjvu_message_any_s any;
     }
+
+    /// <summary>
+    /// The page decoding process generates this message
+    /// - when basic page information is available and 
+    ///   before any m_relayout or m_redisplay message,
+    /// - when the page decoding thread terminates.
+    /// You can distinguish both cases using 
+    /// function <see cref="Native.ddjvu_page_decoding_status(IntPtr)" />
+    /// Messages m_pageinfo are also generated as a consequence of 
+    /// functions such as ddjvu_document_get_pageinfo. 
+    /// The field m_any.page of such message is null.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ddjvu_message_pageinfo_s
+    {
+        public ddjvu_message_any_s  any;
+    }
+
+    /// <summary>
+    /// This message is generated when a DjVu viewer
+    /// should recompute the layout of the page viewer
+    /// because the page size and resolution information has
+    /// been updated.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ddjvu_message_relayout_s
+    {
+        public ddjvu_message_any_s  any;
+    }
+
+    /// <summary>
+    /// This message is generated when a DjVu viewer
+    /// should call <see cref="ddjvu_page_render" /> and redisplay
+    /// the page. This happens, for instance, when newly 
+    /// decoded DjVu data provides a better image.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ddjvu_message_redisplay_s
+    {
+        public ddjvu_message_any_s any;
+    }
+
+    /// <summary>
+    /// This message indicates that an additional chunk
+    /// of DjVu data has been decoded.  Member chunkid
+    /// indicates the type of the DjVu chunk.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ddjvu_message_chunk_s
+    {
+        public ddjvu_message_any_s  any;
+        public IntPtr chunkid;
+    }
+
+    /// <summary>
+    /// This structure specifies the location of a rectangle.
+    /// Coordinates are usually expressed in pixels relative to 
+    /// the BOTTOM LEFT CORNER (but see ddjvu_format_set_y_direction).
+    /// Members x and y indicate the position of the bottom left 
+    /// corner of the rectangle. Members w and h indicate the 
+    /// width and height of the rectangle.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    struct DjvuRect
+    {
+        /// <summary>
+        /// Members x and y indicate the position of the bottom left 
+        /// corner of the rectangle
+        /// </summary>
+        public int x;
+
+        /// <summary>
+        /// Members x and y indicate the position of the bottom left 
+        /// corner of the rectangle
+        /// </summary>
+        public int y;
+
+        /// <summary>
+        /// Members w indicates the 
+        /// width and height of the rectangle.
+        /// </summary>
+        public uint w;
+
+        /// <summary>
+        /// Members h indicates the 
+        /// width and height of the rectangle.
+        /// </summary> 
+        public uint h;
+    };
+
+
+    /// <summary>
+    /// This message is sent when additional thumbnails are available
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ddjvu_message_thumbnail_s
+    {
+        public ddjvu_message_any_s any;
+        public int pagenum;
+    }
+
+    /// <summary>
+    /// These messages are generated to indicate progress 
+    /// towards the completion of a print or save job.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ddjvu_message_progress_s
+    {
+        public ddjvu_message_any_s any;
+        public int status;
+        public int percent;
+    };
+
+
+    /* -------------------------------------------------- */
+    /* DJVU_MESSAGE_T                                     */
+    /* -------------------------------------------------- */
+
+    /// <summary>
+    /// Represents the ddjvu_message_s union in the unmanaged code
+    /// </summary>
+    [StructLayout(LayoutKind.Explicit)]
+    public struct ddjvu_message_s
+    {
+        [FieldOffset(0)]
+        public ddjvu_message_any_s        m_any;
+
+        [FieldOffset(0)]
+        public ddjvu_message_error_s      m_error;
+
+        [FieldOffset(0)]
+        public ddjvu_message_info_s       m_info;
+
+        [FieldOffset(0)]
+        public ddjvu_message_newstream_s  m_newstream;
+
+        [FieldOffset(0)]
+        public ddjvu_message_docinfo_s    m_docinfo;
+
+        [FieldOffset(0)]
+        public ddjvu_message_pageinfo_s   m_pageinfo;
+
+        [FieldOffset(0)]
+        public ddjvu_message_chunk_s      m_chunk;
+
+        [FieldOffset(0)]
+        public ddjvu_message_relayout_s   m_relayout;
+
+        [FieldOffset(0)]
+        public ddjvu_message_redisplay_s  m_redisplay;
+
+        [FieldOffset(0)]
+        public ddjvu_message_thumbnail_s  m_thumbnail;
+
+        [FieldOffset(0)]
+        public ddjvu_message_progress_s   m_progress;
+    }
+    
 
     internal static class Native
     {
@@ -409,5 +572,39 @@ namespace DjvuSharp
         /// <returns>An integer which should be cast to the enum <see cref="DjvuPageRotation"/></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int ddjvu_page_get_rotation(IntPtr page);
+
+
+        /* -------------------------------------------------- */
+        /* COORDINATE TRANSFORMS                              */
+        /* -------------------------------------------------- */
+
+
+        /// <summary>
+        /// Creates a djvu_rectmapper_t data structure 
+        /// representing an affine coordinate transformation that
+        /// maps points from rectangle input to rectangle output.
+        /// The transformation maintains the positions relative
+        /// to the coordinates of the rectangle corners.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe IntPtr ddjvu_rectmapper_create(DjvuRect* input, DjvuRect* output);
+
+
+        /// <summary>
+        /// Modifies the coordinate transform <paramref name="mapper"/> by redefining
+        /// which corners of the output rectangle match those of the
+        /// input rectangle. This function first applies a counter-clockwise
+        /// rotation of <paramref name="rotation"/> quarter-turns, and then reverses the X
+        /// (resp.Y) coordinates when <paramref name="mirrorx"/> (resp. <paramref name="mirrory"/>) is non zero.
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="rotation"></param>
+        /// <param name="mirrorx"></param>
+        /// <param name="mirrory"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_rectmapper_modify(IntPtr mapper, int rotation, int mirrorx, int mirrory);
     }
 }

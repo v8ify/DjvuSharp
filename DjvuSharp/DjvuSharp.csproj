@@ -1,20 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="../native/out/build/linux-x64/libdjvulibre.so" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-  </ItemGroup>
+    <ItemGroup>
+        <Content Include="../native/out/build/linux-x64/libdjvulibre.so" CopyToOutputDirectory="PreserveNewest">
+            <Pack>true</Pack>
+            <PackagePath>runtimes/linux-x64/native/</PackagePath>
+        </Content>
+    </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="../native/libs/win-x64/libdjvulibre-21.dll" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<Content Include="../native/libs/win-x64/libdjvulibre-21.dll" CopyToOutputDirectory="PreserveNewest">
+            <Pack>true</Pack>
+            <PackagePath>runtimes/win-x64/native/</PackagePath>
+        </Content>
 	</ItemGroup>
 
-  <!-- Macro used for conditional compilation on 32-bit machines -->
-  <PropertyGroup Condition="'${Platform}' == 'x86'">
-    <DefineConstants>X86</DefineConstants>
-  </PropertyGroup>
+    <!-- Macro used for conditional compilation on 32-bit machines -->
+    <PropertyGroup Condition="'${Platform}' == 'x86'">
+        <DefineConstants>X86</DefineConstants>
+    </PropertyGroup>
 
 </Project>

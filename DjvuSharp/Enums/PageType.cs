@@ -1,4 +1,4 @@
-﻿/*
+/*
 *   DjvuSharp - .NET bindings for DjvuLibre
 *   Copyright (C) 2021 Prajwal Jadhav
 *   
@@ -18,19 +18,17 @@
 */
 
 
-namespace DjvuSharp
+namespace DjvuSharp.Enums
 {
     /// <summary>
-    /// Represents the counter-clockwise rotation angle of 
-    /// a rotated page.
-    /// Used by <see cref="Native.ddjvu_page_set_rotation(System.IntPtr, int)"/>
-    /// and <see cref="Native.ddjvu_page_get_rotation(System.IntPtr)"/>
+    /// Pretty self explanatory. This enum contains the types of djvu pages
+    /// the property <see cref="DjvuPage.Type" /> returns.
     /// </summary>
-    public enum DjvuPageRotation
+    public enum PageType
     {
-        DDJVU_ROTATE_0,
-        DDJVU_ROTATE_90,
-        DDJVU_ROTATE_180,
-        DDJVU_ROTATE_270,
+        DDJVU_PAGETYPE_UNKNOWN,
+        DDJVU_PAGETYPE_BITONAL,
+        DDJVU_PAGETYPE_PHOTO,
+        DDJVU_PAGETYPE_COMPOUND
     }
 }
