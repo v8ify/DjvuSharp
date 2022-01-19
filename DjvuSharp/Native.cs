@@ -610,5 +610,40 @@ namespace DjvuSharp
         /// <param name="mapper">Pointer to ddjvu_rectmapper_t that you want to release.</param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void ddjvu_rectmapper_release(IntPtr mapper);
+
+        /// <summary>
+        /// Applies the coordinate transform to a point
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_map_point(IntPtr mapper, ref int x, ref int y);
+
+        /// <summary>
+        /// Applies the coordinate transform to a rectangle
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="rect"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe void ddjvu_map_rect(IntPtr mapper, DjvuRect* rect);
+
+        /// <summary>
+        /// Applies the inverse coordinate transform to a point
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        [DllImport(dllname, CallingConvention=CallingConvention.Cdecl)]
+        internal static extern void ddjvu_unmap_point(IntPtr mapper, ref int x, ref int y);
+
+        /// <summary>
+        /// Applies the inverse coordinate transform to a rectangle
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe void ddjvu_unmap_rect(IntPtr mapper, DjvuRect* rect);
     }
 }
