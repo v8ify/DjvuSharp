@@ -698,5 +698,34 @@ namespace DjvuSharp
         /// <returns>A pointer to ddjvu_format_t</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr ddjvu_format_create(int style, int nargs, uint[] args);
+
+
+        /// <summary>
+        /// Sets a flag indicating whether the rows in the pixel buffer
+        /// are stored starting from the top or the bottom of the image.
+        /// Default ordering starts from the bottom of the image.
+        /// This is the opposite of the X11 convention
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="top_to_bottom"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void ddjvu_format_set_row_order(IntPtr format, int top_to_bottom);
+
+        /// <summary>
+        /// Sets a flag indicating whether the rows in the pixel buffer
+        /// are stored starting from the top or the bottom of the image.
+        /// Default ordering starts from the bottom of the image.
+        /// This is the opposite of the X11 convention
+        /// </summary>
+        /// <param name="format">A pointer to djvu_format_t.
+        /// Normally gotten from <see cref="ddjvu_format_create(int, int, uint[])"/>
+        /// </param>
+        /// <param name="top_to_bottom">If true, rows pixel buffers are stored starting from top to bottom.</param>
+        internal static void ddjvu_format_set_row_order(IntPtr format, bool topToBottom)
+        {
+            int top_to_bottom = topToBottom ? 1 : 0;
+
+            ddjvu_format_set_row_order(format, top_to_bottom);
+        }
     }
 }
