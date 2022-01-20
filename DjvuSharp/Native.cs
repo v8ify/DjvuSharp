@@ -645,5 +645,58 @@ namespace DjvuSharp
         /// <param name="y"></param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern unsafe void ddjvu_unmap_rect(IntPtr mapper, DjvuRect* rect);
+
+
+        /* -------------------------------------------------- */
+        /* DJVU_FORMAT_T                                      */
+        /* -------------------------------------------------- */
+
+        /// <summary>
+        /// Creates a ddjvu_format_t object describing a pixel format.
+        /// </summary>
+        /// <param name="style">Describes the generic pixel format.</param>
+        /// <param name="nargs">
+        /// Argument <paramref name="args"/> is an array of <paramref name="nargs"/> unsigned ints
+        /// providing additionnal information:
+        /// <list type="bullet">
+        /// <item>
+        /// When style is RGBMASK*, argument <paramref name="nargs"/> must be 3 or 4.
+        /// The three first entries of array <paramref name="args"/> are three contiguous
+        /// bit masks for the red, green, and blue components of each pixel.
+        /// The resulting color is then xored with the optional fourth entry. 
+        /// </item>
+        /// <item>
+        /// When style is PALLETE*, argument <paramref name="nargs"/> must be 216
+        /// and array <paramref name="args"/> contains the 6*6*6 entries of a web
+        /// color cube.
+        /// </item>
+        /// <item>
+        /// Otherwise <paramref name="nargs"/> must be 0.
+        /// </item>
+        /// </list>
+        /// </param>
+        /// <param name="args">
+        /// Argument <paramref name="args"/> is an array of <paramref name="nargs"/> unsigned ints
+        /// providing additionnal information:
+        /// <list type="bullet">
+        /// <item>
+        /// When style is RGBMASK*, argument <paramref name="nargs"/> must be 3 or 4.
+        /// The three first entries of array <paramref name="args"/> are three contiguous
+        /// bit masks for the red, green, and blue components of each pixel.
+        /// The resulting color is then xored with the optional fourth entry. 
+        /// </item>
+        /// <item>
+        /// When style is PALLETE*, argument <paramref name="nargs"/> must be 216
+        /// and array <paramref name="args"/> contains the 6*6*6 entries of a web
+        /// color cube.
+        /// </item>
+        /// <item>
+        /// Otherwise <paramref name="nargs"/> must be 0.
+        /// </item>
+        /// </list>
+        /// </param>
+        /// <returns>A pointer to ddjvu_format_t</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr ddjvu_format_create(int style, int nargs, uint[] args);
     }
 }
