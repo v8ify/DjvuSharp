@@ -51,11 +51,6 @@ namespace DjvuSharp
         public IntPtr document;
         public IntPtr page;
         public IntPtr job;
-
-        public override bool Equals(object obj)
-        {
-            
-        }
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -606,5 +601,199 @@ namespace DjvuSharp
         /// <param name="mirrory"></param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void ddjvu_rectmapper_modify(IntPtr mapper, int rotation, int mirrorx, int mirrory);
+
+
+        /// <summary>
+        /// Destroys the ddjvu_rectmapper_t structure
+        /// returned by <see cref="ddjvu_rectmapper_release(IntPtr)"/>.
+        /// </summary>
+        /// <param name="mapper">Pointer to ddjvu_rectmapper_t that you want to release.</param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_rectmapper_release(IntPtr mapper);
+
+        /// <summary>
+        /// Applies the coordinate transform to a point
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_map_point(IntPtr mapper, ref int x, ref int y);
+
+        /// <summary>
+        /// Applies the coordinate transform to a rectangle
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="rect"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe void ddjvu_map_rect(IntPtr mapper, DjvuRect* rect);
+
+        /// <summary>
+        /// Applies the inverse coordinate transform to a point
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        [DllImport(dllname, CallingConvention=CallingConvention.Cdecl)]
+        internal static extern void ddjvu_unmap_point(IntPtr mapper, ref int x, ref int y);
+
+        /// <summary>
+        /// Applies the inverse coordinate transform to a rectangle
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe void ddjvu_unmap_rect(IntPtr mapper, DjvuRect* rect);
+
+
+        /* -------------------------------------------------- */
+        /* DJVU_FORMAT_T                                      */
+        /* -------------------------------------------------- */
+
+        /// <summary>
+        /// Creates a ddjvu_format_t object describing a pixel format.
+        /// </summary>
+        /// <param name="style">Describes the generic pixel format.</param>
+        /// <param name="nargs">
+        /// Argument <paramref name="args"/> is an array of <paramref name="nargs"/> unsigned ints
+        /// providing additionnal information:
+        /// <list type="bullet">
+        /// <item>
+        /// When style is RGBMASK*, argument <paramref name="nargs"/> must be 3 or 4.
+        /// The three first entries of array <paramref name="args"/> are three contiguous
+        /// bit masks for the red, green, and blue components of each pixel.
+        /// The resulting color is then xored with the optional fourth entry. 
+        /// </item>
+        /// <item>
+        /// When style is PALLETE*, argument <paramref name="nargs"/> must be 216
+        /// and array <paramref name="args"/> contains the 6*6*6 entries of a web
+        /// color cube.
+        /// </item>
+        /// <item>
+        /// Otherwise <paramref name="nargs"/> must be 0.
+        /// </item>
+        /// </list>
+        /// </param>
+        /// <param name="args">
+        /// Argument <paramref name="args"/> is an array of <paramref name="nargs"/> unsigned ints
+        /// providing additionnal information:
+        /// <list type="bullet">
+        /// <item>
+        /// When style is RGBMASK*, argument <paramref name="nargs"/> must be 3 or 4.
+        /// The three first entries of array <paramref name="args"/> are three contiguous
+        /// bit masks for the red, green, and blue components of each pixel.
+        /// The resulting color is then xored with the optional fourth entry. 
+        /// </item>
+        /// <item>
+        /// When style is PALLETE*, argument <paramref name="nargs"/> must be 216
+        /// and array <paramref name="args"/> contains the 6*6*6 entries of a web
+        /// color cube.
+        /// </item>
+        /// <item>
+        /// Otherwise <paramref name="nargs"/> must be 0.
+        /// </item>
+        /// </list>
+        /// </param>
+        /// <returns>A pointer to ddjvu_format_t</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr ddjvu_format_create(int style, int nargs, uint[] args);
+
+
+        /// <summary>
+        /// Sets a flag indicating whether the rows in the pixel buffer
+        /// are stored starting from the top or the bottom of the image.
+        /// Default ordering starts from the bottom of the image.
+        /// This is the opposite of the X11 convention
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="top_to_bottom"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void ddjvu_format_set_row_order(IntPtr format, int top_to_bottom);
+
+        /// <summary>
+        /// Sets a flag indicating whether the rows in the pixel buffer
+        /// are stored starting from the top or the bottom of the image.
+        /// Default ordering starts from the bottom of the image.
+        /// This is the opposite of the X11 convention
+        /// </summary>
+        /// <param name="format">A pointer to djvu_format_t.
+        /// Normally gotten from <see cref="ddjvu_format_create(int, int, uint[])"/>
+        /// </param>
+        /// <param name="top_to_bottom">If true, rows pixel buffers are stored starting from top to bottom.</param>
+        internal static void ddjvu_format_set_row_order(IntPtr format, bool topToBottom)
+        {
+            int top_to_bottom = topToBottom ? 1 : 0;
+
+            ddjvu_format_set_row_order(format, top_to_bottom);
+        }
+
+        /// <summary>
+        /// Sets a flag indicating whether the y coordinates in the drawing 
+        /// area are oriented from bottom to top, or from top to botttom.
+        /// The default is bottom to top, similar to PostScript.
+        /// This is the opposite of the X11 convention.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="top_to_bottom"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void ddjvu_format_set_y_direction(IntPtr format, int top_to_bottom);
+
+        /// <summary>
+        /// Sets a flag indicating whether the y coordinates in the drawing 
+        /// area are oriented from bottom to top, or from top to botttom.
+        /// The default is bottom to top, similar to PostScript.
+        /// This is the opposite of the X11 convention.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="topToBottom"></param>
+        internal static void ddjvu_format_set_y_direction(IntPtr format, bool topToBottom)
+        {
+            int top_to_bottom = topToBottom ? 1 : 0;
+
+            ddjvu_format_set_y_direction(format, top_to_bottom);
+        }
+
+        /// <summary>
+        /// Specifies the final depth of the image on the screen.
+        /// This is used to decide which dithering algorithm should be used.
+        /// The default is usually appropriate.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="bits"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_format_set_ditherbits(IntPtr format, int bits);
+
+        /// <summary>
+        /// Sets the gamma of the display for which the pixels are
+        /// intended.  This will be combined with the gamma stored in
+        /// DjVu documents in order to compute a suitable color
+        /// correction.  The default value is 2.2.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="gamma"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_format_set_gamma(IntPtr format, double gamma);
+
+        /// <summary>
+        /// Sets the whitepoint of the display for which the pixels are
+        /// intended.  This will be combined with the gamma stored in
+        /// DjVu documents in order to compute a suitable color
+        /// correction.  The default value is 0xff,0xff,0xff.
+        /// </summary>
+        /// <param name="format">A pointer to djvu_format_t</param>
+        /// <param name="b"></param>
+        /// <param name="g"></param>
+        /// <param name="r"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_format_set_white(IntPtr format, byte b, byte g, byte r);
+
+        /// <summary>
+        /// Release a reference to a ddjvu_format_t object.
+        /// The calling program should no longer reference this object.
+        /// </summary>
+        /// <param name="format"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_format_release(IntPtr format);
     }
 }
