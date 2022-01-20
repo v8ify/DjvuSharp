@@ -753,5 +753,47 @@ namespace DjvuSharp
 
             ddjvu_format_set_y_direction(format, top_to_bottom);
         }
+
+        /// <summary>
+        /// Specifies the final depth of the image on the screen.
+        /// This is used to decide which dithering algorithm should be used.
+        /// The default is usually appropriate.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="bits"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_format_set_ditherbits(IntPtr format, int bits);
+
+        /// <summary>
+        /// Sets the gamma of the display for which the pixels are
+        /// intended.  This will be combined with the gamma stored in
+        /// DjVu documents in order to compute a suitable color
+        /// correction.  The default value is 2.2.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="gamma"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_format_set_gamma(IntPtr format, double gamma);
+
+        /// <summary>
+        /// Sets the whitepoint of the display for which the pixels are
+        /// intended.  This will be combined with the gamma stored in
+        /// DjVu documents in order to compute a suitable color
+        /// correction.  The default value is 0xff,0xff,0xff.
+        /// </summary>
+        /// <param name="format">A pointer to djvu_format_t</param>
+        /// <param name="b"></param>
+        /// <param name="g"></param>
+        /// <param name="r"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_format_set_white(IntPtr format, byte b, byte g, byte r);
+
+        /// <summary>
+        /// Release a reference to a ddjvu_format_t object.
+        /// The calling program should no longer reference this object.
+        /// </summary>
+        /// <param name="format"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_format_release(IntPtr format);
     }
 }
