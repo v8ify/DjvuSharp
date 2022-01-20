@@ -727,5 +727,31 @@ namespace DjvuSharp
 
             ddjvu_format_set_row_order(format, top_to_bottom);
         }
+
+        /// <summary>
+        /// Sets a flag indicating whether the y coordinates in the drawing 
+        /// area are oriented from bottom to top, or from top to botttom.
+        /// The default is bottom to top, similar to PostScript.
+        /// This is the opposite of the X11 convention.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="top_to_bottom"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void ddjvu_format_set_y_direction(IntPtr format, int top_to_bottom);
+
+        /// <summary>
+        /// Sets a flag indicating whether the y coordinates in the drawing 
+        /// area are oriented from bottom to top, or from top to botttom.
+        /// The default is bottom to top, similar to PostScript.
+        /// This is the opposite of the X11 convention.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="topToBottom"></param>
+        internal static void ddjvu_format_set_y_direction(IntPtr format, bool topToBottom)
+        {
+            int top_to_bottom = topToBottom ? 1 : 0;
+
+            ddjvu_format_set_y_direction(format, top_to_bottom);
+        }
     }
 }
