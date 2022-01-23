@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="../native/out/build/linux-x64/libdjvulibre.so" CopyToOutputDirectory="PreserveNewest">
+        <Content Include="../native/libs/linux-x64/libdjvulibre-21.so" CopyToOutputDirectory="PreserveNewest">
             <Pack>true</Pack>
             <PackagePath>runtimes/linux-x64/native/</PackagePath>
         </Content>
