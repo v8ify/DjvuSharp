@@ -30,15 +30,49 @@ namespace DjvuSharp
     /// </summary>
     public sealed class DjvuContext
     {
-        private IntPtr _djvu_context;
+        private static IntPtr _djvu_context = IntPtr.Zero;
 
         private bool _isDisposed;
 
-        public DjvuContext(string programName)
+        private static DjvuContext _instance = null;
+
+        private static readonly object _lock = new object();
+
+        DjvuContext()
         {
-            // Create a djvu context
-            _djvu_context = Native.ddjvu_context_create(programName);
+        
         }
+
+        public static DjvuContext Init(string programName)
+        {
+            lock(_lock)
+            {
+                if (_instance == null)
+                {
+                    // Create a djvu context
+                    _djvu_context = Native.ddjvu_context_create(programName);
+                    _instance = new DjvuContext();
+
+                    return _instance;
+                }
+
+                return _instance;
+            }
+        }
+
+        public static DjvuContext GetInstance()
+        {
+            lock(_lock)
+            {
+                if (_instance == null)
+                {
+                    throw new NullReferenceException($"You must call {nameof(DjvuContext.Init)} before calling {nameof(DjvuContext.GetInstance)}");
+                }
+
+                return _instance;
+            }
+        }
+
 
         /// <summary>
         /// <para>Gets and sets the maximum size of the cache of decoded page data.
