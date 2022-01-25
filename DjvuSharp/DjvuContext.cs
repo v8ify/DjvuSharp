@@ -28,7 +28,7 @@ namespace DjvuSharp
     /// cache of decoded pages, or the list of pending 
     /// event messages.
     /// </summary>
-    public class DjvuContext: IDisposable
+    public sealed class DjvuContext
     {
         private IntPtr _djvu_context;
 
@@ -127,10 +127,10 @@ namespace DjvuSharp
 
         ~DjvuContext()
         {
-            this.Dispose(false);
+            /*this.Dispose(false);*/
         }
 
-        public void Dispose()
+        /*public void Dispose()
         {
             // Dispose of unmanaged resources.
             Dispose(true);
@@ -145,6 +145,6 @@ namespace DjvuSharp
 
                 _isDisposed = true;
             }
-        }
+        }*/
     }
 }
