@@ -291,7 +291,7 @@ namespace DjvuSharp
         /// <param name="context">Pointer to djvu_context_t</param>
         /// <returns>Pointer to ddjvu_message_t</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static IntPtr ddjvu_message_peek(IntPtr context);
+        internal extern static unsafe ddjvu_message_s* ddjvu_message_peek(IntPtr context);
 
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace DjvuSharp
         /// <param name="context">Pointer to djvu_context_t</param>
         /// <returns>A pointer to the next DDJVU message.</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static IntPtr ddjvu_message_wait(IntPtr context);
+        internal extern static unsafe ddjvu_message_s* ddjvu_message_wait(IntPtr context);
 
 
         /// <summary>
