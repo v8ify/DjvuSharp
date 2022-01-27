@@ -30,7 +30,14 @@ namespace DjvuSharp
     public class DjvuDocument: IDisposable
     {
         private IntPtr _djvu_document;
+
+        private DjvuContext _djvu_context;
+
         private bool disposedValue;
+
+        private bool _docInfoComplete;
+
+        private bool _errorOccured;
 
         /// <inheritdoc cref="DjvuDocument" />
         internal DjvuDocument(IntPtr djvu_document)
@@ -148,6 +155,13 @@ namespace DjvuSharp
 
             return new DjvuPage(djvuPagePtr);
         }
+
+        
+        public void Decode()
+        {
+            throw new NotImplementedException();
+        }
+        
 
 
         protected virtual void Dispose(bool disposing)

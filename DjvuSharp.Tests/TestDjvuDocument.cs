@@ -41,7 +41,7 @@ public class TestDjvuDocument
             {
                 context.WaitMessage();
 
-                DDjvuMessage msg;
+                Message.Message msg;
 
                 while ((msg = context.PeekMessage()) != null)
                 {
@@ -75,7 +75,7 @@ public class TestDjvuDocument
             {
                 while (!document.IsDecodingDone())
                 {
-                    DDjvuMessage message = context.WaitMessage();
+                    Message.Message message = context.WaitMessage();
 
                     while ((message = context.PeekMessage()) != null)
                     {
@@ -121,7 +121,7 @@ public class TestDjvuDocument
             {
                 while (!document.IsDecodingDone())
                 {
-                    DDjvuMessage message = context.WaitMessage();
+                    Message.Message message = context.WaitMessage();
 
                     while ((message = context.PeekMessage()) != null)
                     {
@@ -174,7 +174,7 @@ public class TestDjvuDocument
             {
                 while (!document.IsDecodingDone())
                 {
-                    DDjvuMessage message = context.WaitMessage();
+                    Message.Message message = context.WaitMessage();
 
                     while ((message = context.PeekMessage()) != null)
                     {
@@ -217,7 +217,7 @@ public class TestDjvuDocument
             {
                 while (!document.IsDecodingDone())
                 {
-                    DDjvuMessage message = context.WaitMessage();
+                    Message.Message message = context.WaitMessage();
 
                     while ((message = context.PeekMessage()) != null)
                     {

@@ -17,14 +17,15 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using System;
 
 namespace DjvuSharp.Message
 {
-    public class DDjvuMessage
+    public class Message
     {
-        private ddjvu_message_s _ddjvu_message;
+        private IntPtr document;
 
-        internal DDjvuMessage(ddjvu_message_s ddjvu_message)
+        internal Message(ddjvu_message_s ddjvu_message)
         {
             _ddjvu_message = ddjvu_message;
         }

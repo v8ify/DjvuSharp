@@ -18,7 +18,7 @@
 */
 
 using System;
-using DjvuSharp.Message;
+using System.Collections.Generic;
 
 namespace DjvuSharp
 {
@@ -38,9 +38,11 @@ namespace DjvuSharp
 
         private static readonly object _lock = new object();
 
+        private List<ddjvu_message_s> _message_list;
+
         DjvuContext()
         {
-        
+            _message_list = new List<ddjvu_message_s>();
         }
 
         public static DjvuContext Init(string programName)
@@ -123,38 +125,38 @@ namespace DjvuSharp
             return new DjvuDocument(djvu_document);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        // public DDjvuMessage PeekMessage()
-        // {
-        //     IntPtr message = Native.ddjvu_message_peek(_djvu_context);
 
-        //     if (message == IntPtr.Zero)
-        //         return null;
 
-        //     return new DDjvuMessage(message);
-        // }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        // public DDjvuMessage WaitMessage()
-        // {
-        //     IntPtr message = Native.ddjvu_message_wait(_djvu_context);
+        private unsafe void PeekMessage()
+        {
+            var message = Native.ddjvu_message_peek(_djvu_context);
 
-        //     if (message == IntPtr.Zero)
-        //         return null;
-
-        //     return new DDjvuMessage(message);
-        // }
+            
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        public void PopMessage()
+        /// <returns></returns>
+        private unsafe void WaitMessage()
+        {
+            IntPtr message = Native.ddjvu_message_wait(_djvu_context);
+
+            if (message == IntPtr.Zero)
+                return null;
+
+            return new DDjvuMessage(message);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private unsafe void PopMessage()
         {
             Native.ddjvu_message_pop(_djvu_context);
         }
@@ -162,6 +164,7 @@ namespace DjvuSharp
         ~DjvuContext()
         {
             /*this.Dispose(false);*/
+            Native.ddjvu_context_release(_djvu_context);
         }
 
         /*public void Dispose()
