@@ -247,13 +247,13 @@ namespace DjvuSharp
     {
         private const string dllname = "libdjvulibre-21";
 
-#if X86
+// #if X86
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static IntPtr djvu_alloc(uint size);
-#else
+/*// 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static IntPtr djvu_alloc(ulong size);
-#endif
+#endif*/
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void djvu_free(IntPtr pointer);
