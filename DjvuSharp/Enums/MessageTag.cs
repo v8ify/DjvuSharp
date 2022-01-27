@@ -24,15 +24,15 @@ namespace DjvuSharp.Enums
     /// </summary>
     public enum MessageTag
     {
-        DDJVU_ERROR,
-        DDJVU_INFO,
-        DDJVU_NEWSTREAM,
-        DDJVU_DOCINFO,
-        DDJVU_PAGEINFO,
-        DDJVU_RELAYOUT,
-        DDJVU_REDISPLAY,
-        DDJVU_CHUNK,
-        DDJVU_THUMBNAIL,
-        DDJVU_PROGRESS
+        ERROR,
+        INFO,
+        NEWSTREAM,
+        DOCINFO,
+        PAGEINFO,
+        RELAYOUT,
+        REDISPLAY,
+        CHUNK,
+        THUMBNAIL,
+        PROGRESS
     }
 }
