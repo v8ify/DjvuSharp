@@ -17,6 +17,7 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DjvuSharp.Enums;
 using System;
 using System.Runtime.InteropServices;
 
@@ -28,7 +29,7 @@ namespace DjvuSharp.Messages
         /// <summary>
         /// The kind of message corresponding to enum <see cref="Message.MessageTag"/>
         /// </summary>
-        public int Tag;
+        public MessageTag Tag;
 
         /* context, document, page, job fields may be IntPtr.Zero when not relevant.
          * These fields are also cleared when the corresponding object is 
