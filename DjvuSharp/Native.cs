@@ -21,7 +21,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
-
+using DjvuSharp.Enums;
 
 [assembly:InternalsVisibleTo("DjvuSharp.Tests")]
 namespace DjvuSharp
@@ -385,7 +385,7 @@ namespace DjvuSharp
         internal extern static void ddjvu_document_release(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static void ddjvu_document_decoding_status(IntPtr document);
+        internal extern static JobStatus ddjvu_document_decoding_status(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int ddjvu_document_get_type(IntPtr document);
