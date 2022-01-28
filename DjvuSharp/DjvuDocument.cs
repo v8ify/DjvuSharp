@@ -19,6 +19,8 @@
 
 using System; // IDisposable
 using DjvuSharp.Enums; // DjvuDocumentType
+using System.IO; // Path
+using System.Diagnostics; // Process
 
 namespace DjvuSharp
 {
@@ -29,14 +31,106 @@ namespace DjvuSharp
     /// </summay>
     public class DjvuDocument: IDisposable
     {
-        private IntPtr _djvu_document;
+        private IntPtr _document;
+
+        private IntPtr _context;
+
+        private string _filePath;
+
         private bool disposedValue;
 
-        /// <inheritdoc cref="DjvuDocument" />
-        internal DjvuDocument(IntPtr djvu_document)
+        /// <inheritdoc cref="DjvuDocument"/>
+        private DjvuDocument(IntPtr context, IntPtr document, string filePath)
         {
-            _djvu_document = djvu_document;
+            _context = context;
+            _document = document;
+            _filePath = filePath;
         }
+
+        public static DjvuDocument Create(string filePath)
+        {
+            IntPtr context = IntPtr.Zero;
+            IntPtr document = IntPtr.Zero;
+
+            try
+            {
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    throw new ArgumentNullException($"The value of {nameof(filePath)} cannot be null or empty");
+                }
+
+                if (!File.Exists(filePath))
+                {
+                    throw new ApplicationException($"The djvu file with path {nameof(filePath)} does not exist.");
+                }
+
+                Process process = Process.GetCurrentProcess();
+                string fileName = Path.GetFileNameWithoutExtension(filePath);
+
+                string contextId = $"Id-{process.Id},Name-{process.ProcessName},File-{fileName},T-{DateTime.Now}";
+
+                context = Native.ddjvu_context_create(contextId);
+
+                if (context == IntPtr.Zero)
+                {
+                    throw new ApplicationException("Failed to create a new context");
+                }
+
+                document = Native.ddjvu_document_create_by_filename(context, filePath, 1);
+
+                if (document == IntPtr.Zero)
+                {
+                    throw new ApplicationException($"Failed to load the djvu document with path: ${filePath}");
+                }
+
+                JobStatus status = JobStatus.JOB_NOTSTARTED;
+
+                while (true)
+                {
+                    status = Native.ddjvu_document_decoding_status(document);
+
+                    if (IsDecodingDone(status))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Utils.ProcessMessages(context, true);
+                    }
+                }
+
+                if (status == JobStatus.JOB_OK)
+                {
+                    return new DjvuDocument(context, document, filePath);
+                }
+                else if (status == JobStatus.JOB_FAILED)
+                {
+                    throw new ApplicationException($"Failed to decode the djvu document: {filePath}");
+                }
+                else if (status == JobStatus.JOB_STOPPED)
+                {
+                    throw new ApplicationException($"Decoding interrupted by the user. Filepath: {filePath}");
+                }
+
+                // If we reached here then some unexpected error has occured
+                throw new ApplicationException($"An unexpected error occured while parsing the document: {filePath}");
+            }
+            catch(Exception ex) 
+            {
+                if (document != IntPtr.Zero)
+                {
+                    Native.ddjvu_document_release(document);
+                }
+
+                if (context != IntPtr.Zero)
+                {
+                    Native.ddjvu_context_release(context);
+                }
+
+                throw new AggregateException($"Failed to create DjvuDocument from file: {filePath}", ex);
+            }
+        }
+
 
         /// <summary>
         /// Access the job object in charge of decoding the document header.
@@ -45,7 +139,7 @@ namespace DjvuSharp
         {
             get 
             {
-                IntPtr job = Native.ddjvu_document_job(_djvu_document);
+                IntPtr job = Native.ddjvu_document_job(_document);
 
                 if (job == IntPtr.Zero)
                     return null;
@@ -64,7 +158,7 @@ namespace DjvuSharp
         /// <returns>The type of djvu document in form of an enum member.</returns>
         public DDjvuDocumentType GetDocumentType()
         {
-            return (DDjvuDocumentType)Native.ddjvu_document_get_type(_djvu_document);
+            return (DDjvuDocumentType)Native.ddjvu_document_get_type(_document);
         }
 
 
@@ -78,7 +172,7 @@ namespace DjvuSharp
         /// <returns>An int representing number of pages.</returns>
         public int GetPageNumber()
         {
-            return Native.ddjvu_document_get_pagenum(_djvu_document);
+            return Native.ddjvu_document_get_pagenum(_document);
         }
 
         /// <summary>
@@ -89,7 +183,7 @@ namespace DjvuSharp
         /// <returns>The number of component files</returns>
         public int GetFileNumber()
         {
-            return Native.ddjvu_document_get_filenum(_djvu_document);
+            return Native.ddjvu_document_get_filenum(_document);
         }
 
         /// <summary>
@@ -100,11 +194,10 @@ namespace DjvuSharp
         /// <p>We use this function to know if the decoding of document is complete.</p>
         /// </summary>
         /// <returns>A boolean. true if decoding of the document is finished. false otherwise.</returns>
-        public bool IsDecodingDone()
+        private static bool IsDecodingDone(JobStatus status)
         {
-            return this.DjvuJob.IsDone();
+            return status >= JobStatus.JOB_OK;
         }
-
 
         /// <summary>
         /// This function returns a UTF8 encoded text describing the contents
@@ -116,7 +209,7 @@ namespace DjvuSharp
         /// </returns>
         public string GetDump(bool json)
         {
-            return Native.ddjvu_document_get_dump(_djvu_document, json);
+            return Native.ddjvu_document_get_dump(_document, json);
         }
 
 
@@ -141,7 +234,7 @@ namespace DjvuSharp
         /// 
         public DjvuPage CreateDjvuPageByPageNo(int pageNum)
         {
-            IntPtr djvuPagePtr = Native.ddjvu_page_create_by_pageno(_djvu_document, pageNum);
+            IntPtr djvuPagePtr = Native.ddjvu_page_create_by_pageno(_document, pageNum);
 
             if (djvuPagePtr == IntPtr.Zero)
                 return null;
@@ -159,8 +252,8 @@ namespace DjvuSharp
                     // TODO: dispose managed state (managed objects)
                 }
 
-                Native.ddjvu_document_release(_djvu_document);
-                _djvu_document = IntPtr.Zero;
+                Native.ddjvu_document_release(_document);
+                _document = IntPtr.Zero;
                 
                 disposedValue = true;
             }
