@@ -388,7 +388,7 @@ namespace DjvuSharp
         internal extern static JobStatus ddjvu_document_decoding_status(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static int ddjvu_document_get_type(IntPtr document);
+        internal extern static DocumentType ddjvu_document_get_type(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int ddjvu_document_get_pagenum(IntPtr document);
