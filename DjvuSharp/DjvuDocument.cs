@@ -252,8 +252,17 @@ namespace DjvuSharp
                     // TODO: dispose managed state (managed objects)
                 }
 
-                Native.ddjvu_document_release(_document);
-                _document = IntPtr.Zero;
+                if (_document != IntPtr.Zero)
+                {
+                    Native.ddjvu_document_release(_document);
+                    _document = IntPtr.Zero;
+                }
+
+                if (_context != IntPtr.Zero)
+                {
+                    Native.ddjvu_context_release(_context);
+                    _context = IntPtr.Zero;
+                }
                 
                 disposedValue = true;
             }
