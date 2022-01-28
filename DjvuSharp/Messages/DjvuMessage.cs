@@ -55,7 +55,7 @@ namespace DjvuSharp.Messages
 
         private T GetInstance<T>()
         {
-            if (_nativeMessage != IntPtr.Zero)
+            if (_nativeMessage == IntPtr.Zero)
             {
                 return default(T);
             }
