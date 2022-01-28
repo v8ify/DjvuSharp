@@ -127,7 +127,7 @@ namespace DjvuSharp
                     Native.ddjvu_context_release(context);
                 }
 
-                throw new AggregateException($"Failed to create DjvuDocument from file: {filePath}", ex);
+                throw ex;
             }
         }
 
