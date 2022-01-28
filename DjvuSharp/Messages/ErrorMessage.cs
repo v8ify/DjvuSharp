@@ -58,5 +58,10 @@ namespace DjvuSharp.Messages
 
             return new ErrorMessage(messageStruct);
         }
+
+        public override string ToString()
+        {
+            return $"{Message}\nFile Name: {FileName}\nLine Number: {LineNo}\nFunction: {Function}";
+        }
     }
 }
