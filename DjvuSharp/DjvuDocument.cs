@@ -151,15 +151,12 @@ namespace DjvuSharp
         /// <summary>
         /// Returns the type of a DjVu document.
         /// <para>
-        /// This function might return <see cref="DDjvuDocumentType.DDJVU_DOCTYPE_UNKNOWN" />
+        /// This function might return <see cref="DocumentType.UNKNOWN" />
         /// when called before receiving a m_docinfo message.
         /// </para>
         /// </summary>
         /// <returns>The type of djvu document in form of an enum member.</returns>
-        public DDjvuDocumentType GetDocumentType()
-        {
-            return (DDjvuDocumentType)Native.ddjvu_document_get_type(_document);
-        }
+        public DocumentType Type { get { return Native.ddjvu_document_get_type(_document); } }
 
 
         /// <summary>
@@ -170,10 +167,7 @@ namespace DjvuSharp
         /// </para>
         /// </summary>
         /// <returns>An int representing number of pages.</returns>
-        public int GetPageNumber()
-        {
-            return Native.ddjvu_document_get_pagenum(_document);
-        }
+        public int PageNumber { get { return Native.ddjvu_document_get_pagenum(_document); } }
 
         /// <summary>
         /// Returns the number of component files. 
@@ -181,10 +175,7 @@ namespace DjvuSharp
         /// before receiving a m_docinfo message
         /// </summary>
         /// <returns>The number of component files</returns>
-        public int GetFileNumber()
-        {
-            return Native.ddjvu_document_get_filenum(_document);
-        }
+        public int FileNumber { get { return Native.ddjvu_document_get_filenum(_document); } }
 
         /// <summary>
         /// <p>When we construct a document, djvulibre starts decoding it in background.<p>
