@@ -32,6 +32,7 @@ namespace DjvuSharp.Messages
             ChunkId = (string)CustomStringMarshaler.GetInstance("").MarshalNativeToManaged(chunkMsgStruct.ChunkId);
         }
 
+        [StructLayout(LayoutKind.Sequential)]
         private class NativeChunkMessageStruct
         {
             public AnyMessage Any;
@@ -46,4 +47,3 @@ namespace DjvuSharp.Messages
         }
     }
 }
-    
