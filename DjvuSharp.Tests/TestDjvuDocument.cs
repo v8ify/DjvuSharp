@@ -11,8 +11,8 @@ public class TestDjvuDocument
     {
     }
 
-    [TestCase("./assets/boy_and_chicken.djvu")]
-    [TestCase("./assets/Djvu3Spec.djvu")]
+    [TestCase(@"./assets/boy_and_chicken.djvu")]
+    [TestCase(@"./assets/DjVu3Spec.djvu")]
     public void Test_OpeningAndClosingDocument(string filename)
     {
         using var document = DjvuDocument.Create(filename);
@@ -24,8 +24,8 @@ public class TestDjvuDocument
     /// <param name="filename">The path to djvu file</param>
     /// <param name="pages">No. of pages.</param>
     /// 
-    [TestCase("./assets/boy_and_chicken.djvu", 2)]
-    [TestCase("./assets/Djvu3Spec.djvu", 71)]
+    [TestCase(@"./assets/boy_and_chicken.djvu", 2)]
+    [TestCase(@"./assets/DjVu3Spec.djvu", 71)]
     public void Test_DocumentPageNumber(string filename, int pages)
     {
         using var document = DjvuDocument.Create(filename);
@@ -89,8 +89,8 @@ public class TestDjvuDocument
     /// <param name="filePath">The file path to the djvu documents which we are testing</param>
     /// <param name="fileNum">The number of files in the document </param>
     /// <exception cref="Exception">Raised if an error occures while decoding the document</exception>
-    [TestCase("./assets/boy_and_chicken.djvu", 2)]
-    [TestCase("./assets/DjVu3Spec.djvu", 75)]
+    [TestCase(@"./assets/boy_and_chicken.djvu", 2)]
+    [TestCase(@"./assets/DjVu3Spec.djvu", 75)]
     public void Test_Document_Get_FileNum(string filePath, int fileNum)
     {
         using var document = DjvuDocument.Create(filePath);

@@ -14,6 +14,6 @@ public class Tests
     {
         var version = Djvu.GetDjvuVersion();
 
-        Assert.AreEqual("DjVuLibre-3.5.28", version);
+        Assert.AreEqual("DjVuLibre-3.5.27", version);
     }
 }
