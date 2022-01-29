@@ -381,10 +381,10 @@ namespace DjvuSharp
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static IntPtr ddjvu_document_job(IntPtr document);
 
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_release")]
         internal extern static void ddjvu_document_release(IntPtr document);
 
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_status")]
         internal extern static JobStatus ddjvu_document_decoding_status(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
@@ -469,7 +469,7 @@ namespace DjvuSharp
         /// or thread needs it.
         /// </summary>
         /// <param name="page"></param>
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_release")]
         internal extern static void ddjvu_page_release(IntPtr page);
 
         /// <summary>
