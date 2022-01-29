@@ -25,7 +25,7 @@ using System.Text;
 namespace DjvuSharp.Marshaler
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
-    public class CustomStringMarshaler: Attribute, ICustomMarshaler
+    public class CustomStringMarshaler : Attribute, ICustomMarshaler
     {
         static CustomStringMarshaler static_instance;
         private string Cookie { get; set; }
@@ -40,7 +40,7 @@ namespace DjvuSharp.Marshaler
 
             // not null terminated
             byte[] strbuf = Encoding.UTF8.GetBytes((string)managedObj);
-            IntPtr buffer = Native.djvu_alloc((uint)(strbuf.Length + 1));
+            IntPtr buffer = Native.ddjvu_alloc((uint)(strbuf.Length + 1));
 
             Marshal.Copy(strbuf, 0, buffer, strbuf.Length);
 
@@ -70,7 +70,7 @@ namespace DjvuSharp.Marshaler
 
         public void CleanUpNativeData(IntPtr pNativeData)
         {
-            Native.djvu_free(pNativeData);
+            Native.ddjvu_free(pNativeData);
         }
 
         public void CleanUpManagedData(object managedObj)

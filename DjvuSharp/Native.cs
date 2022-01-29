@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using DjvuSharp.Enums;
 
-[assembly:InternalsVisibleTo("DjvuSharp.Tests")]
+[assembly: InternalsVisibleTo("DjvuSharp.Tests")]
 namespace DjvuSharp
 {
 
@@ -34,7 +34,7 @@ namespace DjvuSharp
     /// If the message has not yet been passed to the user 
     /// with ddjvu_message_{peek,wait}, it is silently
     /// removed from the message queue.
-     /// </summary>
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ddjvu_message_any_s
     {
@@ -99,7 +99,7 @@ namespace DjvuSharp
     [StructLayout(LayoutKind.Sequential)]
     public struct ddjvu_message_pageinfo_s
     {
-        public ddjvu_message_any_s  any;
+        public ddjvu_message_any_s any;
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ namespace DjvuSharp
     [StructLayout(LayoutKind.Sequential)]
     public struct ddjvu_message_relayout_s
     {
-        public ddjvu_message_any_s  any;
+        public ddjvu_message_any_s any;
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ namespace DjvuSharp
     [StructLayout(LayoutKind.Sequential)]
     public struct ddjvu_message_chunk_s
     {
-        public ddjvu_message_any_s  any;
+        public ddjvu_message_any_s any;
         public IntPtr chunkid;
     }
 
@@ -209,54 +209,54 @@ namespace DjvuSharp
     public struct ddjvu_message_s
     {
         [FieldOffset(0)]
-        public ddjvu_message_any_s        m_any;
+        public ddjvu_message_any_s m_any;
 
         [FieldOffset(0)]
-        public ddjvu_message_error_s      m_error;
+        public ddjvu_message_error_s m_error;
 
         [FieldOffset(0)]
-        public ddjvu_message_info_s       m_info;
+        public ddjvu_message_info_s m_info;
 
         [FieldOffset(0)]
-        public ddjvu_message_newstream_s  m_newstream;
+        public ddjvu_message_newstream_s m_newstream;
 
         [FieldOffset(0)]
-        public ddjvu_message_docinfo_s    m_docinfo;
+        public ddjvu_message_docinfo_s m_docinfo;
 
         [FieldOffset(0)]
-        public ddjvu_message_pageinfo_s   m_pageinfo;
+        public ddjvu_message_pageinfo_s m_pageinfo;
 
         [FieldOffset(0)]
-        public ddjvu_message_chunk_s      m_chunk;
+        public ddjvu_message_chunk_s m_chunk;
 
         [FieldOffset(0)]
-        public ddjvu_message_relayout_s   m_relayout;
+        public ddjvu_message_relayout_s m_relayout;
 
         [FieldOffset(0)]
-        public ddjvu_message_redisplay_s  m_redisplay;
+        public ddjvu_message_redisplay_s m_redisplay;
 
         [FieldOffset(0)]
-        public ddjvu_message_thumbnail_s  m_thumbnail;
+        public ddjvu_message_thumbnail_s m_thumbnail;
 
         [FieldOffset(0)]
-        public ddjvu_message_progress_s   m_progress;
+        public ddjvu_message_progress_s m_progress;
     }
-    
+
 
     internal static class Native
     {
         private const string dllname = "djvulibre-21";
 
-// #if X86
+        // #if X86
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static IntPtr djvu_alloc(uint size);
-/*// 
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static IntPtr djvu_alloc(ulong size);
-#endif*/
+        internal extern static IntPtr ddjvu_alloc(uint size);
+        /*// 
+                [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+                internal extern static IntPtr djvu_alloc(ulong size);
+        #endif*/
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static void djvu_free(IntPtr pointer);
+        internal extern static void ddjvu_free(IntPtr pointer);
 
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
@@ -412,7 +412,7 @@ namespace DjvuSharp
 
             // must free since IntPtr points to dynamically allocated
             // char array
-            djvu_free(docDump);
+            ddjvu_free(docDump);
 
             return result;
         }
@@ -428,7 +428,7 @@ namespace DjvuSharp
             string result = Marshal.PtrToStringUni(docDump);
 
             // must free since IntPtr points to dynamically allocated char array
-            djvu_free(docDump);
+            ddjvu_free(docDump);
 
             return result;
         }
@@ -449,7 +449,7 @@ namespace DjvuSharp
 
             // must free since IntPtr points to dynamically allocated
             // char array
-            djvu_free(docDump);
+            ddjvu_free(docDump);
 
             return result;
         }
@@ -503,7 +503,7 @@ namespace DjvuSharp
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        [DllImport(dllname, CallingConvention=CallingConvention.Cdecl)]
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int ddjvu_page_get_resolution(IntPtr page);
 
         /// <summary>
@@ -634,7 +634,7 @@ namespace DjvuSharp
         /// <param name="mapper"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        [DllImport(dllname, CallingConvention=CallingConvention.Cdecl)]
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void ddjvu_unmap_point(IntPtr mapper, ref int x, ref int y);
 
         /// <summary>
