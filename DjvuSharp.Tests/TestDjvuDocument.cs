@@ -1,7 +1,6 @@
 using NUnit.Framework;
-using DjvuSharp.Message;
 using System;
-using System.IO;
+using DjvuSharp.Enums;
 
 namespace DjvuSharp.Tests;
 
@@ -16,13 +15,7 @@ public class TestDjvuDocument
     [TestCase("./assets/Djvu3Spec.djvu")]
     public void Test_OpeningAndClosingDocument(string filename)
     {
-        using (var context = new DjvuContext("NunitTest"))
-        {
-            using (var document = context.CreateDjvuDocument(filename, true))
-            {
-                 
-            }
-        }
+        using var document = DjvuDocument.Create(filename);
     }
 
     /// <summary>
@@ -35,70 +28,9 @@ public class TestDjvuDocument
     [TestCase("./assets/Djvu3Spec.djvu", 71)]
     public void Test_DocumentPageNumber(string filename, int pages)
     {
-        using (var context = new DjvuContext("NunitTest"))
-        {
-            using (var document = context.CreateDjvuDocument(filename, true))
-            {
-                context.WaitMessage();
+        using var document = DjvuDocument.Create(filename);
 
-                DDjvuMessage msg;
-
-                while ((msg = context.PeekMessage()) != null)
-                {
-                    if (msg.MessageAny.Tag == MessageTag.DDJVU_DOCINFO)
-                    {
-                        int actualPages = document.GetPageNumber();
-
-                        Assert.AreEqual(pages, actualPages);
-                    }
-
-                    context.PopMessage();
-                }
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Tests the capability of job IsDone() function.
-    /// </summary>
-    /// <param name="filename">The path to djvu file</param>
-    /// <param name="type">Type of the document.</param>
-    /// 
-    [TestCase("./assets/boy_and_chicken.djvu", 2)]
-    [TestCase("./assets/DjVu3Spec.djvu", 2)]
-    public void TestDocumentDoneMethod(string filename, int type)
-    {
-        using (var context = new DjvuContext("NunitTest"))
-        {
-            using (var document = context.CreateDjvuDocument(filename, true))
-            {
-                while (!document.IsDecodingDone())
-                {
-                    DDjvuMessage message = context.WaitMessage();
-
-                    while ((message = context.PeekMessage()) != null)
-                    {
-                        switch (message.MessageAny.Tag)
-                        {
-                            case MessageTag.DDJVU_ERROR:
-                                TestContext.Out.WriteLine($"ddjvu: {message.M_Error.message}");
-
-                                if (message.M_Error.filename != null)
-                                    TestContext.Out.WriteLine($"ddjvu: {message.M_Error.filename}");
-
-                                throw new Exception(message.M_Error.message);
-                        }
-
-                        context.PopMessage();
-                    }
-                }
-
-                int actualType = (int)document.GetDocumentType();
-
-                Assert.AreEqual(type, actualType);
-            }
-        }
+        Assert.AreEqual(pages, document.PageNumber);
     }
 
     const string DocumentDump =
@@ -112,40 +44,15 @@ public class TestDjvuDocument
       BG44 [8217]       IW4 data #1, 90 slices, v1.2 (color), 181x240
 ";
 
-    [TestCase("./assets/boy_and_chicken.djvu")]
+    /*[TestCase("./assets/boy_and_chicken.djvu")]
     public void Test_If_Document_GetDump_Return_Correct_Output(string filename)
     {
-        using (var context = new DjvuContext("NunitTest"))
-        {
-            using (var document = context.CreateDjvuDocument(filename, true))
-            {
-                while (!document.IsDecodingDone())
-                {
-                    DDjvuMessage message = context.WaitMessage();
+        using var document = DjvuDocument.Create(filename);
 
-                    while ((message = context.PeekMessage()) != null)
-                    {
-                        switch (message.MessageAny.Tag)
-                        {
-                            case MessageTag.DDJVU_ERROR:
-                                TestContext.Out.WriteLine($"ddjvu: {message.M_Error.message}");
+        string textDump = document.GetDump(false);
 
-                                if (message.M_Error.filename != null)
-                                    TestContext.Out.WriteLine($"ddjvu: {message.M_Error.filename}");
-
-                                throw new Exception(message.M_Error.message);
-                        }
-
-                        context.PopMessage();
-                    }
-                }
-
-                string actualPageDump = document.GetDump(false);
-
-                Assert.AreEqual(DocumentDump, actualPageDump);
-            }
-        }
-    }
+        Assert.AreEqual(DocumentDump, textDump);
+    }*/
 
     const string DocumentDumpJson =
 @"{ ""$type"":""DjvuNet.Serialization.DjvuDoc"", ""DjvuData"":
@@ -165,40 +72,15 @@ public class TestDjvuDocument
     }
 }
 ";
-    [TestCase("./assets/boy_and_chicken.djvu")]
+    /*[TestCase("./assets/boy_and_chicken.djvu")]
     public void Test_If_Document_GetDump_Return_Correct_Output_JSON(string filename)
     {
-        using (var context = new DjvuContext("NunitTest"))
-        {
-            using (var document = context.CreateDjvuDocument(filename, true))
-            {
-                while (!document.IsDecodingDone())
-                {
-                    DDjvuMessage message = context.WaitMessage();
+        using var document = DjvuDocument.Create(filename);
 
-                    while ((message = context.PeekMessage()) != null)
-                    {
-                        switch (message.MessageAny.Tag)
-                        {
-                            case MessageTag.DDJVU_ERROR:
-                                TestContext.Out.WriteLine($"ddjvu: {message.M_Error.message}");
+        string jsonDump = document.GetDump(true);
 
-                                if (message.M_Error.filename != null)
-                                    TestContext.Out.WriteLine($"ddjvu: {message.M_Error.filename}");
-
-                                throw new Exception(message.M_Error.message);
-                        }
-
-                        context.PopMessage();
-                    }
-                }
-
-                string actualPageDump = document.GetDump(true);
-
-                Assert.AreEqual(DocumentDumpJson, actualPageDump);
-            }
-        }
-    }
+        Assert.AreEqual(DocumentDumpJson, jsonDump);
+    }*/
 
     /// <summary>
     /// Testing the Document.GetFileNumber() method if it returns the correct number of files
@@ -211,35 +93,8 @@ public class TestDjvuDocument
     [TestCase("./assets/DjVu3Spec.djvu", 75)]
     public void Test_Document_Get_FileNum(string filePath, int fileNum)
     {
-        using (var context = new DjvuContext("NunitTest"))
-        {
-            using (var document = context.CreateDjvuDocument(filePath, true))
-            {
-                while (!document.IsDecodingDone())
-                {
-                    DDjvuMessage message = context.WaitMessage();
+        using var document = DjvuDocument.Create(filePath);
 
-                    while ((message = context.PeekMessage()) != null)
-                    {
-                        switch (message.MessageAny.Tag)
-                        {
-                            case MessageTag.DDJVU_ERROR:
-                                TestContext.Out.WriteLine($"ddjvu: {message.M_Error.message}");
-
-                                if (message.M_Error.filename != null)
-                                    TestContext.Out.WriteLine($"ddjvu: {message.M_Error.filename}");
-
-                                throw new Exception(message.M_Error.message);
-                        }
-
-                        context.PopMessage();
-                    }
-                }
-
-                int actualFileNum = document.GetFileNumber();
-
-                Assert.AreEqual(fileNum, actualFileNum);
-            }
-        }
+        Assert.AreEqual(document.FileNumber, fileNum);
     }
 }

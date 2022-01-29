@@ -135,7 +135,7 @@ namespace DjvuSharp
         /// <summary>
         /// Access the job object in charge of decoding the document header.
         /// </summary>
-        public DjvuJob DjvuJob
+        /*public DjvuJob DjvuJob
         {
             get 
             {
@@ -146,7 +146,7 @@ namespace DjvuSharp
 
                 return new DjvuJob(job);
             }
-        }
+        }*/
 
         /// <summary>
         /// Returns the type of a DjVu document.

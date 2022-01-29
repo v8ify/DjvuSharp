@@ -17,7 +17,7 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System; // IDisposable
+/*using System; // IDisposable
 using DjvuSharp.Enums; // DDjvuStatus
 
 namespace DjvuSharp
@@ -40,11 +40,11 @@ namespace DjvuSharp
         /// <summary>
         /// Returns the status of the specified this job.
         /// </summary>
-        public DDjvuStatus Status
+        public JobStatus Status
         {
             get
             {
-                return (DDjvuStatus)Native.ddjvu_job_status(_ddjvu_job);
+                return (JobStatus)Native.ddjvu_job_status(_ddjvu_job);
             }
         }
 
@@ -108,4 +108,4 @@ namespace DjvuSharp
             GC.SuppressFinalize(this);
         }
     }
-}
+}*/
