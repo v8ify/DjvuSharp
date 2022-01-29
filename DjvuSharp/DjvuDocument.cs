@@ -29,7 +29,7 @@ namespace DjvuSharp
     /// decoding job then generates messages to request the raw
     /// data and to indicate the state of the decoding process.
     /// </summay>
-    public class DjvuDocument: IDisposable
+    public class DjvuDocument : IDisposable
     {
         private IntPtr _document;
 
@@ -115,7 +115,7 @@ namespace DjvuSharp
                 // If we reached here then some unexpected error has occured
                 throw new ApplicationException($"An unexpected error occured while parsing the document: {filePath}");
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 if (document != IntPtr.Zero)
                 {
@@ -200,7 +200,8 @@ namespace DjvuSharp
         /// </returns>
         public string GetDump(bool json)
         {
-            return Native.ddjvu_document_get_dump(_document, json);
+            int flag = json ? 1 : 0;
+            return Native.ddjvu_document_get_dump(_document, flag);
         }
 
 
@@ -254,7 +255,7 @@ namespace DjvuSharp
                     Native.ddjvu_context_release(_context);
                     _context = IntPtr.Zero;
                 }
-                
+
                 disposedValue = true;
             }
         }
