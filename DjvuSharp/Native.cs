@@ -21,7 +21,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
-
+using DjvuSharp.Enums;
 
 [assembly:InternalsVisibleTo("DjvuSharp.Tests")]
 namespace DjvuSharp
@@ -247,13 +247,13 @@ namespace DjvuSharp
     {
         private const string dllname = "libdjvulibre-21";
 
-#if X86
+// #if X86
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static IntPtr djvu_alloc(uint size);
-#else
+/*// 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static IntPtr djvu_alloc(ulong size);
-#endif
+#endif*/
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void djvu_free(IntPtr pointer);
@@ -381,14 +381,14 @@ namespace DjvuSharp
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static IntPtr ddjvu_document_job(IntPtr document);
 
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_release")]
         internal extern static void ddjvu_document_release(IntPtr document);
 
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static void ddjvu_document_decoding_status(IntPtr document);
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_status")]
+        internal extern static JobStatus ddjvu_document_decoding_status(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static int ddjvu_document_get_type(IntPtr document);
+        internal extern static DocumentType ddjvu_document_get_type(IntPtr document);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int ddjvu_document_get_pagenum(IntPtr document);
@@ -469,7 +469,7 @@ namespace DjvuSharp
         /// or thread needs it.
         /// </summary>
         /// <param name="page"></param>
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_release")]
         internal extern static void ddjvu_page_release(IntPtr page);
 
         /// <summary>

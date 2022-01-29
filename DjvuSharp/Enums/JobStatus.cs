@@ -19,31 +19,31 @@
 
 namespace DjvuSharp.Enums
 {
-    public enum DDjvuStatus
+    public enum JobStatus
     {
         /// <summary>
         /// Operation was not even started
         /// </summary>
-        DDJVU_JOB_NOTSTARTED,
+        JOB_NOTSTARTED,
 
         /// <summary>
         /// Operation is in progress
         /// </summary>
-        DDJVU_JOB_STARTED,
+        JOB_STARTED,
 
         /// <summary>
         /// Operation terminated successfully
         /// </summary>
-        DDJVU_JOB_OK,
+        JOB_OK,
 
         /// <summary>
         /// Operation failed because of an error
         /// </summary>
-        DDJVU_JOB_FAILED,
+        JOB_FAILED,
 
         /// <summary>
         /// Operation was interrupted by user
         /// </summary>
-        DDJVU_JOB_STOPPED
+        JOB_STOPPED
     }
 }

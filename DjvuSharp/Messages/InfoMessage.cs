@@ -1,4 +1,4 @@
-/*
+﻿/*
 *   DjvuSharp - .NET bindings for DjvuLibre
 *   Copyright (C) 2021 Prajwal Jadhav
 *   
@@ -17,22 +17,34 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DjvuSharp.Enums
+
+using DjvuSharp.Marshaler;
+using System;
+using System.Runtime.InteropServices;
+
+namespace DjvuSharp.Messages
 {
-    /// <summary>
-    /// This enum identifies each kind of message delivered by the DDJVU API.
-    /// </summary>
-    public enum MessageTag
+    public class InfoMessage
     {
-        ERROR,
-        INFO,
-        NEWSTREAM,
-        DOCINFO,
-        PAGEINFO,
-        RELAYOUT,
-        REDISPLAY,
-        CHUNK,
-        THUMBNAIL,
-        PROGRESS
+        public string Message { get; set; }
+
+        private InfoMessage(NativeInfoMessageStruct infoMessage)
+        {
+            Message = (string)CustomStringMarshaler.GetInstance("").MarshalNativeToManaged(infoMessage.Message);
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private class NativeInfoMessageStruct
+        {
+            public AnyMessage AnyMessage;
+            public IntPtr Message;
+        }
+
+        public static InfoMessage GetInstance(IntPtr nativeMessageStruct)
+        {
+            var msg = Marshal.PtrToStructure<NativeInfoMessageStruct>(nativeMessageStruct);
+
+            return new InfoMessage(msg);
+        }
     }
 }

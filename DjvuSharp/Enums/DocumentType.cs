@@ -18,23 +18,23 @@
 */
 
 
-namespace DjvuSharp.Message
+namespace DjvuSharp.Enums
 {
-    public class DDjvuMessageAny
+    public enum DocumentType
     {
-        private ddjvu_message_any_s _message_any;
+        UNKNOWN,
+        SINGLEPAGE,
+        BUNDLED,
+        INDIRECT,
 
-        internal DDjvuMessageAny(ddjvu_message_any_s message_any)
-        {
-            _message_any = message_any;
-        }
+        /// <summary>
+        /// obsolete
+        /// </summary>
+        OLD_BUNDLED,
 
-        public MessageTag Tag
-        {
-            get
-            {
-                return (MessageTag)_message_any.tag;
-            }
-        } 
+        /// <summary>
+        /// obsolete
+        /// </summary>
+        OLD_INDEXED
     }
 }

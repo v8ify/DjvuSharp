@@ -1,4 +1,4 @@
-/*
+﻿/*
 *   DjvuSharp - .NET bindings for DjvuLibre
 *   Copyright (C) 2021 Prajwal Jadhav
 *   
@@ -17,35 +17,14 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using System.Runtime.InteropServices;
 
-namespace DjvuSharp.Message
+namespace DjvuSharp.Messages
 {
-    public class DDjvuMessage
+    [StructLayout(LayoutKind.Sequential)]
+    public class ThumbnailMessage
     {
-        private ddjvu_message_s _ddjvu_message;
-
-        internal DDjvuMessage(ddjvu_message_s ddjvu_message)
-        {
-            _ddjvu_message = ddjvu_message;
-        }
-
-        public DDjvuMessageAny MessageAny
-        {
-            get
-            {
-                if (_ddjvu_message.m_any == default(ddjvu_message_any_s))
-                    return null;
-
-                return new DDjvuMessageAny(_ddjvu_message.m_any);
-            }
-        }
-
-        public ddjvu_message_error_s M_Error
-        {
-            get
-            {
-                return _ddjvu_message.m_error;
-            }
-        }
+        public AnyMessage Any;
+        public int PageNo;
     }
 }

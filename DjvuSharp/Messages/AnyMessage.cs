@@ -1,4 +1,4 @@
-/*
+﻿/*
 *   DjvuSharp - .NET bindings for DjvuLibre
 *   Copyright (C) 2021 Prajwal Jadhav
 *   
@@ -17,24 +17,27 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DjvuSharp.Enums;
+using System;
+using System.Runtime.InteropServices;
 
-namespace DjvuSharp.Enums
+namespace DjvuSharp.Messages
 {
-    public enum DDjvuDocumentType
+    [StructLayout(LayoutKind.Sequential)]
+    public class AnyMessage
     {
-        DDJVU_DOCTYPE_UNKNOWN = 0,
-        DDJVU_DOCTYPE_SINGLEPAGE,
-        DDJVU_DOCTYPE_BUNDLED,
-        DDJVU_DOCTYPE_INDIRECT,
-
         /// <summary>
-        /// obsolete
+        /// The kind of message corresponding to enum <see cref="Message.MessageTag"/>
         /// </summary>
-        DDJVU_DOCTYPE_OLD_BUNDLED,
+        public MessageTag Tag;
 
-        /// <summary>
-        /// obsolete
-        /// </summary>
-        DDJVU_DOCTYPE_OLD_INDEXED
+        /* context, document, page, job fields may be IntPtr.Zero when not relevant.
+         * These fields are also cleared when the corresponding object is 
+         * released with ddjvu_{job,page,document}_release methods.
+         */
+        public IntPtr Context;
+        public IntPtr Document;
+        public IntPtr Page;
+        public IntPtr Job;
     }
 }

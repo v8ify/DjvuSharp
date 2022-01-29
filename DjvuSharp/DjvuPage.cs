@@ -46,7 +46,7 @@ namespace DjvuSharp
         /// <summary>
         /// Access the job object in charge of decoding the document header.
         /// </summary>
-        public DjvuJob PageJob
+        /*public DjvuJob PageJob
         {
             get
             {
@@ -57,7 +57,7 @@ namespace DjvuSharp
 
                 return new DjvuJob(job);
             }
-        }
+        }*/
 
 
         /// <summary>
