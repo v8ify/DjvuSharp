@@ -1,4 +1,0 @@
-native/libs/linux-64/libdjvulibre.a filter=lfs diff=lfs merge=lfs -text
-native/libs/win-x64/* filter=lfs diff=lfs merge=lfs -text
-native/libs/linux-64/libdjvulibre-21.so filter=lfs diff=lfs merge=lfs -text
-native/libs/linux-x64/* filter=lfs diff=lfs merge=lfs -text
