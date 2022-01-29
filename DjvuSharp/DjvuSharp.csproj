@@ -14,7 +14,7 @@
     </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="../native/libs/win-x64/libdjvulibre-21.dll" CopyToOutputDirectory="PreserveNewest">
+		<Content Include="../native/libs/win-x64/djvulibre-21.dll" CopyToOutputDirectory="PreserveNewest">
             <Pack>true</Pack>
             <PackagePath>runtimes/win-x64/native/</PackagePath>
         </Content>
