@@ -245,7 +245,7 @@ namespace DjvuSharp
 
     internal static class Native
     {
-        private const string dllname = "libdjvulibre-21";
+        private const string dllname = "djvulibre-21";
 
 // #if X86
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
