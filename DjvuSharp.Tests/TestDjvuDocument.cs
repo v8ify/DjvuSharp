@@ -18,6 +18,33 @@ public class TestDjvuDocument
         using var document = DjvuDocument.Create(filename);
     }
 
+    [TestCase(@"./assets/boy_and_chicken.djvu")]
+    [TestCase(@"./assets/DjVu3Spec.djvu")]
+    public void Test_DocumentFilePath(string filename)
+    {
+        using var document = DjvuDocument.Create(filename);
+
+        Assert.AreEqual(filename, document.FilePath);
+    }
+
+    [TestCase(@"./assets/boy_and_chicken.djvu")]
+    [TestCase(@"./assets/DjVu3Spec.djvu")]
+    public void Test_Document_Context_Property_Is_Not_IntPtrZero(string filename)
+    {
+        using var document = DjvuDocument.Create(filename);
+
+        Assert.AreNotEqual(IntPtr.Zero, document.Context);
+    }
+
+    [TestCase(@"./assets/boy_and_chicken.djvu")]
+    [TestCase(@"./assets/DjVu3Spec.djvu")]
+    public void Test_Document_Document_Property_Is_Not_IntPtrZero(string filename)
+    {
+        using var document = DjvuDocument.Create(filename);
+
+        Assert.AreNotEqual(IntPtr.Zero, document.Document);
+    }
+
     /// <summary>
     /// Tests if functions return correct page numbers in djvu document.
     /// </summary>

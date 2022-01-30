@@ -131,22 +131,9 @@ namespace DjvuSharp
             }
         }
 
-
-        /// <summary>
-        /// Access the job object in charge of decoding the document header.
-        /// </summary>
-        /*public DjvuJob DjvuJob
-        {
-            get 
-            {
-                IntPtr job = Native.ddjvu_document_job(_document);
-
-                if (job == IntPtr.Zero)
-                    return null;
-
-                return new DjvuJob(job);
-            }
-        }*/
+        public IntPtr Context { get { return _context; } }
+        public IntPtr Document { get { return _document; } }
+        public string FilePath { get { return _filePath; } }
 
         /// <summary>
         /// Returns the type of a DjVu document.
@@ -205,7 +192,7 @@ namespace DjvuSharp
         }
 
 
-        /// <summary>
+        /*/// <summary>
         ///     Each page of a document can be accessed by creating a
         ///     <see cref="DjvuPage" /> object with this function.
         ///     <para>
@@ -232,7 +219,7 @@ namespace DjvuSharp
                 return null;
 
             return new DjvuPage(djvuPagePtr);
-        }
+        }*/
 
 
         protected virtual void Dispose(bool disposing)
