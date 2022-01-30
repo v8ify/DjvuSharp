@@ -24,41 +24,85 @@ using DjvuSharp.Enums; // PageStatus
 namespace DjvuSharp
 {
     /// <summary>
-    /// The <see cref="DjvuPage" /> class represents the single page in
-    /// a djvu document
-    /// 
-    /// <para>
-    /// It can be created from the instance of <see cref="DjvuDocument" /> class
-    /// with methods <see cref="DjvuDocument.CreateDjvuPageByPageNo(int)" /> 
-    /// ToDo: Implement another method of creating a djvu page.
-    /// </para>
+    /// This class represents the single page in a djvu document
     /// </summary>
     public class DjvuPage: IDisposable
     {
         private IntPtr _djvu_page;
         private bool disposedValue;
 
-        internal DjvuPage(IntPtr djvu_page)
+        /// <summary>
+        /// Each page of a document can be accessed by creating a
+        /// <see cref="DjvuPage" /> object with this function.
+        /// </summary>
+        /// <param name="document">The <see cref="DjvuDocument" /> to which this page belongs to.</param>
+        /// <param name="pageNumber">An integer between 0 to (total_pages - 1)</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public DjvuPage(DjvuDocument document, int pageNumber)
         {
-            _djvu_page = djvu_page;
+            if (document == null)
+            {
+                throw new ArgumentNullException(nameof(document));
+            }
+
+            if (pageNumber < 0 || (pageNumber >= document.PageNumber))
+            {
+                throw new ArgumentOutOfRangeException(nameof(pageNumber));
+            }
+
+            _djvu_page = IntPtr.Zero;
+
+            try
+            {
+                _djvu_page = Native.ddjvu_page_create_by_pageno(document.Document, PageNumber);
+
+                if (_djvu_page == IntPtr.Zero)
+                {
+                    throw new ApplicationException($"Failed to create page from page number.");
+                }
+
+                JobStatus status = JobStatus.JOB_NOTSTARTED;
+
+                while (true)
+                {
+                    status = Native.ddjvu_page_decoding_status(_djvu_page);
+
+                    if (Utils.IsDecodingDone(status))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Utils.ProcessMessages(document.Context, true);
+                    }
+                }
+
+                if (status == JobStatus.JOB_FAILED)
+                {
+                    throw new ApplicationException($"Failed to decode page with page number: {pageNumber}");
+                }
+                else if (status == JobStatus.JOB_STOPPED)
+                {
+                    throw new ApplicationException($"Decoding interrupted by user. Page number: {pageNumber}");
+                }
+
+                Document = document;
+                PageNumber = pageNumber;
+            }
+            catch (Exception)
+            {
+                if (_djvu_page != IntPtr.Zero)
+                {
+                    Native.ddjvu_page_release(_djvu_page);
+                }
+
+                throw;
+            }
         }
 
-        /// <summary>
-        /// Access the job object in charge of decoding the document header.
-        /// </summary>
-        /*public DjvuJob PageJob
-        {
-            get
-            {
-                var job = Native.ddjvu_page_job(_djvu_page);
-
-                if (job == null)
-                    return null;
-
-                return new DjvuJob(job);
-            }
-        }*/
-
+        public DjvuDocument Document { get; private set; }
+        public int PageNumber { get; private set; }
 
         /// <summary>
         /// Returns the page height in pixels. Calling this function 
@@ -124,9 +168,6 @@ namespace DjvuSharp
         }
 
 
-
-
-
         /* 
             Implementing Dispose pattern below
         */
@@ -139,8 +180,12 @@ namespace DjvuSharp
                     // TODO: dispose managed state (managed objects)
                 }
 
-                Native.ddjvu_page_release(_djvu_page);
-                _djvu_page = IntPtr.Zero;
+                if (_djvu_page != IntPtr.Zero)
+                {
+                    Native.ddjvu_page_release(_djvu_page);
+                    _djvu_page = IntPtr.Zero;
+                }
+
                 disposedValue = true;
             }
         }

@@ -456,6 +456,9 @@ namespace DjvuSharp
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_release")]
         internal extern static void ddjvu_page_release(IntPtr page);
 
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_status")]
+        internal extern static JobStatus ddjvu_page_decoding_status(IntPtr document);
+
         /// <summary>
         /// Gets the job which corresponds to a page
         /// </summary>
