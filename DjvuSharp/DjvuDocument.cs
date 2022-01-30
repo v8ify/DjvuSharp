@@ -115,7 +115,7 @@ namespace DjvuSharp
                 // If we reached here then some unexpected error has occured
                 throw new ApplicationException($"An unexpected error occured while parsing the document: {filePath}");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (document != IntPtr.Zero)
                 {
@@ -127,7 +127,7 @@ namespace DjvuSharp
                     Native.ddjvu_context_release(context);
                 }
 
-                throw ex;
+                throw;
             }
         }
 
