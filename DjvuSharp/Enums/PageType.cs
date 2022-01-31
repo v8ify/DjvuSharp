@@ -26,9 +26,9 @@ namespace DjvuSharp.Enums
     /// </summary>
     public enum PageType
     {
-        DDJVU_PAGETYPE_UNKNOWN,
-        DDJVU_PAGETYPE_BITONAL,
-        DDJVU_PAGETYPE_PHOTO,
-        DDJVU_PAGETYPE_COMPOUND
+        UNKNOWN,
+        BITONAL,
+        PHOTO,
+        COMPOUND
     }
 }

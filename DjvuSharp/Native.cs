@@ -524,12 +524,12 @@ namespace DjvuSharp
         /// <summary>
         /// Returns the type of the page data.
         /// Calling this function before the termination of the
-        /// decoding process might returns <see cref="PageType.DDJVU_PAGETYPE_UNKNOWN"/>.
+        /// decoding process might returns <see cref="PageType.UNKNOWN"/>.
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int ddjvu_page_get_type(IntPtr page);
+        internal static extern PageType ddjvu_page_get_type(IntPtr page);
 
         /// <summary>
         /// Changes the counter-clockwise rotation angle for a DjVu page.
