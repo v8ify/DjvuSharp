@@ -55,7 +55,7 @@ namespace DjvuSharp
 
             try
             {
-                _djvu_page = Native.ddjvu_page_create_by_pageno(document.Document, PageNumber);
+                _djvu_page = Native.ddjvu_page_create_by_pageno(document.Document, pageNumber);
 
                 if (_djvu_page == IntPtr.Zero)
                 {
