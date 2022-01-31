@@ -39,7 +39,8 @@ namespace DjvuSharp.Tests
             djvuSpec.Dispose();
         }
 
-        public void Test_Document_Property(string filePath)
+        [Test]
+        public void Test_Document_Property()
         {
             Assert.IsNotNull(boyAndChickenPage_0.Document);
         }
@@ -88,6 +89,27 @@ namespace DjvuSharp.Tests
 
             Assert.AreEqual(2.2, djvuSpecPage_0.Gamma);
             Assert.AreEqual(2.2, djvuSpecPage_0.Gamma);
+        }
+
+        [Test]
+        public void Test_Page_Resolution()
+        {
+            Assert.AreEqual(100, boyAndChickenPage_0.Resolution);
+            Assert.AreEqual(100, boyAndChickenPage_1.Resolution);
+
+            Assert.AreEqual(300, djvuSpecPage_0.Resolution);
+            Assert.AreEqual(300, djvuSpecPage_0.Resolution);
+        }
+
+
+        [Test]
+        public void Test_Page_Version()
+        {
+            Assert.AreEqual(24, boyAndChickenPage_0.Version);
+            Assert.AreEqual(24, boyAndChickenPage_1.Version);
+
+            Assert.AreEqual(25, djvuSpecPage_0.Version);
+            Assert.AreEqual(25, djvuSpecPage_0.Version);
         }
     }
 }
