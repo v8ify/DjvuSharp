@@ -122,5 +122,39 @@ namespace DjvuSharp.Tests
             Assert.AreEqual(PageType.BITONAL, djvuSpecPage_0.Type);
             Assert.AreEqual(PageType.BITONAL, djvuSpecPage_0.Type);
         }
+
+        [Test]
+        public void Test_Page_Rotation_Getter()
+        {
+            Assert.AreEqual(PageRotation.ROTATE_0, boyAndChickenPage_0.Rotation);
+
+            Assert.AreEqual(PageRotation.ROTATE_0, djvuSpecPage_0.Rotation);
+        }
+
+        [Test]
+        public void Test_Page_Rotation_Setter()
+        {
+            boyAndChickenPage_0.Rotation = PageRotation.ROTATE_180;
+            djvuSpecPage_70.Rotation = PageRotation.ROTATE_90;
+
+            Assert.AreEqual(PageRotation.ROTATE_180, boyAndChickenPage_0.Rotation);
+            Assert.AreEqual(PageRotation.ROTATE_90, djvuSpecPage_70.Rotation);
+
+            boyAndChickenPage_0.Rotation = PageRotation.ROTATE_0;
+            djvuSpecPage_70.Rotation = PageRotation.ROTATE_0;
+        }
+
+        [Test]
+        public void Test_Page_InitialRotation()
+        {
+            boyAndChickenPage_0.Rotation = PageRotation.ROTATE_180;
+            djvuSpecPage_70.Rotation = PageRotation.ROTATE_90;
+
+            Assert.AreEqual(PageRotation.ROTATE_0, boyAndChickenPage_0.InitialRotation);
+            Assert.AreEqual(PageRotation.ROTATE_0, djvuSpecPage_70.InitialRotation);
+
+            boyAndChickenPage_0.Rotation = PageRotation.ROTATE_0;
+            djvuSpecPage_70.Rotation = PageRotation.ROTATE_0;
+        }
     }
 }
