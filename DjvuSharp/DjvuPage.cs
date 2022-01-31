@@ -167,6 +167,25 @@ namespace DjvuSharp
             get { return Native.ddjvu_page_get_type(_djvu_page); }
         }
 
+        /// <summary>
+        /// The counter-clockwise rotation angle for the DjVu page.
+        /// Rotation is automatically taken into account by <see cref="Width"/> and <see cref="Height"/>
+        /// </summary>
+        public PageRotation Rotation
+        {
+            get { return Native.ddjvu_page_get_rotation(_djvu_page); }
+            set { Native.ddjvu_page_set_rotation(_djvu_page, value); }
+        }
+
+        /// <summary>
+        /// The original rotation value of the page as a counter-clockwise angle. 
+        /// Specified by the orientation flags in the DjVu file.
+        /// </summary>
+        public PageRotation InitialRotation
+        {
+            get { return Native.ddjvu_page_get_initial_rotation(_djvu_page); }
+        }
+
 
         /* 
             Implementing Dispose pattern below
