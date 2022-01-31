@@ -551,7 +551,7 @@ namespace DjvuSharp
         /// and <see cref="ddjvu_page_get_height(IntPtr)"/>
         /// </summary>
         /// <param name="page">An IntPtr to ddjvu_page_t</param>
-        /// <returns>An integer which should be cast to the enum <see cref="DjvuPageRotation"/></returns>
+        /// <returns>An integer which should be cast to the enum <see cref="PageRotation"/></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int ddjvu_page_get_rotation(IntPtr page);
 
