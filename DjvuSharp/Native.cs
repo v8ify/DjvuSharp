@@ -542,7 +542,7 @@ namespace DjvuSharp
         /// Remember to cast it to int before passing as an argument.
         /// </param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void ddjvu_page_set_rotation(IntPtr page, int rotation);
+        internal static extern void ddjvu_page_set_rotation(IntPtr page, PageRotation rotation);
 
         /// <summary>
         /// Returns the counter-clockwise rotation angle for the DjVu page.
@@ -553,7 +553,21 @@ namespace DjvuSharp
         /// <param name="page">An IntPtr to ddjvu_page_t</param>
         /// <returns>An integer which should be cast to the enum <see cref="PageRotation"/></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int ddjvu_page_get_rotation(IntPtr page);
+        internal static extern PageRotation ddjvu_page_get_rotation(IntPtr page);
+
+        /// <summary>
+        /// Returns the page rotation specified by the 
+        /// orientation flags in the DjVu file.
+        /// [brain damage warning] This is useful because
+        /// maparea coordinates in the annotation chunks
+        /// are expressed relative to the rotated coordinates
+        /// whereas text coordinates in the hidden text data
+        /// are expressed relative to the unrotated coordinates.
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern PageRotation ddjvu_page_get_initial_rotation(IntPtr page);
 
 
         /* -------------------------------------------------- */
