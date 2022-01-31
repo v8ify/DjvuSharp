@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using DjvuSharp.Enums;
 
 namespace DjvuSharp.Tests
 {
@@ -110,6 +111,16 @@ namespace DjvuSharp.Tests
 
             Assert.AreEqual(25, djvuSpecPage_0.Version);
             Assert.AreEqual(25, djvuSpecPage_0.Version);
+        }
+
+        [Test]
+        public void Test_Page_Type()
+        {
+            Assert.AreEqual(PageType.PHOTO, boyAndChickenPage_0.Type);
+            Assert.AreEqual(PageType.PHOTO, boyAndChickenPage_1.Type);
+
+            Assert.AreEqual(PageType.BITONAL, djvuSpecPage_0.Type);
+            Assert.AreEqual(PageType.BITONAL, djvuSpecPage_0.Type);
         }
     }
 }
