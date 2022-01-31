@@ -456,6 +456,9 @@ namespace DjvuSharp
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_release")]
         internal extern static void ddjvu_page_release(IntPtr page);
 
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_status")]
+        internal extern static JobStatus ddjvu_page_decoding_status(IntPtr document);
+
         /// <summary>
         /// Gets the job which corresponds to a page
         /// </summary>
@@ -521,12 +524,12 @@ namespace DjvuSharp
         /// <summary>
         /// Returns the type of the page data.
         /// Calling this function before the termination of the
-        /// decoding process might returns <see cref="PageType.DDJVU_PAGETYPE_UNKNOWN"/>.
+        /// decoding process might returns <see cref="PageType.UNKNOWN"/>.
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int ddjvu_page_get_type(IntPtr page);
+        internal static extern PageType ddjvu_page_get_type(IntPtr page);
 
         /// <summary>
         /// Changes the counter-clockwise rotation angle for a DjVu page.
@@ -539,7 +542,7 @@ namespace DjvuSharp
         /// Remember to cast it to int before passing as an argument.
         /// </param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void ddjvu_page_set_rotation(IntPtr page, int rotation);
+        internal static extern void ddjvu_page_set_rotation(IntPtr page, PageRotation rotation);
 
         /// <summary>
         /// Returns the counter-clockwise rotation angle for the DjVu page.
@@ -548,9 +551,23 @@ namespace DjvuSharp
         /// and <see cref="ddjvu_page_get_height(IntPtr)"/>
         /// </summary>
         /// <param name="page">An IntPtr to ddjvu_page_t</param>
-        /// <returns>An integer which should be cast to the enum <see cref="DjvuPageRotation"/></returns>
+        /// <returns>An integer which should be cast to the enum <see cref="PageRotation"/></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int ddjvu_page_get_rotation(IntPtr page);
+        internal static extern PageRotation ddjvu_page_get_rotation(IntPtr page);
+
+        /// <summary>
+        /// Returns the page rotation specified by the 
+        /// orientation flags in the DjVu file.
+        /// [brain damage warning] This is useful because
+        /// maparea coordinates in the annotation chunks
+        /// are expressed relative to the rotated coordinates
+        /// whereas text coordinates in the hidden text data
+        /// are expressed relative to the unrotated coordinates.
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern PageRotation ddjvu_page_get_initial_rotation(IntPtr page);
 
 
         /* -------------------------------------------------- */

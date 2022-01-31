@@ -26,11 +26,11 @@ namespace DjvuSharp.Enums
     /// Used by <see cref="Native.ddjvu_page_set_rotation(System.IntPtr, int)"/>
     /// and <see cref="Native.ddjvu_page_get_rotation(System.IntPtr)"/>
     /// </summary>
-    public enum DjvuPageRotation
+    public enum PageRotation
     {
-        DDJVU_ROTATE_0,
-        DDJVU_ROTATE_90,
-        DDJVU_ROTATE_180,
-        DDJVU_ROTATE_270,
+        ROTATE_0,
+        ROTATE_90,
+        ROTATE_180,
+        ROTATE_270
     }
 }
