@@ -26,9 +26,10 @@ namespace DjvuSharp.Renderer
     /// <summary>
     /// Used for rendering a page
     /// </summary>
-    public class RenderEngine
+    public class RenderEngine: IDisposable
     {
         private IntPtr _djvu_format;
+        private bool disposedValue;
 
         internal RenderEngine(IntPtr djvu_format)
         {
@@ -63,6 +64,38 @@ namespace DjvuSharp.Renderer
         public RenderEngine SetWhite()
         {
             throw new NotImplementedException();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // dispose managed state (managed objects)
+                }
+
+                if (_djvu_format != IntPtr.Zero)
+                {
+                    Native.ddjvu_format_release(_djvu_format);
+                    _djvu_format = IntPtr.Zero;
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        ~RenderEngine()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
