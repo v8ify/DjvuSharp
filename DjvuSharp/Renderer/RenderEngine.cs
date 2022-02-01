@@ -41,29 +41,39 @@ namespace DjvuSharp.Renderer
             throw new NotImplementedException();
         }
 
-        public RenderEngine SetGamma()
+        public RenderEngine SetGamma(double gamma = 2.2)
         {
-            throw new NotImplementedException();
+            Native.ddjvu_format_set_gamma(_djvu_format, gamma);
+
+            return this;
         }
 
-        public RenderEngine SetRowOrder()
+        public RenderEngine SetRowOrder(bool topToBottom = false)
         {
-            throw new NotImplementedException();
+            Native.ddjvu_format_set_row_order(_djvu_format, topToBottom);
+
+            return this;
         }
 
-        public RenderEngine SetYDirection()
+        public RenderEngine SetYDirection(bool topToBottom = false)
         {
-            throw new NotImplementedException();
+            Native.ddjvu_format_set_y_direction(_djvu_format, topToBottom);
+
+            return this;
         }
 
-        public RenderEngine SetDitherBits()
+        public RenderEngine SetDitherBits(int bits)
         {
-            throw new NotImplementedException();
+            Native.ddjvu_format_set_ditherbits(_djvu_format, bits);
+
+            return this;
         }
 
-        public RenderEngine SetWhite()
+        public RenderEngine SetWhite(byte blue, byte green, byte red)
         {
-            throw new NotImplementedException();
+            Native.ddjvu_format_set_white(_djvu_format, blue, green, red);
+
+            return this;
         }
 
         protected virtual void Dispose(bool disposing)
