@@ -103,6 +103,7 @@ namespace DjvuSharp
 
         public DjvuDocument Document { get; private set; }
         public int PageNumber { get; private set; }
+        public IntPtr NativePagePtr { get { return _djvu_page; } }
 
         /// <summary>
         /// Returns the page height in pixels. Calling this function 

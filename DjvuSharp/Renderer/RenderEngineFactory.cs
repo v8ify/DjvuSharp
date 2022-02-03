@@ -74,7 +74,7 @@ namespace DjvuSharp.Renderer
                 throw new ApplicationException($"Failed to create the render engine.");
             }
 
-            return new RenderEngine(format);
+            return new RenderEngine(format, style);
         }
     }
 }

@@ -800,7 +800,6 @@ namespace DjvuSharp
 
         /* ------- RENDER ------- */
 
-#if X86
         /// <summary>
         /// <para>Renders a segment of a page with arbitrary scale</para>
         /// <para>
@@ -830,52 +829,13 @@ namespace DjvuSharp
         /// the buffer.
         /// </returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe int ddjvu_page_render(
+        internal static extern int ddjvu_page_render(
             IntPtr page,
-            int mode,
-            DjvuRect* pagerect,
-            DjvuRect* renderrect,
+            RenderMode mode,
+            Rectangle pagerect,
+            Rectangle renderrect,
             IntPtr pixelformat,
-            uint rowsize,
-            sbyte[] buffer);
-#else
-        /// <summary>
-        /// <para>Renders a segment of a page with arbitrary scale</para>
-        /// <para>
-        /// Conceptually this function renders the full page
-        /// into a rectangle <paramref name="pagerect"/> and copies the
-        /// pixels specified by rectangle <paramref name="renderrect"/>
-        /// into the buffer starting at position <paramref name="imagebuffer"/>.
-        /// The actual code is much more efficient than that.
-        /// </para>
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="mode"></param>
-        /// <param name="pagerect"></param>
-        /// <param name="renderrect"></param>
-        /// <param name="pixelformat">specifies the expected pixel format.</param>
-        /// <param name="rowsize">
-        /// specifies the number of BYTES from 
-        /// one row to the next in the buffer.The buffer must be
-        /// large enough to accomodate the desired image.
-        /// </param>
-        /// <param name="imagebuffer">The final image is written into buffer</param>
-        /// <returns>
-        /// This function makes a best effort to compute an image
-        /// that reflects the most recently decoded data.It might
-        /// return 0 to indicate that no image could be
-        /// computed at this point, and that nothing was written into
-        /// the buffer.
-        /// </returns>
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe int ddjvu_page_render(
-            IntPtr page,
-            int mode,
-            DjvuRect* pagerect,
-            DjvuRect* renderrect,
-            IntPtr pixelformat,
-            ulong rowsize,
-            sbyte[] imagebuffer);
-#endif
+            int rowsize,
+            [Out] sbyte[] imagebuffer);
     }
 }

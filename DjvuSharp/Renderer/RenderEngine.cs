@@ -17,9 +17,11 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DjvuSharp.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace DjvuSharp.Renderer
 {
@@ -29,14 +31,46 @@ namespace DjvuSharp.Renderer
     public class RenderEngine: IDisposable
     {
         private IntPtr _djvu_format;
+        private readonly PixelFormatStyle _formatStyle;
+
         private bool disposedValue;
 
-        internal RenderEngine(IntPtr djvu_format)
+        internal RenderEngine(IntPtr djvu_format, PixelFormatStyle formatStyle)
         {
             _djvu_format = djvu_format;
+            _formatStyle = formatStyle;
         }
 
-        public byte[] Render()
+        public sbyte[] RenderPage(DjvuPage page, RenderMode mode, Rectangle pageRect, Rectangle renderRect)
+        {
+            int rowSize;
+
+            if (_formatStyle == PixelFormatStyle.MSBTOLSB)
+            {
+                rowSize = (((int)renderRect.Width) + 7) / 8;
+            }
+            else if (_formatStyle == PixelFormatStyle.GREY8)
+            {
+                rowSize = (int)renderRect.Width;
+            }
+            else
+            {
+                rowSize = (int)renderRect.Width * 3;
+            }
+
+            sbyte[] imageBuffer = new sbyte[rowSize * renderRect.Height];
+
+            int success = Native.ddjvu_page_render(page.NativePagePtr, mode, pageRect, renderRect, _djvu_format, rowSize, imageBuffer);
+
+            if (success == 0)
+            {
+                throw new ApplicationException($"Failed to render page. Page no.: {page.PageNumber}");
+            }
+
+            return imageBuffer;
+        }
+
+        public byte[] RenderPageThumbnail()
         {
             throw new NotImplementedException();
         }
