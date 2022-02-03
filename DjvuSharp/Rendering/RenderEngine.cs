@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace DjvuSharp.Renderer
+namespace DjvuSharp.Rendering
 {
     /// <summary>
     /// Used for rendering a page

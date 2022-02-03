@@ -24,7 +24,7 @@ using System.Text;
 using DjvuSharp.Enums;
 using System.Runtime.InteropServices;
 
-namespace DjvuSharp.Renderer
+namespace DjvuSharp.Rendering
 {
     public class RenderEngineFactory
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using DjvuSharp.Renderer;
+using DjvuSharp.Rendering;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
