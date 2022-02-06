@@ -9,6 +9,8 @@ namespace DjvuSharp.Rendering
         protected IntPtr _djvu_format;
         protected int _bpp;
 
+        private bool disposedValue;
+
         protected PixelFormat()
         {
 
@@ -37,6 +39,38 @@ namespace DjvuSharp.Rendering
         public void SetWhite(byte blue, byte green, byte red)
         {
             Native.ddjvu_format_set_white(_djvu_format, blue, green, red);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // dispose managed state (managed objects)
+                }
+
+                if (_djvu_format != IntPtr.Zero)
+                {
+                    Native.ddjvu_format_release(_djvu_format);
+                    _djvu_format = IntPtr.Zero;
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        ~PixelFormat()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

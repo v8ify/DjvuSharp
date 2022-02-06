@@ -698,7 +698,7 @@ namespace DjvuSharp
         /// </param>
         /// <returns>A pointer to ddjvu_format_t</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr ddjvu_format_create(PixelFormatStyle style, int nargs, int[] args);
+        internal static extern IntPtr ddjvu_format_create(PixelFormatStyle style, int nargs, uint[] args);
 
 
         /// <summary>

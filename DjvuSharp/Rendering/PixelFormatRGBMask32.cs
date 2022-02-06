@@ -24,9 +24,10 @@ using DjvuSharp.Enums;
 
 namespace DjvuSharp.Rendering
 {
-    public class PixelFormatRGBMask16: PixelFormat
+    public class PixelFormatRGBMask32: PixelFormat
     {
-        public PixelFormatRGBMask16(uint redMask, uint greenMask, uint blueMask, uint xor = 0) : base()
+        // Todo - make CLS compliant by removing unsigned int from public api
+        public PixelFormatRGBMask32(uint redMask, uint greenMask, uint blueMask, uint xor = 0) : base()
         {
             _bpp = 16;
 
@@ -35,10 +36,10 @@ namespace DjvuSharp.Rendering
                 throw new ArgumentException("Arguments must not be negative");
             }*/
 
-            redMask &= 0xFFFF;
-            greenMask &= 0xFFFF;
-            blueMask &= 0xFFFF;
-            xor &= 0xFFFF;
+            redMask &= 0xFFFFFFFF;
+            greenMask &= 0xFFFFFFFF;
+            blueMask &= 0xFFFFFFFF;
+            xor &= 0xFFFFFFFF;
 
             uint[] args = new uint[4] { redMask, greenMask, blueMask, xor };
 
@@ -46,7 +47,7 @@ namespace DjvuSharp.Rendering
 
             if (_djvu_format == IntPtr.Zero)
             {
-                throw new ApplicationException($"Failed to create {nameof(PixelFormatRGBMask16)}");
+                throw new ApplicationException($"Failed to create {nameof(PixelFormatRGBMask32)}");
             }
         }
     }
