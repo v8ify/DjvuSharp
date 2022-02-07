@@ -94,5 +94,38 @@ namespace DjvuSharp
         {
             return status >= JobStatus.JOB_OK;
         }
+
+        /// <summary>
+        /// Todo - write doc comments.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="rowAlignment"></param>
+        /// <param name="bpp"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        internal static long CalculateRowSize(long width, long rowAlignment, int bpp)
+        {
+            long rowSize;
+
+            if (bpp == 1)
+            {
+                int extra = ((width & 7) != 0) ? 1 : 0;
+
+                rowSize = (width >> 3) + extra;
+            }
+            else if ((bpp & 7) == 0)
+            {
+                rowSize = width;
+                rowSize *= (bpp >> 3);
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid value of argument {nameof(bpp)}", nameof(bpp));
+            }
+
+            long result = ((rowSize + (rowAlignment - 1)) / rowAlignment) * rowAlignment;
+
+            return result;
+        }
     }
 }
