@@ -19,7 +19,7 @@
 
 using System; // IDisposable
 using DjvuSharp.Enums; // PageStatus
-
+using DjvuSharp.Rendering;
 
 namespace DjvuSharp
 {
@@ -185,6 +185,24 @@ namespace DjvuSharp
         public PageRotation InitialRotation
         {
             get { return Native.ddjvu_page_get_initial_rotation(_djvu_page); }
+        }
+
+
+        public sbyte[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, int rowAlignment=1)
+        {
+            long rowSize = Utils.CalculateRowSize(renderRect.Width, rowAlignment, pixelFormat.Bpp);
+
+            sbyte[] imageBuffer = Utils.AllocateImageMemory(rowSize, renderRect.Height);
+
+            int success = Native.ddjvu_page_render(_djvu_page, mode, pageRect, renderRect, pixelFormat.NativePtr, (int)rowSize, imageBuffer);
+
+            // Failed to render the page
+            if (success == 0)
+            {
+                throw new ApplicationException($"Failed to render page. Page no.: {PageNumber}");
+            }
+
+            return imageBuffer;
         }
 
 

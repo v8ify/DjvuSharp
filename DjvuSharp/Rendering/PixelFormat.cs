@@ -35,6 +35,10 @@ namespace DjvuSharp.Rendering
 
         }
 
+        public int Bpp { get { return _bpp; } }
+
+        public IntPtr NativePtr { get { return _djvu_format; } }
+
         public void SetGamma(double gamma = 2.2)
         {
             Native.ddjvu_format_set_gamma(_djvu_format, gamma);

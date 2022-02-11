@@ -130,7 +130,7 @@ namespace DjvuSharp
 
 
         // Todo - this function may be made to receive 'long' parameters instead of 'int'
-        internal static sbyte[] AllocateImageMemory(int width, int height)
+        internal static sbyte[] AllocateImageMemory(long width, long height)
         {
             sbyte[] buffer = new sbyte[width * height];
 
