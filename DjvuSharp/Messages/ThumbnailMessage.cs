@@ -21,6 +21,9 @@ using System.Runtime.InteropServices;
 
 namespace DjvuSharp.Messages
 {
+    /// <summary>
+    /// This message is sent when additional thumbnails are available
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class ThumbnailMessage
     {

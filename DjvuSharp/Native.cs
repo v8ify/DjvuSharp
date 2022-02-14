@@ -837,5 +837,26 @@ namespace DjvuSharp
             IntPtr pixelformat,
             int rowsize,
             [Out] sbyte[] imagebuffer);
+
+
+        /* -------------------------------------------------- */
+        /* THUMBNAILS                                         */
+        /* -------------------------------------------------- */
+
+        /// <summary>
+        /// Determine whether a thumbnail is available for page pagenum.
+        /// Calling this function with non zero argument start initiates
+        /// a thumbnail calculation job. Regardless of its success,
+        /// the completion of the job is signalled by a subsequent 
+        /// <see cref="Messages.ThumbnailMessage"/> message.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="pageNo"></param>
+        /// <param name="start">Calling this function with non zero argument start initiates
+        /// a thumbnail calculation job.
+        /// </param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern JobStatus ddjvu_thumbnail_status(IntPtr document, int pageNo, int start);
     }
 }
