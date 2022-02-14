@@ -858,5 +858,35 @@ namespace DjvuSharp
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern JobStatus ddjvu_thumbnail_status(IntPtr document, int pageNo, int start);
+
+
+        /// <summary>
+        /// Renders a thumbnail for page pagenum.
+        /// Argument imagebuffer must be large enough to contain
+        /// an image of size wptr by hptr using pixel format
+        /// pixelformat.Argument rowsize specifies the number
+        /// of BYTES from one row to the next in the buffer.
+        /// This function returns FALSE when no thumbnail is available.
+        /// Otherwise it returns TRUE, adjusts *wptr and *hptr to
+        /// reflect the thumbnail size, and, if the pointer imagebuffer
+        /// is non zero, writes the pixel data into the image buffer. 
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="pageNo"></param>
+        /// <param name="wptr"></param>
+        /// <param name="hptr"></param>
+        /// <param name="pixelFormat"></param>
+        /// <param name="rowSize"></param>
+        /// <param name="imageBuffer"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern JobStatus ddjvu_thumbnail_render(
+            IntPtr document,
+            int pageNo,
+            ref int wptr,
+            ref int hptr,
+            IntPtr pixelFormat,
+            ulong rowSize,
+            [Out] sbyte[] imageBuffer);
     }
 }
