@@ -188,13 +188,18 @@ namespace DjvuSharp
         }
 
 
-        public sbyte[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, int rowAlignment=1)
+        public sbyte[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
         {
+            if (rowAlignment <= 0)
+            {
+                throw new ArgumentException($"{nameof(rowAlignment)} must be a greater than 0", nameof(rowAlignment));
+            }
+
             long rowSize = Utils.CalculateRowSize(renderRect.Width, rowAlignment, pixelFormat.Bpp);
 
             sbyte[] imageBuffer = Utils.AllocateImageMemory(rowSize, renderRect.Height);
 
-            int success = Native.ddjvu_page_render(_djvu_page, mode, pageRect, renderRect, pixelFormat.NativePtr, (int)rowSize, imageBuffer);
+            int success = Native.ddjvu_page_render(_djvu_page, mode, pageRect, renderRect, pixelFormat.NativePtr, (ulong)rowSize, imageBuffer);
 
             // Failed to render the page
             if (success == 0)

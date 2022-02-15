@@ -835,7 +835,7 @@ namespace DjvuSharp
             Rectangle pagerect,
             Rectangle renderrect,
             IntPtr pixelformat,
-            int rowsize,
+            ulong rowsize,
             [Out] sbyte[] imagebuffer);
 
 
