@@ -73,6 +73,106 @@ namespace DjvuSharp
                     case MessageTag.PROGRESS:
                         list.Add(message);
                         break;
+                    default:
+                        break;
+                }
+
+                Native.ddjvu_message_pop(context);
+                msg = Native.ddjvu_message_peek(context);
+            }
+
+            return list;
+        }
+
+        internal static List<object> ProcessMessages(IntPtr context, MessageTag messageType, bool wait = true)
+        {
+            var list = new List<object>();
+
+            IntPtr msg = IntPtr.Zero;
+
+            if (wait)
+            {
+                msg = Native.ddjvu_message_wait(context);
+            }
+
+            msg = Native.ddjvu_message_peek(context);
+
+            while (msg != IntPtr.Zero)
+            {
+                DjvuMessage message = new DjvuMessage(msg);
+
+                switch (message.Any.Tag)
+                {
+                    case MessageTag.ERROR:
+                        list.Add(message);
+                        var errorMessage = message.Error;
+                        throw new ApplicationException(errorMessage.ToString());
+                    case MessageTag.INFO:
+                        list.Add(message);
+                        if (messageType == MessageTag.INFO)
+                        {
+                            Native.ddjvu_message_pop(context);
+                            return list;
+                        }
+                        break;
+                    case MessageTag.NEWSTREAM:
+                        list.Add(message);
+                        if (messageType == MessageTag.NEWSTREAM)
+                        {
+                            Native.ddjvu_message_pop(context);
+                            return list;
+                        }
+                        break;
+                    case MessageTag.DOCINFO:
+                        list.Add(message);
+                        if (messageType == MessageTag.DOCINFO)
+                        {
+                            Native.ddjvu_message_pop(context);
+                            return list;
+                        }
+                        break;
+                    case MessageTag.PAGEINFO:
+                        list.Add(message);
+                        if (messageType == MessageTag.PAGEINFO)
+                        {
+                            Native.ddjvu_message_pop(context);
+                            return list;
+                        }
+                        break;
+                    case MessageTag.RELAYOUT:
+                        list.Add(message);
+                        if (messageType == MessageTag.RELAYOUT)
+                        {
+                            Native.ddjvu_message_pop(context);
+                            return list;
+                        }
+                        break;
+                    case MessageTag.CHUNK:
+                        list.Add(message);
+                        if (messageType == MessageTag.CHUNK)
+                        {
+                            Native.ddjvu_message_pop(context);
+                            return list;
+                        }
+                        break;
+                    case MessageTag.THUMBNAIL:
+                        list.Add(message);
+                        if (messageType == MessageTag.THUMBNAIL)
+                        {
+                            Native.ddjvu_message_pop(context);
+                            return list;
+                        }
+                        break;
+                    case MessageTag.PROGRESS:
+                        list.Add(message);
+                        if (messageType == MessageTag.PROGRESS)
+                        {
+                            Native.ddjvu_message_pop(context);
+                            return list;
+                        }
+                        break;
+                    default:
+                        break;
                 }
 
                 Native.ddjvu_message_pop(context);
