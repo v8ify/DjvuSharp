@@ -17,17 +17,35 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Runtime.InteropServices;
 
-namespace DjvuSharp.Messages
+namespace DjvuSharp
 {
     /// <summary>
-    /// This message is sent when additional thumbnails are available
+    /// This structure specifies the location of a rectangle.
+    /// Coordinates are usually expressed in pixels relative to
+    /// the BOTTOM LEFT CORNER(but see ddjvu_format_set_y_direction).
+    /// Members <see cref="X"/> and <see cref="Y"/> indicate the position of the bottom left
+    /// corner of the rectangle Members <see cref="Width"/> and <see cref="Height"/> indicate the
+    /// width and height of the rectangle.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public class ThumbnailMessage
+    public class Rectangle
     {
-        public AnyMessage Any;
-        public int PageNo;
+        public int X;
+        public int Y;
+        public uint Width;
+        public uint Height;
+
+        public Rectangle(int x, int y, int width, int height)
+        {
+            X = x;
+            Y = y;
+            Width = ((uint)width);
+            Height = ((uint)height);
+        }
     }
 }

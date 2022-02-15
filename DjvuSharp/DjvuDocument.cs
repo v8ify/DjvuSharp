@@ -21,6 +21,7 @@ using System; // IDisposable
 using DjvuSharp.Enums; // DjvuDocumentType
 using System.IO; // Path
 using System.Diagnostics; // Process
+using DjvuSharp.Rendering;
 
 namespace DjvuSharp
 {
@@ -190,36 +191,6 @@ namespace DjvuSharp
             int flag = json ? 1 : 0;
             return Native.ddjvu_document_get_dump(_document, flag);
         }
-
-
-        /*/// <summary>
-        ///     Each page of a document can be accessed by creating a
-        ///     <see cref="DjvuPage" /> object with this function.
-        ///     <para>
-        ///         This function may return NULL when called before receiving the
-        ///         M_DocInfo message.
-        ///     </para>
-        ///     <para>Error messages will be generated if the page does not exists.</para>
-        ///     <para>
-        ///         Calling this function also initiates the data transfer
-        ///         and the decoding threads for the specified page. Various messages
-        ///         will document the progress of these operations.
-        ///     </para>
-        /// </summary>
-        /// 
-        /// <param name="pageNum">An integer between 0 to (total_pages - 1)</param>
-        /// 
-        /// <returns>A <see cref="DjvuPage" /></returns>
-        /// 
-        public DjvuPage CreateDjvuPageByPageNo(int pageNum)
-        {
-            IntPtr djvuPagePtr = Native.ddjvu_page_create_by_pageno(_document, pageNum);
-
-            if (djvuPagePtr == IntPtr.Zero)
-                return null;
-
-            return new DjvuPage(djvuPagePtr);
-        }*/
 
 
         protected virtual void Dispose(bool disposing)

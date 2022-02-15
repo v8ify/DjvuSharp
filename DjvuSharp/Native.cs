@@ -698,7 +698,7 @@ namespace DjvuSharp
         /// </param>
         /// <returns>A pointer to ddjvu_format_t</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr ddjvu_format_create(int style, int nargs, uint[] args);
+        internal static extern IntPtr ddjvu_format_create(PixelFormatStyle style, int nargs, uint[] args);
 
 
         /// <summary>
@@ -800,7 +800,6 @@ namespace DjvuSharp
 
         /* ------- RENDER ------- */
 
-#if X86
         /// <summary>
         /// <para>Renders a segment of a page with arbitrary scale</para>
         /// <para>
@@ -830,52 +829,64 @@ namespace DjvuSharp
         /// the buffer.
         /// </returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe int ddjvu_page_render(
+        internal static extern int ddjvu_page_render(
             IntPtr page,
-            int mode,
-            DjvuRect* pagerect,
-            DjvuRect* renderrect,
-            IntPtr pixelformat,
-            uint rowsize,
-            sbyte[] buffer);
-#else
-        /// <summary>
-        /// <para>Renders a segment of a page with arbitrary scale</para>
-        /// <para>
-        /// Conceptually this function renders the full page
-        /// into a rectangle <paramref name="pagerect"/> and copies the
-        /// pixels specified by rectangle <paramref name="renderrect"/>
-        /// into the buffer starting at position <paramref name="imagebuffer"/>.
-        /// The actual code is much more efficient than that.
-        /// </para>
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="mode"></param>
-        /// <param name="pagerect"></param>
-        /// <param name="renderrect"></param>
-        /// <param name="pixelformat">specifies the expected pixel format.</param>
-        /// <param name="rowsize">
-        /// specifies the number of BYTES from 
-        /// one row to the next in the buffer.The buffer must be
-        /// large enough to accomodate the desired image.
-        /// </param>
-        /// <param name="imagebuffer">The final image is written into buffer</param>
-        /// <returns>
-        /// This function makes a best effort to compute an image
-        /// that reflects the most recently decoded data.It might
-        /// return 0 to indicate that no image could be
-        /// computed at this point, and that nothing was written into
-        /// the buffer.
-        /// </returns>
-        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe int ddjvu_page_render(
-            IntPtr page,
-            int mode,
-            DjvuRect* pagerect,
-            DjvuRect* renderrect,
+            RenderMode mode,
+            Rectangle pagerect,
+            Rectangle renderrect,
             IntPtr pixelformat,
             ulong rowsize,
-            sbyte[] imagebuffer);
-#endif
+            [Out] sbyte[] imagebuffer);
+
+
+        /* -------------------------------------------------- */
+        /* THUMBNAILS                                         */
+        /* -------------------------------------------------- */
+
+        /// <summary>
+        /// Determine whether a thumbnail is available for page pagenum.
+        /// Calling this function with non zero argument start initiates
+        /// a thumbnail calculation job. Regardless of its success,
+        /// the completion of the job is signalled by a subsequent 
+        /// <see cref="Messages.ThumbnailMessage"/> message.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="pageNo"></param>
+        /// <param name="start">Calling this function with non zero argument start initiates
+        /// a thumbnail calculation job.
+        /// </param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern JobStatus ddjvu_thumbnail_status(IntPtr document, int pageNo, int start);
+
+
+        /// <summary>
+        /// Renders a thumbnail for page pagenum.
+        /// Argument imagebuffer must be large enough to contain
+        /// an image of size wptr by hptr using pixel format
+        /// pixelformat.Argument rowsize specifies the number
+        /// of BYTES from one row to the next in the buffer.
+        /// This function returns FALSE when no thumbnail is available.
+        /// Otherwise it returns TRUE, adjusts *wptr and *hptr to
+        /// reflect the thumbnail size, and, if the pointer imagebuffer
+        /// is non zero, writes the pixel data into the image buffer. 
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="pageNo"></param>
+        /// <param name="wptr"></param>
+        /// <param name="hptr"></param>
+        /// <param name="pixelFormat"></param>
+        /// <param name="rowSize"></param>
+        /// <param name="imageBuffer"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int ddjvu_thumbnail_render(
+            IntPtr document,
+            int pageNo,
+            ref int wptr,
+            ref int hptr,
+            IntPtr pixelFormat,
+            ulong rowSize,
+            [Out] sbyte[] imageBuffer);
     }
 }

@@ -17,17 +17,25 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System.Runtime.InteropServices;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using DjvuSharp.Enums;
 
-namespace DjvuSharp.Messages
+namespace DjvuSharp.Rendering
 {
-    /// <summary>
-    /// This message is sent when additional thumbnails are available
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public class ThumbnailMessage
+    public class PixelFormatMSBToLSB: PixelFormat
     {
-        public AnyMessage Any;
-        public int PageNo;
+        public PixelFormatMSBToLSB(): base()
+        {
+            _bpp = 1;
+
+            _djvu_format = Native.ddjvu_format_create(PixelFormatStyle.MSBTOLSB, 0, null);
+
+            if (_djvu_format == IntPtr.Zero)
+            {
+                throw new ApplicationException($"Failed to create {nameof(PixelFormatMSBToLSB)}");
+            }
+        }
     }
 }

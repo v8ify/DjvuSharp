@@ -25,5 +25,5 @@
     <PropertyGroup Condition="'${Platform}' == 'x86'">
         <DefineConstants>X86</DefineConstants>
     </PropertyGroup>
-
+	
 </Project>

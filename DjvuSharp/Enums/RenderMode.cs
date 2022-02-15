@@ -23,13 +23,36 @@ namespace DjvuSharp.Enums
     /// <summary>
     /// Various ways to render a page
     /// </summary>
-    public enum DjvuRenderMode
+    public enum RenderMode
     {
-        DDJVU_RENDER_COLOR,           /* color page or stencil */
-        DDJVU_RENDER_BLACK,           /* stencil or color page */
-        DDJVU_RENDER_COLORONLY,       /* color page or fail */
-        DDJVU_RENDER_MASKONLY,        /* stencil or fail */
-        DDJVU_RENDER_BACKGROUND,      /* color background layer */
-        DDJVU_RENDER_FOREGROUND,      /* color foreground layer */
+        /// <summary>
+        /// color page or stencil
+        /// </summary>
+        COLOR,
+
+        /// <summary>
+        /// stencil or color page
+        /// </summary>
+        BLACK,
+
+        /// <summary>
+        /// color page or fail
+        /// </summary>
+        COLORONLY,
+
+        /// <summary>
+        /// stencil or fail
+        /// </summary>
+        MASKONLY,
+
+        /// <summary>
+        /// color background layer
+        /// </summary>
+        BACKGROUND,
+
+        /// <summary>
+        /// color foreground layer
+        /// </summary>
+        FOREGROUND
     }
 }
