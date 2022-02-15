@@ -880,7 +880,7 @@ namespace DjvuSharp
         /// <param name="imageBuffer"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern JobStatus ddjvu_thumbnail_render(
+        internal static extern int ddjvu_thumbnail_render(
             IntPtr document,
             int pageNo,
             ref int wptr,
