@@ -21,6 +21,7 @@ using System; // IDisposable
 using DjvuSharp.Enums; // DjvuDocumentType
 using System.IO; // Path
 using System.Diagnostics; // Process
+using DjvuSharp.Rendering;
 
 namespace DjvuSharp
 {
@@ -191,6 +192,29 @@ namespace DjvuSharp
             return Native.ddjvu_document_get_dump(_document, flag);
         }
 
+        public sbyte[] RenderThumbnail(int pageNo, ref int width, ref int height, PixelFormat pixelFormat, long rowAlignment=1)
+        {
+            if (rowAlignment <= 0)
+            {
+                throw new ArgumentException($"{nameof(rowAlignment)} must be a greater than 0", nameof(rowAlignment));
+            }
+
+            if (width <= 0 || height <= 0)
+            {
+                throw new ArgumentException($"{nameof(width)} and {nameof(height)} must be a greater than 0");
+            }
+
+            long rowSize = Utils.CalculateRowSize(width, rowAlignment, pixelFormat.Bpp);
+
+            sbyte[] buffer = Utils.AllocateImageMemory(rowSize, height);
+
+            if (Native.ddjvu_thumbnail_render(_document, pageNo, ref width, ref height, pixelFormat.NativePtr, (ulong)rowSize, buffer) == 0)
+            {
+                return null;
+            }
+
+            return buffer;
+        }
 
         protected virtual void Dispose(bool disposing)
         {
