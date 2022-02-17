@@ -20,6 +20,7 @@
 using System; // IDisposable
 using DjvuSharp.Enums; // PageStatus
 using DjvuSharp.Rendering;
+using System.Linq;
 
 namespace DjvuSharp
 {
@@ -188,7 +189,7 @@ namespace DjvuSharp
         }
 
 
-        public sbyte[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
+        public short[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
         {
             if (rowAlignment <= 0)
             {
@@ -207,7 +208,7 @@ namespace DjvuSharp
                 throw new ApplicationException($"Failed to render page. Page no.: {PageNumber}");
             }
 
-            return imageBuffer;
+            return imageBuffer.Select(i => (short)i).ToArray();
         }
 
 

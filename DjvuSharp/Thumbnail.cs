@@ -18,10 +18,9 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using DjvuSharp.Enums;
 using DjvuSharp.Rendering;
+using System.Linq;
 
 namespace DjvuSharp
 {
@@ -62,7 +61,7 @@ namespace DjvuSharp
             }
         }
 
-        public sbyte[] Render(int pageNo, ref int width, ref int height, PixelFormat pixelFormat, long rowAlignment = 1)
+        public short[] Render(int pageNo, ref int width, ref int height, PixelFormat pixelFormat, long rowAlignment = 1)
         {
             if (rowAlignment <= 0)
             {
@@ -85,7 +84,7 @@ namespace DjvuSharp
                 return null;
             }
 
-            return buffer;
+            return buffer.Select(i => (short)i).ToArray();
         }
     }
 }
