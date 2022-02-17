@@ -25,8 +25,8 @@ namespace DjvuSharp.Rendering
 {
     public class PixelFormat
     {
-        protected IntPtr _djvu_format;
-        protected int _bpp;
+        protected IntPtr djvu_format;
+        protected int bppValue;
 
         private bool disposedValue;
 
@@ -35,33 +35,33 @@ namespace DjvuSharp.Rendering
 
         }
 
-        public int Bpp { get { return _bpp; } }
+        public int Bpp { get { return bppValue; } }
 
-        public IntPtr NativePtr { get { return _djvu_format; } }
+        public IntPtr NativePtr { get { return djvu_format; } }
 
         public void SetGamma(double gamma = 2.2)
         {
-            Native.ddjvu_format_set_gamma(_djvu_format, gamma);
+            Native.ddjvu_format_set_gamma(djvu_format, gamma);
         }
 
         public void SetRowOrder(bool topToBottom = false)
         {
-            Native.ddjvu_format_set_row_order(_djvu_format, topToBottom);
+            Native.ddjvu_format_set_row_order(djvu_format, topToBottom);
         }
 
         public void SetYDirection(bool topToBottom = false)
         {
-            Native.ddjvu_format_set_y_direction(_djvu_format, topToBottom);
+            Native.ddjvu_format_set_y_direction(djvu_format, topToBottom);
         }
 
         public void SetDitherBits(int bits)
         {
-            Native.ddjvu_format_set_ditherbits(_djvu_format, bits);
+            Native.ddjvu_format_set_ditherbits(djvu_format, bits);
         }
 
         public void SetWhite(byte blue, byte green, byte red)
         {
-            Native.ddjvu_format_set_white(_djvu_format, blue, green, red);
+            Native.ddjvu_format_set_white(djvu_format, blue, green, red);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -73,10 +73,10 @@ namespace DjvuSharp.Rendering
                     // dispose managed state (managed objects)
                 }
 
-                if (_djvu_format != IntPtr.Zero)
+                if (djvu_format != IntPtr.Zero)
                 {
-                    Native.ddjvu_format_release(_djvu_format);
-                    _djvu_format = IntPtr.Zero;
+                    Native.ddjvu_format_release(djvu_format);
+                    djvu_format = IntPtr.Zero;
                 }
 
                 disposedValue = true;

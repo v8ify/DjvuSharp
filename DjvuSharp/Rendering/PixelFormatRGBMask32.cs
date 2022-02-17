@@ -29,7 +29,7 @@ namespace DjvuSharp.Rendering
         // Todo - make CLS compliant by removing unsigned int from public api
         public PixelFormatRGBMask32(uint redMask, uint greenMask, uint blueMask, uint xor = 0) : base()
         {
-            _bpp = 16;
+            bppValue = 16;
 
             /*if (redMask < 0 || greenMask < 0 || blueMask < 0 || xor < 0)
             {
@@ -43,9 +43,9 @@ namespace DjvuSharp.Rendering
 
             uint[] args = new uint[4] { redMask, greenMask, blueMask, xor };
 
-            _djvu_format = Native.ddjvu_format_create(PixelFormatStyle.RGBMASK16, 4, args);
+            djvu_format = Native.ddjvu_format_create(PixelFormatStyle.RGBMASK16, 4, args);
 
-            if (_djvu_format == IntPtr.Zero)
+            if (djvu_format == IntPtr.Zero)
             {
                 throw new ApplicationException($"Failed to create {nameof(PixelFormatRGBMask32)}");
             }

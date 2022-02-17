@@ -28,7 +28,7 @@ namespace DjvuSharp.Rendering
     {
         public PixelFormatPalette(Dictionary<ValueTuple<int, int, int>, uint> pallete): base()
         {
-            _bpp = 8;
+            bppValue = 8;
 
             uint[] _palette = new uint[216];
 
@@ -51,9 +51,9 @@ namespace DjvuSharp.Rendering
                 }
             }
 
-            _djvu_format = Native.ddjvu_format_create(PixelFormatStyle.GREY8, 216, _palette);
+            djvu_format = Native.ddjvu_format_create(PixelFormatStyle.GREY8, 216, _palette);
 
-            if (_djvu_format == IntPtr.Zero)
+            if (djvu_format == IntPtr.Zero)
             {
                 throw new ApplicationException($"Failed to create {nameof(PixelFormatPalette)}");
             }
