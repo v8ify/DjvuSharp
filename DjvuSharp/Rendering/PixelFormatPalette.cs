@@ -26,34 +26,40 @@ namespace DjvuSharp.Rendering
 {
     public class PixelFormatPalette: PixelFormat
     {
-        public PixelFormatPalette(Dictionary<ValueTuple<int, int, int>, uint> pallete): base()
+        public PixelFormatPalette(Dictionary<ValueTuple<int, int, int>, int> pallete): base()
         {
-            _bpp = 8;
+            bppValue = 8;
 
             uint[] _palette = new uint[216];
 
-            uint n = 0;
             for (int i = 0; i < 6; ++i)
             {
                 for (int j = 0; j < 6; ++j)
                 {
                     for (int k = 0; k < 6; ++k)
                     {
-                        n = pallete[(i, j, k)];
+                        int palleteValue = pallete[(i, j, k)];
 
-                        if (n > 0x100)
+                        if (palleteValue < 0)
+                        {
+                            throw new ArgumentException($"Values in {nameof(pallete)} must not be negative.", nameof(pallete));
+                        }
+
+                        if (palleteValue > 0x100)
                         {
                             throw new ArgumentException($"Values in {nameof(pallete)} must be less than 0x100", nameof(pallete));
                         }
+
+                        uint n = (uint)palleteValue;
 
                         _palette[i * 6 * 6 + j * 6 + k] = n;
                     }
                 }
             }
 
-            _djvu_format = Native.ddjvu_format_create(PixelFormatStyle.GREY8, 216, _palette);
+            djvu_format = Native.ddjvu_format_create(PixelFormatStyle.GREY8, 216, _palette);
 
-            if (_djvu_format == IntPtr.Zero)
+            if (djvu_format == IntPtr.Zero)
             {
                 throw new ApplicationException($"Failed to create {nameof(PixelFormatPalette)}");
             }

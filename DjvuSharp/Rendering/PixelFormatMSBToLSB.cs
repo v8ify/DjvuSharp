@@ -28,11 +28,11 @@ namespace DjvuSharp.Rendering
     {
         public PixelFormatMSBToLSB(): base()
         {
-            _bpp = 1;
+            bppValue = 1;
 
-            _djvu_format = Native.ddjvu_format_create(PixelFormatStyle.MSBTOLSB, 0, null);
+            djvu_format = Native.ddjvu_format_create(PixelFormatStyle.MSBTOLSB, 0, null);
 
-            if (_djvu_format == IntPtr.Zero)
+            if (djvu_format == IntPtr.Zero)
             {
                 throw new ApplicationException($"Failed to create {nameof(PixelFormatMSBToLSB)}");
             }
