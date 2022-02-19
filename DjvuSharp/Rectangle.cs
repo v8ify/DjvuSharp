@@ -35,13 +35,18 @@ namespace DjvuSharp
     [StructLayout(LayoutKind.Sequential)]
     public class Rectangle
     {
-        public int X;
-        public int Y;
-        public uint Width;
-        public uint Height;
+        internal int X;
+        internal int Y;
+        internal uint Width;
+        internal uint Height;
 
         public Rectangle(int x, int y, int width, int height)
         {
+            if (width < 0 || height < 0)
+            {
+                throw new ArgumentException($"The arguments {nameof(width)} and {nameof(height)} must not be negative.");
+            }
+
             X = x;
             Y = y;
             Width = ((uint)width);
