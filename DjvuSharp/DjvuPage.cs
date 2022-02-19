@@ -192,9 +192,7 @@ namespace DjvuSharp
         public short[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
         {
             if (rowAlignment <= 0)
-            {
-                throw new ArgumentException($"{nameof(rowAlignment)} must be a greater than 0", nameof(rowAlignment));
-            }
+                throw new ArgumentOutOfRangeException(nameof(rowAlignment), rowAlignment, $"Must be a greater than 0");
 
             long rowSize = Utils.CalculateRowSize(renderRect.Width, rowAlignment, pixelFormat.Bpp);
 
@@ -208,7 +206,7 @@ namespace DjvuSharp
                 throw new ApplicationException($"Failed to render page. Page no.: {PageNumber}");
             }
 
-            return imageBuffer.Select(i => (short)i).ToArray();
+            return imageBuffer.Cast<short>().ToArray();
         }
 
 

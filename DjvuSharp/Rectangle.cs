@@ -43,9 +43,7 @@ namespace DjvuSharp
         public Rectangle(int x, int y, int width, int height)
         {
             if (width < 0 || height < 0)
-            {
                 throw new ArgumentException($"The arguments {nameof(width)} and {nameof(height)} must not be negative.");
-            }
 
             X = x;
             Y = y;

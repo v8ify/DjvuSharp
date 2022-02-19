@@ -64,14 +64,13 @@ namespace DjvuSharp
         public short[] Render(int pageNo, ref int width, ref int height, PixelFormat pixelFormat, long rowAlignment = 1)
         {
             if (rowAlignment <= 0)
-            {
-                throw new ArgumentException($"{nameof(rowAlignment)} must be a greater than 0", nameof(rowAlignment));
-            }
+                throw new ArgumentOutOfRangeException(nameof(rowAlignment), rowAlignment, $"Must be a greater than 0");
 
-            if (width <= 0 || height <= 0)
-            {
-                throw new ArgumentException($"{nameof(width)} and {nameof(height)} must be a greater than 0");
-            }
+            if (width <= 0)
+                throw new ArgumentOutOfRangeException(nameof(width), width, $"Must be a greater than 0");
+
+            if (height <= 0)
+                throw new ArgumentOutOfRangeException(nameof(height), height, $"Must be a greater than 0");
 
             long rowSize = Utils.CalculateRowSize(width, rowAlignment, pixelFormat.Bpp);
 
@@ -84,7 +83,7 @@ namespace DjvuSharp
                 return null;
             }
 
-            return buffer.Select(i => (short)i).ToArray();
+            return buffer.Cast<short>().ToArray();
         }
     }
 }
