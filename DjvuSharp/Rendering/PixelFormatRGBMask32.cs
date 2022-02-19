@@ -26,22 +26,33 @@ namespace DjvuSharp.Rendering
 {
     public class PixelFormatRGBMask32: PixelFormat
     {
-        // Todo - make CLS compliant by removing unsigned int from public api
-        public PixelFormatRGBMask32(uint redMask, uint greenMask, uint blueMask, uint xor = 0) : base()
+        public PixelFormatRGBMask32(int redMask, int greenMask, int blueMask, int xor = 0) : base()
         {
             bppValue = 16;
 
-            /*if (redMask < 0 || greenMask < 0 || blueMask < 0 || xor < 0)
-            {
-                throw new ArgumentException("Arguments must not be negative");
-            }*/
+            if (redMask < 0)
+                throw new ArgumentOutOfRangeException(nameof(redMask), redMask, $"Argument value must be non-negative");
 
-            redMask &= 0xFFFFFFFF;
-            greenMask &= 0xFFFFFFFF;
-            blueMask &= 0xFFFFFFFF;
-            xor &= 0xFFFFFFFF;
+            if (greenMask < 0)
+                throw new ArgumentOutOfRangeException(nameof(greenMask), greenMask, $"Argument value must be non-negative");
 
-            uint[] args = new uint[4] { redMask, greenMask, blueMask, xor };
+            if (blueMask < 0)
+                throw new ArgumentOutOfRangeException(nameof(blueMask), blueMask, $"Argument value must be non-negative");
+
+            if (xor < 0)
+                throw new ArgumentOutOfRangeException(nameof(xor), xor, $"Argument value must be non-negative");
+
+            uint red = ((uint)redMask);
+            uint green = ((uint)greenMask);
+            uint blue = ((uint)blueMask);
+            uint XOR = ((uint)xor);
+
+            red &= 0xFFFFFFFF;
+            green &= 0xFFFFFFFF;
+            blue &= 0xFFFFFFFF;
+            XOR &= 0xFFFFFFFF;
+
+            uint[] args = new uint[4] { red, green, blue, XOR };
 
             djvu_format = Native.ddjvu_format_create(PixelFormatStyle.RGBMASK16, 4, args);
 
