@@ -25,7 +25,7 @@ using DjvuSharp.Enums;
 using DjvuSharp.Marshaler;
 
 [assembly: InternalsVisibleTo("DjvuSharp.Tests")]
-namespace DjvuSharp
+namespace DjvuSharp.Interop
 {
 
     /// <summary>

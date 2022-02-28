@@ -21,6 +21,9 @@ using System; // IDisposable
 using DjvuSharp.Enums; // PageStatus
 using DjvuSharp.Rendering;
 using System.Linq;
+using System.IO;
+using System.Drawing;
+using DjvuSharp.Interop;
 
 namespace DjvuSharp
 {
@@ -208,6 +211,15 @@ namespace DjvuSharp
 
             return imageBuffer.Cast<short>().ToArray();
         }
+
+        /*public Stream RenderBitmap(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment = 1)
+        {
+            short[] imageBuffer = this.Render(mode, pageRect, renderRect, pixelFormat, rowAlignment);
+
+            Stream bitmap = new MemoryStream();
+            
+
+        }*/
 
 
         /* 

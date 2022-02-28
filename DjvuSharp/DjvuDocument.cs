@@ -22,6 +22,7 @@ using DjvuSharp.Enums; // DjvuDocumentType
 using System.IO; // Path
 using System.Diagnostics; // Process
 using DjvuSharp.Rendering;
+using DjvuSharp.Interop;
 
 namespace DjvuSharp
 {

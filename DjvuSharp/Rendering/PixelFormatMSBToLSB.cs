@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using DjvuSharp.Enums;
+using DjvuSharp.Interop;
 
 namespace DjvuSharp.Rendering
 {
