@@ -20,8 +20,9 @@
 using System;
 using DjvuSharp.Enums;
 using DjvuSharp.Rendering;
-using System.Linq;
+using System.IO;
 using DjvuSharp.Interop;
+using DjvuSharp.Utility;
 
 namespace DjvuSharp
 {
@@ -85,6 +86,25 @@ namespace DjvuSharp
             }
 
             return buffer;
+        }
+
+        public Stream RenderBitmap(int pageNo, ref int width, ref int height, PixelFormat pixelFormat, long rowAlignment = 1)
+        {
+            byte[] imageBuffer = this.Render(pageNo, ref width, ref height, pixelFormat, rowAlignment);
+
+            byte[] bitmapBuffer = Bitmap.GenerateBitmapImage(imageBuffer, width, height);
+
+            Stream bitmap = new MemoryStream();
+
+            using (BinaryWriter bw = new BinaryWriter(bitmap))
+            {
+                foreach(byte i in bitmapBuffer)
+                {
+                    bw.Write(i);
+                }
+            }
+
+            return bitmap;
         }
     }
 }
