@@ -836,7 +836,7 @@ namespace DjvuSharp.Interop
             Rectangle renderrect,
             IntPtr pixelformat,
             ulong rowsize,
-            [Out] sbyte[] imagebuffer);
+            [Out] byte[] imagebuffer);
 
 
         /* -------------------------------------------------- */
@@ -887,6 +887,6 @@ namespace DjvuSharp.Interop
             ref int hptr,
             IntPtr pixelFormat,
             ulong rowSize,
-            [Out] sbyte[] imageBuffer);
+            [Out] byte[] imageBuffer);
     }
 }

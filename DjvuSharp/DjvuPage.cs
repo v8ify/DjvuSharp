@@ -22,7 +22,7 @@ using DjvuSharp.Enums; // PageStatus
 using DjvuSharp.Rendering;
 using System.Linq;
 using System.IO;
-using System.Drawing;
+using DjvuSharp.Utility;
 using DjvuSharp.Interop;
 
 namespace DjvuSharp
@@ -192,14 +192,14 @@ namespace DjvuSharp
         }
 
 
-        public short[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
+        public byte[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
         {
             if (rowAlignment <= 0)
                 throw new ArgumentOutOfRangeException(nameof(rowAlignment), rowAlignment, $"Must be a greater than 0");
 
             long rowSize = Utils.CalculateRowSize(renderRect.Width, rowAlignment, pixelFormat.Bpp);
 
-            sbyte[] imageBuffer = Utils.AllocateImageMemory(rowSize, renderRect.Height);
+            byte[] imageBuffer = Utils.AllocateImageMemory(rowSize, renderRect.Height);
 
             int success = Native.ddjvu_page_render(_djvu_page, mode, pageRect, renderRect, pixelFormat.NativePtr, (ulong)rowSize, imageBuffer);
 
@@ -209,17 +209,36 @@ namespace DjvuSharp
                 throw new ApplicationException($"Failed to render page. Page no.: {PageNumber}");
             }
 
-            return imageBuffer.Cast<short>().ToArray();
+            return imageBuffer;
         }
 
-        /*public Stream RenderBitmap(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment = 1)
+        /// <summary>
+        /// Generates/Renders a bitmap image for this djvu page. Useful for displaying djvu page on the screen.
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <param name="pageRect"></param>
+        /// <param name="renderRect"></param>
+        /// <param name="pixelFormat"></param>
+        /// <param name="rowAlignment"></param>
+        /// <returns>A stream containing the bitmap image.</returns>
+        public Stream RenderBitmap(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment = 1)
         {
-            short[] imageBuffer = this.Render(mode, pageRect, renderRect, pixelFormat, rowAlignment);
+            byte[] imageBuffer = this.Render(mode, pageRect, renderRect, pixelFormat, rowAlignment);
+
+            byte[] bitmapBuffer = Bitmap.GenerateBitmapImage(imageBuffer, ((int)renderRect.Width), ((int)renderRect.Height));
 
             Stream bitmap = new MemoryStream();
-            
 
-        }*/
+            using (BinaryWriter bw = new BinaryWriter(bitmap))
+            {
+                foreach(byte i in bitmapBuffer)
+                {
+                    bw.Write(i);
+                }
+            }
+
+            return bitmap;
+        }
 
 
         /* 

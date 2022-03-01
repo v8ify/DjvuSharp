@@ -62,7 +62,7 @@ namespace DjvuSharp
             }
         }
 
-        public short[] Render(int pageNo, ref int width, ref int height, PixelFormat pixelFormat, long rowAlignment = 1)
+        public byte[] Render(int pageNo, ref int width, ref int height, PixelFormat pixelFormat, long rowAlignment = 1)
         {
             if (rowAlignment <= 0)
                 throw new ArgumentOutOfRangeException(nameof(rowAlignment), rowAlignment, $"Must be a greater than 0");
@@ -75,7 +75,7 @@ namespace DjvuSharp
 
             long rowSize = Utils.CalculateRowSize(width, rowAlignment, pixelFormat.Bpp);
 
-            sbyte[] buffer = Utils.AllocateImageMemory(rowSize, height);
+            byte[] buffer = Utils.AllocateImageMemory(rowSize, height);
 
             int result = Native.ddjvu_thumbnail_render(_document.Document, pageNo, ref width, ref height, pixelFormat.NativePtr, (ulong)rowSize, buffer);
 
@@ -84,7 +84,7 @@ namespace DjvuSharp
                 return null;
             }
 
-            return buffer.Cast<short>().ToArray();
+            return buffer;
         }
     }
 }

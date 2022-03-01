@@ -42,7 +42,7 @@ namespace DjvuSharp.Utility
         /// <param name="width">Width of bitmap image specified by user.</param>
         /// <param name="height">Height of bitmap image specified by user</param>
         /// <returns>Bitmap image array. Might be appropriate to cast this array to a stream for general purpose use.</returns>
-        static byte[] GenerateBitmapImage(byte[] image, int width, int height)
+        internal static byte[] GenerateBitmapImage(byte[] image, int width, int height)
         {
             int widthInBytes = width * BYTES_PER_PIXEL;
 
