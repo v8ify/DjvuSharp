@@ -586,7 +586,7 @@ namespace DjvuSharp.Interop
         /// <param name="output"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe IntPtr ddjvu_rectmapper_create(DjvuRect* input, DjvuRect* output);
+        internal static extern IntPtr ddjvu_rectmapper_create(Rectangle input, Rectangle output);
 
 
         /// <summary>
@@ -601,7 +601,7 @@ namespace DjvuSharp.Interop
         /// <param name="mirrorx"></param>
         /// <param name="mirrory"></param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void ddjvu_rectmapper_modify(IntPtr mapper, int rotation, int mirrorx, int mirrory);
+        internal static extern void ddjvu_rectmapper_modify(IntPtr mapper, PageRotation rotation, int mirrorx, int mirrory);
 
 
         /// <summary>
@@ -627,7 +627,7 @@ namespace DjvuSharp.Interop
         /// <param name="mapper"></param>
         /// <param name="rect"></param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe void ddjvu_map_rect(IntPtr mapper, DjvuRect* rect);
+        internal static extern unsafe void ddjvu_map_rect(IntPtr mapper, Rectangle rect);
 
         /// <summary>
         /// Applies the inverse coordinate transform to a point
@@ -645,7 +645,7 @@ namespace DjvuSharp.Interop
         /// <param name="x"></param>
         /// <param name="y"></param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe void ddjvu_unmap_rect(IntPtr mapper, DjvuRect* rect);
+        internal static extern void ddjvu_unmap_rect(IntPtr mapper, Rectangle rect);
 
 
         /* -------------------------------------------------- */
@@ -888,5 +888,5 @@ namespace DjvuSharp.Interop
             IntPtr pixelFormat,
             ulong rowSize,
             [Out] sbyte[] imageBuffer);
-    }
+    }    
 }
