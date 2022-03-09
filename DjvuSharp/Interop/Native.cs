@@ -50,7 +50,7 @@ namespace DjvuSharp.Interop
          */
         public IntPtr context;
         public IntPtr document;
-        public IntPtr page;
+        public IntPtr miniexpage;
         public IntPtr job;
     }
 
@@ -257,7 +257,7 @@ namespace DjvuSharp.Interop
         #endif*/
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal extern static void ddjvu_free(IntPtr pointer);
+        internal extern static void ddjvu_free(IntPtr miniexpointer);
 
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
@@ -411,7 +411,7 @@ namespace DjvuSharp.Interop
 
             string result = Marshal.PtrToStringUni(docDump);
 
-            // must free since IntPtr points to dynamically allocated char array
+            // must free since IntPtr miniexpoints to dynamically allocated char array
             ddjvu_free(docDump);
 
             return result;
@@ -431,7 +431,7 @@ namespace DjvuSharp.Interop
 
             string result = Marshal.PtrToStringUni(docDump);
 
-            // must free since IntPtr points to dynamically allocated
+            // must free since IntPtr miniexpoints to dynamically allocated
             // char array
             ddjvu_free(docDump);
 
@@ -454,7 +454,7 @@ namespace DjvuSharp.Interop
         /// </summary>
         /// <param name="page"></param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_release")]
-        internal extern static void ddjvu_page_release(IntPtr page);
+        internal extern static void ddjvu_page_release(IntPtr miniexpage);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ddjvu_job_status")]
         internal extern static JobStatus ddjvu_page_decoding_status(IntPtr document);
@@ -465,7 +465,7 @@ namespace DjvuSharp.Interop
         /// <param name="page">A pointer to the page whose job we want</param>
         /// <returns>A pointer to djvu_job. Could be null so check with IntPtr.Zero</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr ddjvu_page_job(IntPtr page);
+        internal static extern IntPtr ddjvu_page_job(IntPtr miniexpage);
 
 
         /// <summary>
@@ -475,7 +475,7 @@ namespace DjvuSharp.Interop
         /// <param name="page">A pointer to page.</param>
         /// <returns>Page width in pixels.</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int ddjvu_page_get_width(IntPtr page);
+        internal static extern int ddjvu_page_get_width(IntPtr miniexpage);
 
         /// <summary>
         /// 
@@ -483,7 +483,7 @@ namespace DjvuSharp.Interop
         /// <param name="page"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int ddjvu_page_get_height(IntPtr page);
+        internal static extern int ddjvu_page_get_height(IntPtr miniexpage);
 
         /// <summary>
         /// 
@@ -491,7 +491,7 @@ namespace DjvuSharp.Interop
         /// <param name="page"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int ddjvu_page_get_resolution(IntPtr page);
+        internal static extern int ddjvu_page_get_resolution(IntPtr miniexpage);
 
         /// <summary>
         /// 
@@ -499,7 +499,7 @@ namespace DjvuSharp.Interop
         /// <param name="page"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern double ddjvu_page_get_gamma(IntPtr page);
+        internal static extern double ddjvu_page_get_gamma(IntPtr miniexpage);
 
         /// <summary>
         /// Returns the version of the djvu file format.
@@ -509,7 +509,7 @@ namespace DjvuSharp.Interop
         /// <param name="page"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int ddjvu_page_get_version(IntPtr page);
+        internal static extern int ddjvu_page_get_version(IntPtr miniexpage);
 
         /// <summary>
         /// Returns the version of the djvu file format
@@ -529,7 +529,7 @@ namespace DjvuSharp.Interop
         /// <param name="page"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern PageType ddjvu_page_get_type(IntPtr page);
+        internal static extern PageType ddjvu_page_get_type(IntPtr miniexpage);
 
         /// <summary>
         /// Changes the counter-clockwise rotation angle for a DjVu page.
@@ -542,7 +542,7 @@ namespace DjvuSharp.Interop
         /// Remember to cast it to int before passing as an argument.
         /// </param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void ddjvu_page_set_rotation(IntPtr page, PageRotation rotation);
+        internal static extern void ddjvu_page_set_rotation(IntPtr miniexpage, PageRotation rotation);
 
         /// <summary>
         /// Returns the counter-clockwise rotation angle for the DjVu page.
@@ -553,7 +553,7 @@ namespace DjvuSharp.Interop
         /// <param name="page">An IntPtr to ddjvu_page_t</param>
         /// <returns>An integer which should be cast to the enum <see cref="PageRotation"/></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern PageRotation ddjvu_page_get_rotation(IntPtr page);
+        internal static extern PageRotation ddjvu_page_get_rotation(IntPtr miniexpage);
 
         /// <summary>
         /// Returns the page rotation specified by the 
@@ -567,7 +567,7 @@ namespace DjvuSharp.Interop
         /// <param name="page"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern PageRotation ddjvu_page_get_initial_rotation(IntPtr page);
+        internal static extern PageRotation ddjvu_page_get_initial_rotation(IntPtr miniexpage);
 
 
         /* -------------------------------------------------- */
@@ -830,11 +830,11 @@ namespace DjvuSharp.Interop
         /// </returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int ddjvu_page_render(
-            IntPtr page,
+            IntPtr miniexpage,
             RenderMode mode,
             Rectangle pagerect,
             Rectangle renderrect,
-            IntPtr pixelformat,
+            IntPtr miniexpixelformat,
             ulong rowsize,
             [Out] sbyte[] imagebuffer);
 
@@ -885,8 +885,127 @@ namespace DjvuSharp.Interop
             int pageNo,
             ref int wptr,
             ref int hptr,
-            IntPtr pixelFormat,
+            IntPtr miniexpixelFormat,
             ulong rowSize,
             [Out] sbyte[] imageBuffer);
-    }    
+
+
+
+        /* -------------------------------------------------- */
+        /* S-EXPRESSIONS                                      */
+        /* -------------------------------------------------- */
+
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ddjvu_miniexp_release(IntPtr document, IntPtr expr);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr ddjvu_document_get_outline(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr ddjvu_document_get_anno(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr ddjvu_document_get_pagetext(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
+        internal static extern string ddjvu_document_get_pagetext_utf8(IntPtr document);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr ddjvu_document_get_pageanno(IntPtr document, int pageno);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
+        internal static extern string ddjvu_anno_get_bgcolor(IntPtr annotations);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
+        internal static extern string ddjvu_anno_get_zoom(IntPtr annotations);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
+        internal static extern string ddjvu_anno_get_mode(IntPtr annotations);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
+        internal static extern string ddjvu_anno_get_horizalign(IntPtr annotations);
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
+        internal static extern string ddjvu_anno_get_vertalign(IntPtr annotations);
+
+        /// <summary>
+        /// Returns the length of a list.
+        /// </summary>
+        /// <param name="miniexp">lisp expression in question</param>
+        /// <returns>Returns 0 for non lists, -1 for circular lists.</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int miniexp_length(IntPtr miniexp);
+
+
+        /* Represent common combinations of car and cdr. */
+
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_caar(IntPtr miniexp);
+        
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_cadr(IntPtr miniexp);
+        
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_cdar(IntPtr miniexp);
+        
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_cddr(IntPtr miniexp);
+        
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_caddr(IntPtr miniexp);
+        
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_cdddr(IntPtr miniexp);
+
+        /// <summary>
+        /// Returns the n-th element of a list.
+        /// </summary>
+        /// <param name="n">The element which we want.</param>
+        /// <param name="miniexp_list">The miniexp (list) on which we want to run this function</param>
+        /// <returns>lisp s-expression at the position n</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_nth(int n, IntPtr miniexp_list);
+
+        /// <summary>
+        /// Constructs a pair
+        /// </summary>
+        /// <param name="car">The first part of list</param>
+        /// <param name="cdr">The second part of the list</param>
+        /// <returns>The s-expression pair created</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_cons(IntPtr car, IntPtr cdr);
+
+        /// <summary>
+        /// Replaces the car of the pair
+        /// </summary>
+        /// <param name="pair">The pair whose car we want to replace</param>
+        /// <param name="newcar">The new value of car of type s-expression</param>
+        /// <returns>The newly created s-expression with car replaced</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_rplaca(IntPtr pair, IntPtr newcar);
+
+        /// <summary>
+        /// Replaces the cdr of the pair
+        /// </summary>
+        /// <param name="pair">The pair whose cdr we want to replace</param>
+        /// <param name="newcar">The new value of cdr of type s-expression</param>
+        /// <returns>The newly created s-expression with cdr replaced</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_rplacd(IntPtr pair, IntPtr newcdr);
+
+        /// <summary>
+        /// Reverses a list in place.
+        /// </summary>
+        /// <param name="p">The targeted list (or pair)</param>
+        /// <returns>The reversed list</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_reverse(IntPtr p);
+    }
 }
