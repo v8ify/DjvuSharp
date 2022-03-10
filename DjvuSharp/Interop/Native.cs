@@ -1007,5 +1007,29 @@ namespace DjvuSharp.Interop
         /// <returns>The reversed list</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr miniexp_reverse(IntPtr p);
+
+
+        /* -------- S-EXPRESSION (STRINGS) -------- */
+
+        /// <summary>
+        /// Tests if an expression is a string.
+        /// </summary>
+        /// <param name="miniexp">The pointer to the s-expression.</param>
+        /// <returns>0 if the expression is not a string.</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int miniexp_stringp(IntPtr miniexp);
+
+
+        /* -------- S-EXPRESSION (FLOAT) -------- */
+
+        /// <summary>
+        /// Tests if an expression is a float.
+        /// </summary>
+        /// <param name="miniexp">The pointer to the s-expression.</param>
+        /// <returns>0 if the expression is not a float.</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int miniexp_floatnump(IntPtr miniexp);
+
+
     }
 }

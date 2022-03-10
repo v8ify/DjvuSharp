@@ -20,6 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
+using DjvuSharp.Interop;
 
 namespace DjvuSharp.LispExpressions
 {
@@ -39,29 +41,64 @@ namespace DjvuSharp.LispExpressions
             _document = document;
         }
 
+        /// <summary>
+        /// Checks whether the current s-expression is a symbol.
+        /// Essential when converting to more specific type like pair, IntExpression, etc
+        /// </summary>
+        /// <returns>True if this expression is symbol; false otherwise</returns>
         public bool IsSymbol()
         {
-            throw new NotImplementedException();
+            long i = _expression.ToInt64();
+
+            return (i & 3) == 2;
         }
 
+        /// <summary>
+        /// Checks whether the current s-expression is a pair.
+        /// Essential when converting to more specific type like pair, IntExpression, etc
+        /// </summary>
+        /// <returns>True if this expression is pair; false otherwise</returns>
         public bool IsPair()
         {
-            throw new NotImplementedException();
+            long i = _expression.ToInt64();
+
+            return (i & 3) == 0;
         }
 
+        /// <summary>
+        /// Checks whether the current s-expression is a StringExpression.
+        /// Essential when converting to more specific type like pair, IntExpression, etc
+        /// </summary>
+        /// <returns>True if this expression is StringExpression; false otherwise</returns>
         public bool IsStringExpression()
         {
-            throw new NotImplementedException();
+            int result = Native.miniexp_stringp(_expression);
+
+            return !(result == 0);
         }
 
+        /// <summary>
+        /// Checks whether the current s-expression is a FloatExpression.
+        /// Essential when converting to more specific type like pair, IntExpression, etc
+        /// </summary>
+        /// <returns>True if this expression is FloatExpression; false otherwise</returns>
         public bool IsFloatExpression()
         {
-            throw new NotImplementedException();
+            int result = Native.miniexp_floatnump(_expression);
+
+            return !(result == 0);
         }
 
+        /// <summary>
+        /// Checks whether the current s-expression is a IntExpression.
+        /// Essential when converting to more specific type like pair, IntExpression, etc
+        /// </summary>
+        /// <returns>True if this expression is IntExpression; false otherwise</returns>
         public bool IsIntExpression()
         {
-            throw new NotImplementedException();
+            long i = _expression.ToInt64();
+
+            return (i & 3) == 0;
         }
     }
 }
