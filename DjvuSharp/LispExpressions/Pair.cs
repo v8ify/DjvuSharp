@@ -30,41 +30,46 @@ namespace DjvuSharp.LispExpressions
     /// - the <code>car</code> represents the first element of a list.
     /// - the <code>cdr</code> usually is a pair representing the rest of the list.
     /// </summary>
-    public class Pair
+    public class Pair: Expression
     {
-        /// <summary>
-        /// Pointer to native lisp expression (of type miniexp_t)
-        /// </summary>
-        private IntPtr _miniexp;
-        
-        /// <summary>
-        /// Pointer to native document to which this s-expression belongs
-        /// </summary>
-        private IntPtr _document;
-
-        public Pair(IntPtr miniexp, IntPtr document)
+        public Pair(IntPtr expression, IntPtr document): base(expression, document)
         {
-            if (miniexp == IntPtr.Zero)
-                throw new ArgumentException($"{nameof(miniexp)} cannot be equal to IntPtr.Zero.", nameof(miniexp));
 
-            if (document == IntPtr.Zero)
-                throw new ArgumentException($"{nameof(document)} cannot be equal to IntPtr.Zero.", nameof(document));
-
-            _miniexp = miniexp;
-            _document = document;
         }
 
-        public Pair Caar()
+        public Expression Caar()
         {
-            IntPtr carResult = Native.miniexp_caar(_miniexp);
-            var i = (ulong)carResult;
+            IntPtr result = Native.miniexp_caar(_expression);
 
-            throw new NotImplementedException();
+            return new Expression(result, _document);
         }
 
-        ~Pair()
+        public Expression Cadr()
         {
-            Native.ddjvu_miniexp_release(_document, _miniexp);
+            IntPtr result = Native.miniexp_cadr(_expression);
+
+            return new Expression(result, _document);
+        }
+
+        public Expression Cddr()
+        {
+            IntPtr result = Native.miniexp_cddr(_expression);
+
+            return new Expression(result, _document);
+        }
+
+        public Expression Caddr()
+        {
+            IntPtr result = Native.miniexp_caddr(_expression);
+
+            return new Expression(result, _document);
+        }
+
+        public Expression Cdddr()
+        {
+            IntPtr result = Native.miniexp_cdddr(_expression);
+
+            return new Expression(result, _document);
         }
     }
 }
