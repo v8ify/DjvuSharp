@@ -97,5 +97,23 @@ namespace DjvuSharp.LispExpressions
 
             return new Expression(result, _document);
         }
+
+        /// <summary>
+        /// Replaces the 'car' of this ListExpression
+        /// </summary>
+        /// <param name="newCar">New value of the car</param>
+        public void ReplaceCar(Expression newCar)
+        {
+            Native.miniexp_rplaca(_expression, newCar._expression);
+        }
+
+        /// <summary>
+        /// Replaces the 'cdr' of this ListExpression
+        /// </summary>
+        /// <param name="newCdr">New value of the cdr</param>
+        public void ReplaceCdr(Expression newCdr)
+        {
+            Native.miniexp_rplacd(_expression, newCdr._expression);
+        }
     }
 }
