@@ -37,21 +37,12 @@ namespace DjvuSharp.LispExpressions
         /// </summary>
         internal protected IntPtr _expression;
 
-        /// <summary>
-        /// Pointer to native document to which this s-expression belongs
-        /// </summary>
-        internal protected IntPtr _document;
-
-        public Expression(IntPtr expression, IntPtr document)
+        public Expression(IntPtr expression)
         {
             if (expression == IntPtr.Zero)
                 throw new ArgumentException($"{nameof(expression)} cannot be equal to IntPtr.Zero.", nameof(expression));
 
-            if (document == IntPtr.Zero)
-                throw new ArgumentException($"{nameof(document)} cannot be equal to IntPtr.Zero.", nameof(document));
-
             _expression = expression;
-            _document = document;
         }
 
         internal Expression()
@@ -117,14 +108,6 @@ namespace DjvuSharp.LispExpressions
             long i = _expression.ToInt64();
 
             return (i & 3) == 0;
-        }
-
-        ~Expression()
-        {
-            if (_document != IntPtr.Zero)
-            {
-                Native.ddjvu_miniexp_release(_document, _expression);
-            }
         }
     }
 }

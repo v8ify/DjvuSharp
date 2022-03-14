@@ -34,16 +34,12 @@ namespace DjvuSharp.LispExpressions
     {
         public ListExpression(Expression car, Expression cdr)
         {
-            if (car._document != cdr._document)
-                throw new ArgumentException($"{nameof(car)} and {nameof(cdr)} must belong to the same document");
-
             IntPtr ptr = Native.miniexp_cons(car._expression, cdr._expression);
 
             _expression = ptr;
-            _document = car._document;
         }
 
-        public ListExpression(IntPtr expression, IntPtr document): base(expression, document)
+        public ListExpression(IntPtr expression, IntPtr document): base(expression)
         {
 
         }
@@ -55,7 +51,7 @@ namespace DjvuSharp.LispExpressions
 
             IntPtr ptr = Native.miniexp_nth(n, _expression);
 
-            return new Expression(ptr, _document);
+            return new Expression(ptr);
         }
 
         /// <summary>
@@ -67,35 +63,35 @@ namespace DjvuSharp.LispExpressions
         {
             IntPtr result = Native.miniexp_caar(_expression);
 
-            return new Expression(result, _document);
+            return new Expression(result);
         }
 
         public Expression Cadr()
         {
             IntPtr result = Native.miniexp_cadr(_expression);
 
-            return new Expression(result, _document);
+            return new Expression(result);
         }
 
         public Expression Cddr()
         {
             IntPtr result = Native.miniexp_cddr(_expression);
 
-            return new Expression(result, _document);
+            return new Expression(result);
         }
 
         public Expression Caddr()
         {
             IntPtr result = Native.miniexp_caddr(_expression);
 
-            return new Expression(result, _document);
+            return new Expression(result);
         }
 
         public Expression Cdddr()
         {
             IntPtr result = Native.miniexp_cdddr(_expression);
 
-            return new Expression(result, _document);
+            return new Expression(result);
         }
 
         /// <summary>
