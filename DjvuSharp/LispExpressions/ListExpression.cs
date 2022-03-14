@@ -30,12 +30,38 @@ namespace DjvuSharp.LispExpressions
     /// - the <code>car</code> represents the first element of a list.
     /// - the <code>cdr</code> usually is a pair representing the rest of the list.
     /// </summary>
-    public class Pair: Expression
+    public class ListExpression: Expression
     {
-        public Pair(IntPtr expression, IntPtr document): base(expression, document)
+        public ListExpression(Expression car, Expression cdr)
+        {
+            if (car._document != cdr._document)
+                throw new ArgumentException($"{nameof(car)} and {nameof(cdr)} must belong to the same document");
+
+            IntPtr ptr = Native.miniexp_cons(car._expression, cdr._expression);
+
+            _expression = ptr;
+            _document = car._document;
+        }
+
+        public ListExpression(IntPtr expression, IntPtr document): base(expression, document)
         {
 
         }
+
+        public Expression GetNthElement(int n)
+        {
+            if (n >= Length || n < 0)
+                throw new ArgumentOutOfRangeException(nameof(n), n, $"Please ensure you are not accessing list elements in valid range.");
+
+            IntPtr ptr = Native.miniexp_nth(n, _expression);
+
+            return new Expression(ptr, _document);
+        }
+
+        /// <summary>
+        /// Returns length of the list. Returns 0 for non-lists and -1 for circular lists
+        /// </summary>
+        public int Length { get => Native.miniexp_length(_expression); }
 
         public Expression Caar()
         {

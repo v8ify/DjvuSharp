@@ -35,12 +35,12 @@ namespace DjvuSharp.LispExpressions
         /// <summary>
         /// Pointer to native lisp expression (of type miniexp_t)
         /// </summary>
-        protected IntPtr _expression;
+        internal protected IntPtr _expression;
 
         /// <summary>
         /// Pointer to native document to which this s-expression belongs
         /// </summary>
-        protected IntPtr _document;
+        internal protected IntPtr _document;
 
         public Expression(IntPtr expression, IntPtr document)
         {
@@ -52,6 +52,11 @@ namespace DjvuSharp.LispExpressions
 
             _expression = expression;
             _document = document;
+        }
+
+        internal Expression()
+        {
+
         }
 
         /// <summary>
@@ -116,7 +121,10 @@ namespace DjvuSharp.LispExpressions
 
         ~Expression()
         {
-            Native.ddjvu_miniexp_release(_document, _expression);
+            if (_document != IntPtr.Zero)
+            {
+                Native.ddjvu_miniexp_release(_document, _expression);
+            }
         }
     }
 }
