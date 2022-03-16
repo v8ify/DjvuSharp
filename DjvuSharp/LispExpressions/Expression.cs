@@ -107,7 +107,7 @@ namespace DjvuSharp.LispExpressions
         {
             long i = _expression.ToInt64();
 
-            return (i & 3) == 0;
+            return (i & 3) == 3;
         }
     }
 }
