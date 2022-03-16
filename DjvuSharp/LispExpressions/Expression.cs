@@ -67,7 +67,7 @@ namespace DjvuSharp.LispExpressions
         /// Essential when converting to more specific type like pair, IntExpression, etc
         /// </summary>
         /// <returns>True if this expression is pair; false otherwise</returns>
-        public bool IsPair()
+        public bool IsListExpression()
         {
             long i = _expression.ToInt64();
 

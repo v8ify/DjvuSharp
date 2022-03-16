@@ -1036,7 +1036,7 @@ namespace DjvuSharp.Interop
         /// <param name="miniexp"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr miniexp_string(string miniexp);
+        internal static extern IntPtr miniexp_string([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))] string miniexp);
 
 
 
