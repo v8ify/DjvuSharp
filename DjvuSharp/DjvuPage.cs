@@ -192,16 +192,16 @@ namespace DjvuSharp
         }
 
 
-        public short[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
+        public byte[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
         {
             if (rowAlignment <= 0)
                 throw new ArgumentOutOfRangeException(nameof(rowAlignment), rowAlignment, $"Must be a greater than 0");
 
-            long rowSize = Utils.CalculateRowSize(renderRect.Width, rowAlignment, pixelFormat.Bpp);
+            uint rowSize = renderRect.Width;
 
-            sbyte[] imageBuffer = Utils.AllocateImageMemory(rowSize, renderRect.Height);
+            byte[] imageBuffer = Utils.AllocateImageMemory(rowSize, renderRect.Height);
 
-            int success = Native.ddjvu_page_render(_djvu_page, mode, pageRect, renderRect, pixelFormat.NativePtr, (ulong)rowSize, imageBuffer);
+            int success = Native.ddjvu_page_render(_djvu_page, mode, pageRect, renderRect, pixelFormat.NativePtr, rowSize, imageBuffer);
 
             // Failed to render the page
             if (success == 0)
@@ -209,7 +209,7 @@ namespace DjvuSharp
                 throw new ApplicationException($"Failed to render page. Page no.: {PageNumber}");
             }
 
-            return imageBuffer.Cast<short>().ToArray();
+            return imageBuffer;
         }
 
         /*public Stream RenderBitmap(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment = 1)
