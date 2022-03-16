@@ -18,8 +18,8 @@ namespace DjvuSharp.Tests
 
         private FloatExpression _floatExpression;
         private IntExpression _intExpression;
-        private ListExpression _listExpression;
         private StringExpression _stringExpression;
+        private ListExpression _listExpression;
         private Symbol _symbol;
 
         [OneTimeSetUp]
@@ -27,8 +27,8 @@ namespace DjvuSharp.Tests
         {
             _floatExpression = new FloatExpression(_floatValue);
             _intExpression = new IntExpression(_intValue);
-            _listExpression = new ListExpression(_floatExpression, _intExpression);
             _stringExpression = new StringExpression(_stringValue);
+            _listExpression = new ListExpression(_floatExpression, new ListExpression(_intExpression, new ListExpression(_intExpression, _stringExpression)));
             _symbol = new Symbol(_symbolValue);
         }
 
@@ -56,10 +56,10 @@ namespace DjvuSharp.Tests
             Assert.AreEqual(_symbolValue, _symbol.Name);
         }
 
-        /*[Test]
+        [Test]
         public void Test_ListExpression_Length()
         {
-            Assert.AreEqual(2, _listExpression.Length);
-        }*/
+            Assert.AreEqual(3, _listExpression.Length);
+        }
     }
 }
