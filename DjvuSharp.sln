@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DjvuSharp", "DjvuSharp\Djvu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DjvuSharp.Tests", "DjvuSharp.Tests\DjvuSharp.Tests.csproj", "{243099A0-1D44-4229-8356-F67A466A4577}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{5FD67ED4-7366-447D-8171-1C0EB7C09BB3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenderPage", "examples\RenderPage\RenderPage.csproj", "{963BDACF-22D8-4751-9650-32A7B3710C16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,9 +35,20 @@ Global
 		{243099A0-1D44-4229-8356-F67A466A4577}.Release|Any CPU.Build.0 = Release|Any CPU
 		{243099A0-1D44-4229-8356-F67A466A4577}.Release|x64.ActiveCfg = Release|x64
 		{243099A0-1D44-4229-8356-F67A466A4577}.Release|x64.Build.0 = Release|x64
+		{963BDACF-22D8-4751-9650-32A7B3710C16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{963BDACF-22D8-4751-9650-32A7B3710C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{963BDACF-22D8-4751-9650-32A7B3710C16}.Debug|x64.ActiveCfg = Debug|x64
+		{963BDACF-22D8-4751-9650-32A7B3710C16}.Debug|x64.Build.0 = Debug|x64
+		{963BDACF-22D8-4751-9650-32A7B3710C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{963BDACF-22D8-4751-9650-32A7B3710C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{963BDACF-22D8-4751-9650-32A7B3710C16}.Release|x64.ActiveCfg = Release|Any CPU
+		{963BDACF-22D8-4751-9650-32A7B3710C16}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{963BDACF-22D8-4751-9650-32A7B3710C16} = {5FD67ED4-7366-447D-8171-1C0EB7C09BB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6980D47-542A-4607-9E7A-B8C4DF54DCA0}
