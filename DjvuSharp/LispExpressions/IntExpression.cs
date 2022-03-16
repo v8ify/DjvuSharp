@@ -20,36 +20,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using DjvuSharp.Interop;
 
 namespace DjvuSharp.LispExpressions
 {
-    /// <summary>
-    /// The textual representation of a Symbol is a 
-    /// sequence of printable characters forming an identifier.
-    /// Each Symbol has a unique representation and remains
-    /// permanently allocated.
-    /// </summary>
-    public class Symbol: Expression
+    public class IntExpression: Expression
     {
-        /// <summary>
-        /// Creates a Symbol with the specified name
-        /// </summary>
-        /// <param name="name"></param>
-        public Symbol(string name)
+        public IntExpression(int integer)
         {
-            _expression = Native.miniexp_symbol(name);
+            IntPtr exp = (IntPtr)((ulong)(integer << 2 | 3));
+            _expression = exp;
         }
 
-        /// <summary>
-        /// Returns the symbol name as a string.
-        /// Returns null if the expression is not a symbol.
-        /// </summary>
-        public string Name { get => Native.miniexp_to_name(_expression); }
-
-        public override string ToString()
-        {
-            return Name;
-        }
+        public int Value { get => ((int)_expression.ToInt64()) >> 2 ; }
     }
 }

@@ -835,8 +835,8 @@ namespace DjvuSharp.Interop
             Rectangle pagerect,
             Rectangle renderrect,
             IntPtr miniexpixelformat,
-            ulong rowsize,
-            [Out] sbyte[] imagebuffer);
+            uint rowsize,
+            [Out] byte[] imagebuffer);
 
 
         /* -------------------------------------------------- */
@@ -886,8 +886,8 @@ namespace DjvuSharp.Interop
             ref int wptr,
             ref int hptr,
             IntPtr miniexpixelFormat,
-            ulong rowSize,
-            [Out] sbyte[] imageBuffer);
+            uint rowSize,
+            [Out] byte[] imageBuffer);
 
 
 
@@ -1019,6 +1019,26 @@ namespace DjvuSharp.Interop
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int miniexp_stringp(IntPtr miniexp);
 
+        /// <summary>
+        /// Returns the c string represented by the expression.
+        /// Returns NULL if the expression is not a string.
+        /// The c string remains valid as long as the corresponding lisp object exists.
+        /// </summary>
+        /// <param name="miniexp"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern string miniexp_to_str(IntPtr miniexp);
+
+        /// <summary>
+        /// Constructs a string expression by copying zero terminated string s.
+        /// </summary>
+        /// <param name="miniexp"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_string(string miniexp);
+
+
+
 
         /* -------- S-EXPRESSION (FLOAT) -------- */
 
@@ -1030,6 +1050,38 @@ namespace DjvuSharp.Interop
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int miniexp_floatnump(IntPtr miniexp);
 
+        /// <summary>
+        /// Returns a new floating point number object.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_floatnum(double input);
 
+        /// <summary>
+        /// Returns a double precision number corresponding to a lisp expression.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern double miniexp_to_double(IntPtr miniexp);
+
+        /* -------- SYMBOLS -------- */
+
+        /// <summary>
+        /// Returns the symbol name as a string.
+        /// </summary>
+        /// <param name="miniexp"></param>
+        /// <returns>Symbol name. Returns NULL if the expression is not a symbol.</returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
+        internal static extern string miniexp_to_name(IntPtr miniexp);
+
+        /// <summary>
+        /// Returns the unique symbol expression with the specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr miniexp_symbol([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))] string name);
     }
 }
