@@ -30,7 +30,7 @@ namespace DjvuSharp.LispExpressions
     /// It can be converted (or cast) to other more specific types of lisp-expression like Pair, etc
     /// But before doing that it's actual type must be checked.
     /// </summary>
-    public class Expression
+    public class Expression: IEquatable<Expression>
     {
         /// <summary>
         /// Pointer to native lisp expression (of type miniexp_t)
@@ -108,6 +108,51 @@ namespace DjvuSharp.LispExpressions
             long i = _expression.ToInt64();
 
             return (i & 3) == 3;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Expression);
+        }
+
+        public bool Equals(Expression other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (Object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return this._expression == other._expression;
+        }
+
+        public static bool operator ==(Expression lhs, Expression rhs)
+        {
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Expression lhs, Expression rhs)
+        {
+            return !(lhs == rhs);
+        }
+
+        public override int GetHashCode()
+        {
+            return _expression.GetHashCode();
         }
     }
 }
