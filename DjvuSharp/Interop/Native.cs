@@ -895,23 +895,128 @@ namespace DjvuSharp.Interop
         /* S-EXPRESSIONS                                      */
         /* -------------------------------------------------- */
 
-
+        /// <summary>
+        /// This function controls the allocation of the
+        /// s-expressions returned by functions from the DDJVU
+        /// API.It indicates that the s-expression<expr> is no
+        /// longer needed and can be deallocated as soon as
+        /// necessary.Otherwise the s-expression remains allocated
+        /// as long as the document object exists.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="expr"></param>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void ddjvu_miniexp_release(IntPtr document, IntPtr expr);
 
+        /// <summary>
+        /// This function tries to obtain the document outline.
+        /// If this information is available, it returns a
+        /// s-expression with the same syntax as function
+        /// print-outline of program djvused.
+        /// Otherwise it returns miniexp_dummy until
+        /// the document header gets fully decoded.
+        /// Typical synchronous usage:
+        /// 
+        ///  miniexp_t r;
+        ///  while ((r=ddjvu_document_get_outline(doc))==miniexp_dummy)
+        ///    handle_ddjvu_messages(ctx, TRUE);
+        /// 
+        ///      This function returns the empty list miniexp_nil when
+        ///      the document contains no outline information.It can also
+        ///      return symbols failed or stopped when an error occurs
+        /// while accessing the desired information.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr ddjvu_document_get_outline(IntPtr document);
 
+        /// <summary>
+        /// This function returns the document-wide annotations.
+        /// This corresponds to a proposed change in the djvu format.
+        /// When no new-style document-wide annotations are available
+        /// and compat is true, this function searches a shared
+        /// annotation chunk and returns its contents.
+        /// 
+        /// This function returns miniexp_dummy if the information
+        /// is not yet available.It may then cause the emission
+        /// ofm_pageinfo messages with null m_any.page.
+        /// 
+        /// This function returns the empty list miniexp_nil when
+        /// the document does not contain page annotations. It can also
+        /// return symbols failed or stopped when an error occurs
+        /// while accessing the desired information.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="compact"></param>
+        /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr ddjvu_document_get_anno(IntPtr document);
+        internal static extern IntPtr ddjvu_document_get_anno(IntPtr document, int compact);
 
+        /// <summary>
+        /// This function tries to obtain the text information for
+        /// page  pageno.If this information is available, it
+        /// returns a s-expression with the same syntax as function
+        ///  print-txt of program djvused.Otherwise it starts
+        /// fetching the page data and returns miniexp_dummy.
+        /// This function causes the emission of m_pageinfo messages
+        /// with zero in the m_any.page field.
+        /// 
+        /// Typical synchronous usage:
+        ///  miniexp_t r;
+        /// while ((r=ddjvu_document_get_pagetext(doc, pageno,0))==miniexp_dummy)
+        ///     handle_ddjvu_messages(ctx, TRUE);
+        ///
+        /// This function returns the empty list miniexp_nil when
+        /// the page contains no text information.It can also return
+        /// 
+        /// symbols failed or stopped when an error occurs while
+        /// 
+        /// accessing the desired information. 
+        /// 
+        /// 
+        /// Argument maxdetail> controls the level of detail in the
+        /// returned s-expression.Values "page", "column", "region", "para",
+        /// "line", and "word" restrict the output to the specified granularity.
+        /// All other values produce a s-expression that represents
+        /// the hidden text data as finely as possible.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr ddjvu_document_get_pagetext(IntPtr document);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
         internal static extern string ddjvu_document_get_pagetext_utf8(IntPtr document);
 
+        /// <summary>
+        /// This function tries to obtain the annotations for
+        /// page pageno.If this information is available, it
+        /// returns a s-expression with the same syntax as function
+        /// print-ant of program djvused.Otherwise it starts
+        /// fetching the page data and returns miniexp_dummy.
+        /// This function causes the emission of m_pageinfo messages
+        /// with zero in the m_any.page field.
+        /// Typical synchronous usage:
+        /// 
+        ///   miniexp_t r;
+        ///   while ((r = ddjvu_document_get_pageanno(doc, pageno))==miniexp_dummy)
+        ///     handle_ddjvu_messages(ctx, TRUE);
+        /// 
+        /// This function returns the empty list miniexp_nil when
+        /// the page contains no annotations. It can also return
+        /// symbols failed or stopped when an error occurs while
+        /// accessing the desired information.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="pageno"></param>
+        /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr ddjvu_document_get_pageanno(IntPtr document, int pageno);
 

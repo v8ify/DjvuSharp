@@ -166,6 +166,8 @@ namespace DjvuSharp
         /// <returns>The number of component files</returns>
         public int FileNumber { get { return Native.ddjvu_document_get_filenum(_document); } }
 
+        public Annotation Annotation { get => throw new NotImplementedException(); }
+
         /// <summary>
         /// <p>When we construct a document, djvulibre starts decoding it in background.<p>
         /// <p>Also djvulibre decodes a document in chunks. Hence, we don't have to wait till
