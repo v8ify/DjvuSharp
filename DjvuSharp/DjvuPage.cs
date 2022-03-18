@@ -192,6 +192,36 @@ namespace DjvuSharp
         }
 
 
+        /// <summary>
+        /// This function tries to obtain the annotations for this page.
+        /// </summary>
+        /// <returns>an Annotation object.</returns>
+        /// <exception cref="Exception">Throws an exception if an error occurs while retrieving information</exception>
+        public Annotation GetAnnotations()
+        {
+            IntPtr exp = Native.ddjvu_document_get_pageanno(Document.Document, PageNumber);
+
+            while (Utils.IsMiniexpDummy(exp))
+            {
+                // Todo - implement an error handling strategy for ProcessMessages
+                Utils.ProcessMessages(Document.Context, true);
+
+                exp = Native.ddjvu_document_get_pageanno(Document.Document, PageNumber);
+            }
+
+            if (Utils.IsMiniexpNil(exp))
+            {
+                return null;
+            }
+
+            if (Utils.IsSymbolFailedOrStopped(exp))
+            {
+                throw new Exception($"Failed to retrieve annotations.");
+            }
+
+            return new Annotation(exp);
+        }
+
         public byte[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
         {
             if (rowAlignment <= 0)

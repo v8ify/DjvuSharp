@@ -41,6 +41,18 @@ namespace DjvuSharp.LispExpressions
             _expression = Native.miniexp_symbol(name);
         }
 
+        public Symbol(Expression expression)
+        {
+            if(!expression.IsSymbol())
+            {
+                throw new ArgumentException(
+                    $"The parameter {nameof(expression)} doesn't point to a symbol lisp-expression.",
+                    nameof(expression));
+            }
+
+            _expression = expression._expression;
+        }
+
         /// <summary>
         /// Returns the symbol name as a string.
         /// Returns null if the expression is not a symbol.

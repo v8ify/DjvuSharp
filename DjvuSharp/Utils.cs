@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using DjvuSharp.Messages;
 using DjvuSharp.Enums;
 using DjvuSharp.Interop;
+using DjvuSharp.LispExpressions;
 
 namespace DjvuSharp
 {
@@ -236,6 +237,66 @@ namespace DjvuSharp
             byte[] buffer = new byte[width * height];
 
             return buffer;
+        }
+
+        /// <summary>
+        /// The underlying djvulibre library tends to return a 'dummy' value of an lisp-expression
+        /// in certain situations.
+        /// 
+        /// For example, if we try to access the annotation of a djvu document and it is 
+        /// not ready yet we get a dummy value
+        /// 
+        /// This method tries to detect this dummy value
+        /// </summary>
+        /// <param name="miniexp">The lisp-expression in question.</param>
+        /// <returns>True if the lisp-expression in question is dummy; false otherwise.</returns>
+        internal static bool IsMiniexpDummy(IntPtr miniexp)
+        {
+            return miniexp.ToInt64() == 2;
+        }
+
+        /// <summary>
+        /// The underlying djvulibre library tends to return a 'nil' value of an lisp-expression
+        /// in certain situations.
+        /// 
+        /// For example, if we try to access the annotation of a djvu document and it doesn't
+        /// exist; then we get a 'nil' value.
+        /// 
+        /// This method tries to detect this nil miniexp value
+        /// </summary>
+        /// <param name="miniexp">The lisp-expression in question.</param>
+        /// <returns>True if the lisp-expression in question is dummy; false otherwise.</returns>
+        internal static bool IsMiniexpNil(IntPtr miniexp)
+        {
+            return miniexp.ToInt64() == 0;
+        }
+
+        /// <summary>
+        /// Checks whether the pointer to given lisp-expression is a symbol with
+        /// values 'failed' or 'stopped'
+        /// 
+        /// Used when validating or using a lisp-expression pointer value returned
+        /// from native functions like <see cref="Native.ddjvu_document_get_anno(IntPtr, int)"/>
+        /// </summary>
+        /// <param name="miniexp">lisp-expression in question</param>
+        /// <returns>True if the lisp-expression in question is symbol with value 'failed'
+        /// or 'stopped'; false otherwise
+        /// </returns>
+        internal static bool IsSymbolFailedOrStopped(IntPtr miniexp)
+        {
+            Expression expression = new Expression(miniexp);
+
+            if (expression.IsSymbol())
+            {
+                string symbolValue = new Symbol(expression).Name;
+
+                if (symbolValue == "failed" || symbolValue == "stopped")
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

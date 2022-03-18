@@ -166,7 +166,41 @@ namespace DjvuSharp
         /// <returns>The number of component files</returns>
         public int FileNumber { get { return Native.ddjvu_document_get_filenum(_document); } }
 
-        public Annotation Annotation { get => throw new NotImplementedException(); }
+        /// <summary>
+        /// This method returns the document-wide annotations.
+        /// </summary>
+        /// <param name="compact">
+        /// When no document-wide annotations are available and compat is true,
+        /// this method searches a shared annotation chunk and returns its contents.
+        /// </param>
+        /// <returns>an Annotation object.</returns>
+        /// <exception cref="Exception">Throws an exception if an error occurs while retrieving information</exception>
+        public Annotation GetAnnotations(bool compact = false) 
+        {
+            int compactFlag = compact ? 1 : 0;
+
+            IntPtr exp = Native.ddjvu_document_get_anno(_document, compactFlag);
+
+            while (Utils.IsMiniexpDummy(exp))
+            {
+                // Todo - implement an error handling strategy for ProcessMessages
+                Utils.ProcessMessages(_context, true);
+
+                exp = Native.ddjvu_document_get_anno(_document, compactFlag);
+            }
+
+            if (Utils.IsMiniexpNil(exp))
+            {
+                return null;
+            }
+
+            if (Utils.IsSymbolFailedOrStopped(exp))
+            {
+                throw new Exception($"Failed to retrieve annotations.");
+            }
+
+            return new Annotation(exp);
+        }
 
         /// <summary>
         /// <p>When we construct a document, djvulibre starts decoding it in background.<p>
