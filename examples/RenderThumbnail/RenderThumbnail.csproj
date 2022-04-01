@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DjvuSharp\DjvuSharp.csproj" />
+    <ProjectReference Include="..\..\DjvuSharp\DjvuSharp.csproj" />
   </ItemGroup>
 
 </Project>
