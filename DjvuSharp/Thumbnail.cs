@@ -27,20 +27,16 @@ namespace DjvuSharp
 {
     public class Thumbnail
     {
-        private DjvuDocument _document;
-        private int _pageNo;
+        private RenderEngine _renderEngine;
 
         public Thumbnail(DjvuDocument document, int pageNo)
         {
-            _document = document;
-            _pageNo = pageNo;
-
             // We start decoding thumbail as well by passing 1 as last argument.
-            JobStatus status = Native.ddjvu_thumbnail_status(_document.Document, pageNo, 1);
+            JobStatus status = Native.ddjvu_thumbnail_status(document.Document, pageNo, 1);
 
             while (true)
             {
-                status = Native.ddjvu_thumbnail_status(_document.Document, pageNo, 0);
+                status = Native.ddjvu_thumbnail_status(document.Document, pageNo, 0);
 
                 if (Utils.IsDecodingDone(status))
                 {
@@ -54,37 +50,41 @@ namespace DjvuSharp
 
             if (status == JobStatus.JOB_FAILED)
             {
-                throw new ApplicationException($"Failed to create page thumbail. Page no.: {_pageNo}");
+                throw new ApplicationException($"Failed to create page thumbail. Page no.: {pageNo}");
             }
             else if (status == JobStatus.JOB_STOPPED)
             {
-                throw new ApplicationException($"Page thumbnail creation interrupted by the user.  Page no.: {_pageNo}");
+                throw new ApplicationException($"Page thumbnail creation interrupted by the user.  Page no.: {pageNo}");
+            }
+
+            Document = document;
+            PageNo = pageNo;
+
+            _renderEngine = RenderEngineFactory.CreateRenderEngine(PixelFormatStyle.RGB24);
+        }
+
+        public DjvuDocument Document { get; }
+
+        public int PageNo { get; }
+
+        public int Width 
+        {
+            get
+            {
+                var dimensions = _renderEngine.GetThumbailDimensions(Document.Document, PageNo);
+
+                return dimensions.Item1;
             }
         }
 
-        public byte[] Render(int pageNo, ref int width, ref int height, PixelFormat pixelFormat, long rowAlignment = 1)
+        public int Height
         {
-            if (rowAlignment <= 0)
-                throw new ArgumentOutOfRangeException(nameof(rowAlignment), rowAlignment, $"Must be a greater than 0");
-
-            if (width <= 0)
-                throw new ArgumentOutOfRangeException(nameof(width), width, $"Must be a greater than 0");
-
-            if (height <= 0)
-                throw new ArgumentOutOfRangeException(nameof(height), height, $"Must be a greater than 0");
-
-            uint rowSize = ((uint)width) * 3;
-
-            byte[] buffer = Utils.AllocateImageMemory(rowSize, height);
-
-            int result = Native.ddjvu_thumbnail_render(_document.Document, pageNo, ref width, ref height, pixelFormat.NativePtr, rowSize, buffer);
-
-            if (result == 0)
+            get
             {
-                return null;
-            }
+                var dimensions = _renderEngine.GetThumbailDimensions(Document.Document, PageNo);
 
-            return buffer;
+                return dimensions.Item2;
+            }
         }
     }
 }

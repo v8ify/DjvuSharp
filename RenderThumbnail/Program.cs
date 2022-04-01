@@ -3,20 +3,22 @@ using DjvuSharp.Enums;
 using DjvuSharp.Rendering;
 
 const string djvuFile = @"C:\Users\prajwalj\Desktop\DjvuSharp\assets\boy_and_chicken.djvu";
-const string targetFile = @"C:\Users\prajwalj\Desktop\chicken.ppm";
+const string targetFile = @"C:\Users\prajwalj\Desktop\chicken_thumbnail.ppm";
 
 DjvuDocument document = DjvuDocument.Create(djvuFile);
 
 DjvuPage page = new DjvuPage(document, 1);
 
-Rectangle pageRect = new Rectangle(0, 0, page.Width, page.Height);
-Rectangle renderRect = new Rectangle(0, 0, page.Width, page.Height);
-
 using (var renderEngine = RenderEngineFactory.CreateRenderEngine(PixelFormatStyle.RGB24))
 {
     renderEngine.SetRowOrder(true);
 
-    byte[] imagePixels = renderEngine.RenderPage(page, RenderMode.COLOR, pageRect, renderRect);
+    Thumbnail thumbnail = new Thumbnail(document, 1);
+
+    int width = 50;
+    int height = 50;
+
+    byte[] imagePixels = renderEngine.RenderPageThumbnail(thumbnail, ref width, ref height);
 
     using (BinaryWriter bw = new BinaryWriter(File.Open(targetFile, FileMode.OpenOrCreate)))
     {
@@ -25,4 +27,7 @@ using (var renderEngine = RenderEngineFactory.CreateRenderEngine(PixelFormatStyl
             bw.Write(i);
         }
     }
+
+    Console.WriteLine($"Width: {width}");
+    Console.WriteLine($"Height: {height}");
 }

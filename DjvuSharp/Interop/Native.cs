@@ -23,6 +23,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using DjvuSharp.Enums;
 using DjvuSharp.Marshaler;
+using DjvuSharp.Rendering;
 
 [assembly: InternalsVisibleTo("DjvuSharp.Tests")]
 namespace DjvuSharp.Interop
@@ -698,7 +699,7 @@ namespace DjvuSharp.Interop
         /// </param>
         /// <returns>A pointer to ddjvu_format_t</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr ddjvu_format_create(PixelFormatStyle style, int nargs, uint[] args);
+        internal static extern IntPtr ddjvu_format_create(PixelFormatStyle style, int numberOfArgs, IntPtr args);
 
 
         /// <summary>
@@ -830,13 +831,13 @@ namespace DjvuSharp.Interop
         /// </returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int ddjvu_page_render(
-            IntPtr miniexpage,
+            IntPtr page,
             RenderMode mode,
             Rectangle pagerect,
             Rectangle renderrect,
-            IntPtr miniexpixelformat,
+            IntPtr pixelformat,
             uint rowsize,
-            [Out] byte[] imagebuffer);
+            IntPtr imagebuffer);
 
 
         /* -------------------------------------------------- */
@@ -887,7 +888,7 @@ namespace DjvuSharp.Interop
             ref int hptr,
             IntPtr miniexpixelFormat,
             uint rowSize,
-            [Out] byte[] imageBuffer);
+            IntPtr imageBuffer);
 
 
 
@@ -1021,24 +1022,42 @@ namespace DjvuSharp.Interop
         internal static extern IntPtr ddjvu_document_get_pageanno(IntPtr document, int pageno);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
-        internal static extern string ddjvu_anno_get_bgcolor(IntPtr annotations);
+        internal static extern IntPtr ddjvu_anno_get_bgcolor(IntPtr annotations);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
-        internal static extern string ddjvu_anno_get_zoom(IntPtr annotations);
+        internal static extern IntPtr ddjvu_anno_get_zoom(IntPtr annotations);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
-        internal static extern string ddjvu_anno_get_mode(IntPtr annotations);
+        internal static extern IntPtr ddjvu_anno_get_mode(IntPtr annotations);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
-        internal static extern string ddjvu_anno_get_horizalign(IntPtr annotations);
+        internal static extern IntPtr ddjvu_anno_get_horizalign(IntPtr annotations);
 
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
-        internal static extern string ddjvu_anno_get_vertalign(IntPtr annotations);
+        internal static extern IntPtr ddjvu_anno_get_vertalign(IntPtr annotations);
+
+        /// <summary>
+        /// Parse the annotations and returns a zero terminated
+        /// array of key symbols for the page metadata.
+        /// The caller should free this array with function<free>.
+        /// See also<(metadata...)> in the djvused man page.
+        /// </summary>
+        /// <param name="annotations"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe void** ddjvu_anno_get_metadata_keys(IntPtr annotations);
+
+        /// <summary>
+        /// Parse the annotations and returns the metadata string
+        /// corresponding to the metadata key symbol<key>.
+        /// The string remains allocated as long as the
+        /// annotations s-expression remain allocated.
+        /// Returns zero if no such key is present.
+        /// </summary>
+        /// <param name="annotations"></param>
+        /// <returns></returns>
+        [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe IntPtr ddjvu_anno_get_metadata(void** annotations);
 
         /// <summary>
         /// Returns the length of a list.
@@ -1180,8 +1199,7 @@ namespace DjvuSharp.Interop
         /// <param name="miniexp"></param>
         /// <returns>Symbol name. Returns NULL if the expression is not a symbol.</returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
-        internal static extern string miniexp_to_name(IntPtr miniexp);
+        internal static extern IntPtr miniexp_to_name(IntPtr miniexp);
 
         /// <summary>
         /// Returns the unique symbol expression with the specified name.

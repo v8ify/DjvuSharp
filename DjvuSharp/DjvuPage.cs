@@ -222,35 +222,6 @@ namespace DjvuSharp
             return new Annotation(exp);
         }
 
-        public byte[] Render(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment=1)
-        {
-            if (rowAlignment <= 0)
-                throw new ArgumentOutOfRangeException(nameof(rowAlignment), rowAlignment, $"Must be a greater than 0");
-
-            uint rowSize = renderRect.Width;
-
-            byte[] imageBuffer = Utils.AllocateImageMemory(rowSize, renderRect.Height);
-
-            int success = Native.ddjvu_page_render(_djvu_page, mode, pageRect, renderRect, pixelFormat.NativePtr, rowSize, imageBuffer);
-
-            // Failed to render the page
-            if (success == 0)
-            {
-                throw new ApplicationException($"Failed to render page. Page no.: {PageNumber}");
-            }
-
-            return imageBuffer;
-        }
-
-        /*public Stream RenderBitmap(RenderMode mode, Rectangle pageRect, Rectangle renderRect, PixelFormat pixelFormat, long rowAlignment = 1)
-        {
-            short[] imageBuffer = this.Render(mode, pageRect, renderRect, pixelFormat, rowAlignment);
-
-            Stream bitmap = new MemoryStream();
-            
-
-        }*/
-
 
         /* 
             Implementing Dispose pattern below
