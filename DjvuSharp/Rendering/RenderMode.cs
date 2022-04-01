@@ -1,6 +1,6 @@
 ﻿/*
 *   DjvuSharp - .NET bindings for DjvuLibre
-*   Copyright (C) 2021 Prajwal Jadhav
+*   Copyright (C) 2022 Prajwal Jadhav
 *   
 *   This program is free software; you can redistribute it and/or
 *   modify it under the terms of the GNU General Public License
@@ -17,51 +17,42 @@
 *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DjvuSharp.Enums
+
+namespace DjvuSharp.Rendering
 {
     /// <summary>
-    /// Enumerated type for pixel formats. Useful when rendering a page.
+    /// Various ways to render a page
     /// </summary>
-    public enum PixelFormatStyle
+    public enum RenderMode
     {
         /// <summary>
-        /// truecolor 24 bits in BGR order
+        /// color page or stencil
         /// </summary>
-        BGR24,
+        COLOR,
 
         /// <summary>
-        /// truecolor 24 bits in RGB order
+        /// stencil or color page
         /// </summary>
-        RGB24,
+        BLACK,
 
         /// <summary>
-        /// truecolor 16 bits with masks
+        /// color page or fail
         /// </summary>
-        RGBMASK16,
+        COLORONLY,
 
         /// <summary>
-        /// truecolor 32 bits with masks
+        /// stencil or fail
         /// </summary>
-        RGBMASK32,
+        MASKONLY,
 
         /// <summary>
-        /// greylevel 8 bits
+        /// color background layer
         /// </summary>
-        GREY8,
+        BACKGROUND,
 
         /// <summary>
-        /// paletized 8 bits (6x6x6 color cube)
+        /// color foreground layer
         /// </summary>
-        PALETTE8,
-
-        /// <summary>
-        /// packed bits, msb on the left
-        /// </summary>
-        MSBTOLSB,
-
-        /// <summary>
-        /// packed bits, lsb on the left
-        /// </summary>
-        LSBTOMSB
+        FOREGROUND
     }
 }

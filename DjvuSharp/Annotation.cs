@@ -21,16 +21,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using DjvuSharp.Interop;
+using DjvuSharp.Marshaler;
+using System.Runtime.InteropServices;
 
 namespace DjvuSharp
 {
     public class Annotation
     {
         private readonly IntPtr _annotation;
+        private readonly ICustomMarshaler _stringMarshaler;
 
         internal Annotation(IntPtr annotation)
         {
             _annotation = annotation;
+            _stringMarshaler = CustomStringMarshaler.GetInstance("");
         }
 
         /// <summary>
@@ -40,7 +44,14 @@ namespace DjvuSharp
         /// 
         /// Returns null if this information is not specified.
         /// </summary>
-        public string BackgroundColor { get => Native.ddjvu_anno_get_bgcolor(_annotation); }
+        public string BackgroundColor
+        {
+            get
+            {
+                IntPtr ptr = Native.ddjvu_anno_get_bgcolor(_annotation);
+                return _stringMarshaler.MarshalNativeToManaged(ptr) as string;
+            }
+        }
 
         /// <summary>
         /// Specify the initial zoom factor of the image. Argument zoomvalue
@@ -50,7 +61,14 @@ namespace DjvuSharp
         ///
         /// Returns null if this information is not specified.
         /// </summary>
-        public string Zoom { get => Native.ddjvu_anno_get_zoom(_annotation); }
+        public string Zoom
+        {
+            get
+            {
+                IntPtr ptr = Native.ddjvu_anno_get_zoom(_annotation);
+                return _stringMarshaler.MarshalNativeToManaged(ptr) as string;
+            }
+        }
 
         /// <summary>
         /// Specify the initial display mode of the image. 
@@ -58,20 +76,70 @@ namespace DjvuSharp
         /// 
         /// Returns null if this information is not specified.
         /// </summary>
-        public string Mode { get => Native.ddjvu_anno_get_mode(_annotation); }
+        public string Mode
+        {
+            get
+            {
+                IntPtr ptr = Native.ddjvu_anno_get_mode(_annotation);
+                return _stringMarshaler.MarshalNativeToManaged(ptr) as string;
+            }
+        }
 
         /// <summary>
         /// Specify how the image should be aligned on the viewer surface.
         /// By default the image is located in the center. 
         /// The value of HorzAlign can be one of 'left', 'center', or 'right'.
         /// </summary>
-        public string HorzAlign { get => Native.ddjvu_anno_get_horizalign(_annotation); }
+        public string HorzAlign
+        {
+            get
+            {
+                IntPtr ptr = Native.ddjvu_anno_get_horizalign(_annotation);
+                return _stringMarshaler.MarshalNativeToManaged(ptr) as string;
+            }
+        }
 
         /// <summary>
         /// Specify how the image should be aligned on the viewer surface.
         /// By default the image is located in the center. 
         /// The value of VertAlign can be one of 'top', 'center', or 'bottom'. 
         /// </summary>
-        public string VertAlign { get => Native.ddjvu_anno_get_vertalign(_annotation); }
+        public string VertAlign
+        {
+            get
+            {
+                IntPtr ptr = Native.ddjvu_anno_get_vertalign(_annotation);
+                return _stringMarshaler.MarshalNativeToManaged(ptr) as string;
+            }
+        }
+
+        public Dictionary<string, string> Metadata
+        {
+            get
+            {
+                Dictionary<string, string> metadata = new Dictionary<string, string>();
+
+                unsafe
+                {
+                    void** ptr = Native.ddjvu_anno_get_metadata_keys(_annotation);
+
+                    while ((int)*ptr != 0)
+                    {
+                        IntPtr strPtr = Native.ddjvu_anno_get_metadata(ptr);
+                        IntPtr keyPtr = new IntPtr(*ptr);
+
+                        string value = _stringMarshaler.MarshalNativeToManaged(strPtr) as string;
+
+                        string key = _stringMarshaler.MarshalNativeToManaged(Native.miniexp_to_name(keyPtr)) as string;
+
+                        metadata.Add(key, value);
+
+                        ptr++;
+                    }
+
+                    return metadata;
+                }
+            }
+        }
     }
 }

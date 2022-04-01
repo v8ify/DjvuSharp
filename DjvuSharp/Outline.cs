@@ -1,6 +1,6 @@
 ﻿/*
 *   DjvuSharp - .NET bindings for DjvuLibre
-*   Copyright (C) 2021 Prajwal Jadhav
+*   Copyright (C) 2022 Prajwal Jadhav
 *   
 *   This program is free software; you can redistribute it and/or
 *   modify it under the terms of the GNU General Public License
@@ -20,23 +20,19 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using DjvuSharp.Enums;
-using DjvuSharp.Interop;
+using DjvuSharp.LispExpressions;
 
-namespace DjvuSharp.Rendering
+namespace DjvuSharp
 {
-    public class PixelFormatLSBToMSB: PixelFormat
+    public class Outline
     {
-        public PixelFormatLSBToMSB(): base()
+        private readonly IntPtr _outline;
+
+        internal Outline(IntPtr outline)
         {
-            bppValue = 1;
-
-            djvu_format = Native.ddjvu_format_create(PixelFormatStyle.LSBTOMSB, 0, null);
-
-            if (djvu_format == IntPtr.Zero)
-            {
-                throw new ApplicationException($"Failed to create {nameof(PixelFormatLSBToMSB)}");
-            }
+            _outline = outline;
         }
+
+        public Expression Expression { get => new Expression(_outline); }
     }
 }

@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using DjvuSharp.Interop;
+using DjvuSharp.Marshaler;
 
 namespace DjvuSharp.LispExpressions
 {
@@ -57,7 +58,14 @@ namespace DjvuSharp.LispExpressions
         /// Returns the symbol name as a string.
         /// Returns null if the expression is not a symbol.
         /// </summary>
-        public string Name { get => Native.miniexp_to_name(_expression); }
+        public string Name
+        {
+            get
+            {
+                IntPtr namePtr = Native.miniexp_to_name(_expression);
+                return CustomStringMarshaler.GetInstance("").MarshalNativeToManaged(namePtr) as string;
+            }
+        }
 
         public override string ToString()
         {
