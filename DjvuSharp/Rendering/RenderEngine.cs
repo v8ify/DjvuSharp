@@ -115,22 +115,6 @@ namespace DjvuSharp.Rendering
             }
         }
 
-        public Tuple<int, int> GetThumbailDimensions(IntPtr document, int pageNo)
-        {
-            int width = 10;
-            int height = 0;
-
-            int success = Native.ddjvu_thumbnail_render(document, pageNo, ref width, ref height,
-                        _djvu_format, 100, IntPtr.Zero);
-
-            if (success == 0)
-            {
-                throw new ApplicationException($"Failed to render thumbnail. Page no.: {pageNo}");
-            }
-
-            return new Tuple<int, int>(width, height);
-        }
-
         public RenderEngine SetGamma(double gamma = 2.2)
         {
             Native.ddjvu_format_set_gamma(_djvu_format, gamma);

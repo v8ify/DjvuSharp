@@ -21,16 +21,28 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using DjvuSharp.Interop;
+using DjvuSharp.Marshaler;
+using System.Runtime.InteropServices;
 
 namespace DjvuSharp.LispExpressions
 {
     public class StringExpression: Expression
     {
+        private readonly ICustomMarshaler _stringMarshaler;
+
         public StringExpression(string input)
         {
             _expression = Native.miniexp_string(input);
+            _stringMarshaler = CustomStringMarshaler.GetInstance("");
         }
 
-        public string Value { get => Native.miniexp_to_str(_expression); }
+        public string Value
+        {
+            get
+            {
+                IntPtr stringPtr = Native.miniexp_to_str(_expression);
+                return _stringMarshaler.MarshalNativeToManaged(stringPtr) as string;
+            }
+        }
     }
 }

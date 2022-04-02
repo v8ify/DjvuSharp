@@ -1151,8 +1151,7 @@ namespace DjvuSharp.Interop
         /// <param name="miniexp"></param>
         /// <returns></returns>
         [DllImport(dllname, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomStringMarshaler))]
-        internal static extern string miniexp_to_str(IntPtr miniexp);
+        internal static extern IntPtr miniexp_to_str(IntPtr miniexp);
 
         /// <summary>
         /// Constructs a string expression by copying zero terminated string s.

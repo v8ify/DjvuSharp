@@ -66,25 +66,5 @@ namespace DjvuSharp
         public DjvuDocument Document { get; }
 
         public int PageNo { get; }
-
-        public int Width 
-        {
-            get
-            {
-                var dimensions = _renderEngine.GetThumbailDimensions(Document.Document, PageNo);
-
-                return dimensions.Item1;
-            }
-        }
-
-        public int Height
-        {
-            get
-            {
-                var dimensions = _renderEngine.GetThumbailDimensions(Document.Document, PageNo);
-
-                return dimensions.Item2;
-            }
-        }
     }
 }
