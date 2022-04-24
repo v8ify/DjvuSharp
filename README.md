@@ -2,8 +2,8 @@
 
 **DjvuSharp** is a set of .NET bindings for DjvuLibre library and targets .NET standard 2.0
 
-It is useful to decode .djvu files. It can render a djvu page to raw pixel data. It also has features
-to access and decode other djvu file data.
+It is useful to decode .djvu files and it can render a djvu page to raw pixel data. It also has features
+to access and decode other djvu file metadata.
 
 ## Getting Started
 
