@@ -191,6 +191,35 @@ namespace DjvuSharp
             get { return Native.ddjvu_page_get_initial_rotation(_djvu_page); }
         }
 
+        public string GetPageText(PageTextDetails details)
+        {
+            string maxDetails = "page";
+
+            switch (details)
+            {
+                case PageTextDetails.Page:
+                    maxDetails = "page";
+                    break;
+                case PageTextDetails.Column:
+                    maxDetails = "column";
+                    break;
+                case PageTextDetails.Region:
+                    maxDetails = "region";
+                    break;
+                case PageTextDetails.Para:
+                    maxDetails = "para";
+                    break;
+                case PageTextDetails.Line:
+                    maxDetails = "line";
+                    break;
+                case PageTextDetails.Word:
+                    maxDetails = "word";
+                    break;
+            }
+
+            return Native.ddjvu_document_get_pagetext_utf8(Document.Document, PageNumber, maxDetails);
+        }
+
 
         /// <summary>
         /// This function tries to obtain the annotations for this page.
