@@ -6,7 +6,6 @@ It is useful to decode .djvu files. It can render a djvu page to raw pixel data.
 to access and decode other djvu file data.
 
 ## Getting Started
-----------------------------------------
 
 The DjvuSharp library targets .NET Standard 2.0, thus it can be used in projects that target .NET Standard 2.0+, .NET Core 2.0+, .NET 5.0+ and possibly others. DjvuSharp includes a pre-compiled native library, which currently supports the following platforms:
 
