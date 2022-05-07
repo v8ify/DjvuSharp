@@ -24,7 +24,7 @@ The [examples](https://github.com/Prajwal-Jadhav/DjvuSharp/tree/master/examples)
 
 ### DjvuSharp library
 
-The first step when using MuPDFCore is to create a `DjvuSharp.DjvuDocument`:
+The first step when using DjvuSharp is to create a `DjvuSharp.DjvuDocument` object:
 
 ```Csharp
     DjvuDocument document = DjvuDocument.Create("path/to/your/djvu/file.djvu");
